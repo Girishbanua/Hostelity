@@ -1,0 +1,245 @@
+@use "_base";
+
+//Container
+.home_container {
+  margin: base.$containerMargin;
+}
+// NavBar
+nav {
+  @include base.flex(center, space-between);
+  padding: 0 20px;
+  .logo {
+    img {
+      width: 100px;
+      mix-blend-mode: multiply;
+    }
+  }
+  .nav_menu {
+    @include base.flex(center, space-between);
+    gap: 20px;
+    ul {
+      display: flex;
+      list-style: none;
+      li {
+        margin: 0 10px;
+        cursor: pointer;
+        transition: ease-in-out, 0.5s;
+        &:hover {
+          transform: translateY(-5px);
+        }
+        a {
+          text-decoration: none;
+          color: black;
+          &:hover {
+            color: base.$darkColor;
+          }
+        }
+      }
+    }
+    .book_now {
+      @include base.btn();
+      width: 120px;
+      &:hover {
+        letter-spacing: 2px;
+      }
+    }
+  }
+}
+// Hero Section
+.hero {
+  margin: 7vh 0;
+  text-align: center;
+  @include base.flex(center, space-between, column);
+  h4 {
+    font-size: 2rem;
+    font-weight: lighter;
+    margin-top: 30px;
+    letter-spacing: 3px;
+  }
+  h1 {
+    margin-top: -25px;
+    font-size: 12rem;
+    font-family: base.$secondaryFont;
+    font-weight: 300;
+    @include base.gradientText();
+  }
+  p {
+    font-size: 1.25rem;
+    color: base.$gray;
+    width: 35vw;
+    line-height: 1.5em;
+    margin-top: 15px;
+  }
+  span {
+    color: base.$lightColor;
+    font-weight: 500;
+  }
+  .hero_btns {
+    margin-top: 60px;
+    display: flex;
+    gap: 20px;
+    > button {
+      padding: 15px;
+      width: 175px;
+    }
+  }
+  .explore {
+    @include base.btn($bgcolor: base.$gradient1);
+    &:hover {
+      background: base.$gradient2;
+    }
+  }
+  .book_stay {
+    @include base.btn(transparent, base.$darkColor);
+    border: 1px solid base.$darkColor;
+    &:hover {
+      letter-spacing: 2px;
+    }
+  }
+}
+
+.hero_divider_img img {
+  width: 100%;
+}
+// Hero 2
+.hero2 {
+  margin: 10vh 5vw;
+
+  .About section {
+    height: 600px;
+    @include base.flex(center, space-between);
+
+    article {
+      @include base.flex(flex-start, center);
+      gap: 50px;
+      div {
+        width: 100%;
+      }
+      
+      h1 {
+        @include base.gradientText();
+        font-size: 4.25rem;
+        font-weight: 400;
+      }
+      p {
+        width: 80%;
+        font-size: 1.25rem;
+        line-height: 1.5em;
+        margin-top: 30px;
+        color: base.$gray;
+        span {
+          color: base.$lightColor;
+        }
+      }
+      img {
+        width: 100%;
+        height: 470px;
+        border-radius: 15px;
+        object-fit: cover;
+      }
+      .abt_txt {
+        button {
+          @include base.btn($bgcolor: base.$gradient1);
+          width: 200px;
+          height: 50px;
+          margin-top: 50px;
+          transition: ease-in-out, 0.3s;
+          &:hover {
+            background: base.$gradient2;
+            letter-spacing: 2px;
+          }
+        }
+      }
+    }
+  }
+}
+// Mid hero
+.divide_text{
+  @include base.flex(center, center, column);
+  @include base.gradientText(base.$gradient2);
+  font-size: 1.5rem;
+  font-family: base.$secondaryFont;
+  font-style: italic;
+  text-align: center;
+  width: 100%;
+  gap: 50px;
+  margin: 20vh 0;
+  .img1{
+    align-self: flex-start;
+  }
+  h2{
+    width: 55%;
+  }
+  .img2{
+    align-self: flex-end;
+    transform: rotate(180deg);
+  }
+}
+//Gallery
+.gallery{
+  margin: 10vh 0;    
+  h1{
+    @include base.gradientText();
+    font-size: 4.25rem;
+    font-weight: 400;
+    text-align: center;
+    margin-bottom: 50px;
+  }
+  .gallery_img{
+    @include base.flex(center, space-between);
+    img{
+      width: 450px;
+      border-radius: 15px;
+    }
+  }
+}
+// Footer
+footer{
+  @include base.flex(flex-end, space-evenly);
+  background: url("/images/Home_Page/footer_background3.png") ;
+  background-size: cover;
+  background-position: center;
+  height: 1440px;
+  padding: 30px 20px; 
+  margin-top: -700px;
+  padding-bottom: 2vh;
+  .footer_logo
+  {
+    width: 20%;
+    @include base.flex(center, center, column);
+    img{
+      width: 200px;
+      mix-blend-mode: multiply;
+    }
+    p::before{
+      content: "© 2024 ";
+    }
+    p::after{
+      content: "Developed by: Girish Chandra Banua & Rajesh Kumar Das";
+      display: block;
+      font-size: 0.6rem;
+      opacity: 0.5;
+    } 
+  }
+  .contact_links{
+    @include base.flex(center, space-evenly);
+    width: 80%;
+    color: rgba(255, 255, 255, 0.578);
+    ul{
+      list-style: none;
+      li{
+        margin: 10px 0;
+        h3{
+          font-size: 2rem;
+          font-weight: 500;
+          text-decoration: underline;
+          margin-bottom: 20px;
+        }
+        a{
+          color: whitesmoke;
+          text-decoration: none;
+        }
+      }
+    }
+  }
+}

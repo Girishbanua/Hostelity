@@ -1,0 +1,57 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Serif:ital,opsz,wght@0,8..144,100..900;1,8..144,100..900&display=swap");
+
+/* Fonts */
+$primaryFont: "Montserrat", sans-serif;
+$secondaryFont: "Roboto Serif", serif;
+
+/* Colors */
+$darkColor: #ff6243;
+$lightColor: #ff8350;
+$extraLightColor: #ff9e81;
+$fadedColor: #ffcbbb;
+$gray: gray;
+//Gradients
+$gradient1: linear-gradient(to right, #ff6243, #ff8350, #ff9e81);
+$gradient2: linear-gradient(to right, #ff9e81, #ff8350, #ff6243);
+
+/* Margins */
+$containerMargin: 0 5vw;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  scroll-behavior: smooth;    
+}
+body{
+  font-family: $primaryFont;
+  font-size: 14px;
+  background: url("/images/Home_Page/Mask_group2.png") no-repeat;
+  background-size: contain;  
+  width: 100%;
+  background-color: #fce5dd39;
+}
+
+@mixin btn($bgcolor: $darkColor, $txtColor: white) {
+  cursor: pointer;
+  border: none;
+  background: $bgcolor;
+  color: $txtColor;
+  border-radius: 10px;
+  padding: 10px;
+  transition: ease-in-out, 0.3s;  
+}
+
+@mixin flex($align: center, $justify: center, $direction: row) {
+  display: flex;
+  align-items: $align;
+  justify-content: $justify;
+  flex-direction: $direction;
+}
+
+@mixin gradientText($gradient: $gradient1) {
+  background: $gradient;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
