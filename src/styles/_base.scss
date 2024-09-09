@@ -1,3 +1,4 @@
+@use "_colors.scss";
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Roboto+Serif:ital,opsz,wght@0,8..144,100..900;1,8..144,100..900&display=swap");
 
@@ -10,7 +11,9 @@ $darkColor: #ff6243;
 $lightColor: #ff8350;
 $extraLightColor: #ff9e81;
 $fadedColor: #ffcbbb;
+$primaryFontColor: #5B5B5B;
 $gray: gray;
+$bodyBg: #fce5dd39;
 //Gradients
 $gradient1: linear-gradient(to right, #ff6243, #ff8350, #ff9e81);
 $gradient2: linear-gradient(to right, #ff9e81, #ff8350, #ff6243);
@@ -24,13 +27,13 @@ $containerMargin: 0 5vw;
   box-sizing: border-box;
   scroll-behavior: smooth;    
 }
+
 body{
   font-family: $primaryFont;
+  background-color: $bodyBg;
   font-size: 14px;
-  background: url("/images/Home_Page/Mask_group2.png") no-repeat;
-  background-size: contain;  
-  width: 100%;
-  background-color: #fce5dd39;
+  cursor: default;
+  color: $primaryFontColor;
 }
 
 @mixin btn($bgcolor: $darkColor, $txtColor: white) {

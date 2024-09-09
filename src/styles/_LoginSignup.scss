@@ -1,0 +1,96 @@
+@use "_base";
+
+.signupContainer{
+    @include base.flex(center, center);    
+    .signupBox{        
+        margin: 10vh 0;          
+        gap: 20px;                   
+        padding: 20px;
+        background-color: white;
+        border-radius: 10px;
+        box-shadow: 1px 2px 7px gray;
+        h1{
+            font-size: 2.5rem;      
+            @include base.gradientText() ;
+            margin: 30px;
+        }
+        form{
+            @include base.flex(left, left);
+            padding: 30px;
+            flex-wrap: wrap;
+            gap: 30px;
+            width: 70vw;
+            div{
+                margin-bottom: 20px;
+                display: flex;
+                width: 45%;
+                align-items: center;
+                gap: 10px;              
+            }
+            label{
+                width: 45%;
+                font-size: 1.5rem;
+                @include base.gradientText();
+            }
+            input{
+                width: 100%;
+                height: 50px;
+                border-radius: 5px;
+                padding: 15px;
+                border: none;
+                outline: 1px solid base.$extraLightColor;              
+            }    
+            select{
+                outline: 1px solid base.$extraLightColor;
+                border: none;
+                border-radius: 10px;
+                width: 50px;
+                padding: 10px;
+                color: base.$lightColor;
+                background: white
+            }      
+            .messChoice{
+                width: 100%;
+                input{
+                    width: auto;
+                    outline: none;                    
+                }
+                input[radio]{
+                    outline-color: base.$lightColor;
+                }
+                label{
+                    width: auto;
+                }
+                div{
+                    width: auto;
+                    margin: auto
+                }
+            }      
+            .formBtns{                
+                @include base.flex(center, space-between);
+                width: 100%;                
+                a{     
+                    text-decoration: none;               
+                    color: base.$primaryFontColor;
+                    text-transform: capitalize;     
+                    margin-top: 25px;                               
+                }
+                a::before{
+                    content: "< ";
+                }
+            }
+            button{
+                @include base.btn();
+                width: 150px;
+                padding: 15px;                
+                margin-top: 30px;
+                font-weight: bold;
+                letter-spacing: 1px;
+                :hover{
+                    background: base.$extraLightColor;
+                }
+            }
+        }
+    }
+}
+

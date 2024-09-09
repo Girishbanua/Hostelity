@@ -1,0 +1,113 @@
+@use "_base";
+
+.sideBar {
+  @include base.flex(center, space-evenly, column);
+  width: 30vw;
+  height: 100vh;
+  background-color: white;
+  box-shadow: 1px 2px 7px rgb(194, 194, 194);
+  border-radius: 0 75px 75px 0;
+  position: absolute;
+  top: 0;
+  .logo {
+    img {
+      width: 100px;
+      mix-blend-mode: multiply;
+    }
+  }
+  .title{
+    background: base.$gradient2;
+    width: 100%;
+    margin-right: 15%;
+    text-align: center;
+    color: white;
+    height: 75px;
+    border-radius: 30px;
+    font-size: 1.2rem;
+    @include base.flex(center, flex-end);
+    gap: 30px;  
+    h3{
+        font-weight: 400;
+        margin-right: 22%;        
+    }
+  }
+  .features{
+    h2{
+        margin-bottom: 50px;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+    }
+    .feature{
+        @include base.flex(center, flex-start);
+        gap: 10px;
+        margin-bottom: 20px;
+        img{
+            width: 25px;
+        }
+        p{
+            @include base.gradientText();
+            font-size: 1.2rem;  
+            cursor: pointer;          
+        }
+    }
+  }
+}
+
+  .dashboard_container{
+    @include base.flex(flex-end, top, column);        
+    margin: 7vh 2vw 5vh 32vw;
+    .dashboard_navbar {
+        @include base.flex(center, space-between);
+        margin: 10vh 0;
+        padding: 0 20px;      
+        .userMenu {
+          @include base.flex(center, space-between);
+          gap: 20px;
+          img {
+            height: 40px;
+            width: 40px;
+            background: base.$extraLightColor;
+            border-radius: 50%;
+            padding: 5px;
+            object-fit: contain;
+          }
+          span {
+            color: base.$lightColor;
+            font-weight: bold;
+          }
+          select {
+            background: base.$extraLightColor;
+            border: none;
+            border-radius: 5px;
+            color: white;
+          }
+        }
+      }
+      h1{
+        align-self: flex-start;
+        margin-top: 60px;
+        font-size: 2.5rem;
+        @include base.gradientText();
+      }
+    .details{
+        align-self: flex-start;
+        @include base.flex();
+        margin-top: 45px;
+        gap: 20px;    
+        width: 100%;    
+        .info{
+            background-color: white;                
+            padding: 10px 15px;   
+            border-radius: 10px;
+            box-shadow: 1px 2px 7px gray;
+            @include base.flex(center, space-between);
+            width: 100%;            
+            h2{
+                font-size: 2.5rem;                
+            }       
+            img{
+                opacity: 0.7;                
+            }              
+        }
+    }
+  }

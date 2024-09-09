@@ -1,8 +1,12 @@
 @use "_base";
-
+//Home background
+main{
+  background: url("/images/Home_Page/Mask_group2.png") no-repeat ;
+  background-size: contain;  
+}
 //Container
 .home_container {
-  margin: base.$containerMargin;
+  margin: base.$containerMargin;  
 }
 // NavBar
 nav {
@@ -98,8 +102,10 @@ nav {
   }
 }
 
-.hero_divider_img img {
-  width: 100%;
+.hero_divider_img {
+  img{
+    width: 100%;
+  }
 }
 // Hero 2
 .hero2 {
@@ -147,6 +153,14 @@ nav {
           &:hover {
             background: base.$gradient2;
             letter-spacing: 2px;
+          }
+          a{
+            text-decoration: none;
+            color: white;
+            :visited {
+              text-decoration: none;
+              color: white;
+            }
           }
         }
       }
@@ -210,6 +224,9 @@ footer{
     img{
       width: 200px;
       mix-blend-mode: multiply;
+    }
+    p{
+      color: black;
     }
     p::before{
       content: "© 2024 ";
