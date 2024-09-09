@@ -1,13 +1,15 @@
 import "../styles/Home.scss";
+import { useNavigate } from "react-router-dom";
 
 export default function Home() {
+  const navigate = useNavigate();
   return (
     <>
       <main>
       <div className="home_container">
         <nav>
           <div className="logo">
-            <a href="#">
+            <a href="">
               <img src="/images/Home_Page/hostelity_logo.png" alt="" />
             </a>
           </div>
@@ -20,13 +22,13 @@ export default function Home() {
                 <a href="#about">About</a>
               </li>
               <li>
-                <a href="#">Room</a>
+                <a href="user">Room</a>
               </li>
               <li>
                 <a href="#contact">Contact</a>
               </li>
             </ul>
-            <button className="book_now">Book Now</button>
+            <button className="book_now" onClick={() => { navigate("/login")}}>Book Now</button>
           </div>
         </nav>
         <div className="hero">
@@ -88,7 +90,7 @@ export default function Home() {
                   a completely affordable price. <br /> Try{" "}
                   <span>something new everyday</span>, with our meal plans.
                 </p>
-                <button>Explore meals</button>
+                <button> <a href="/messMenu">Explore meals</a></button>
               </div>
             </article>
           </section>
@@ -116,7 +118,7 @@ export default function Home() {
           <img src="/images/Home_Page/hostelity_logo.png" alt="logo" loading="lazy" />
           <p>Hostelity, Inc. All rights reserved</p>
         </div>
-        <div className="contact_links">
+        <div className="contact_links" id="contact">
           <ul>
             <li>
               <h3>Explore</h3>
