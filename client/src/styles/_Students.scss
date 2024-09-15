@@ -1,0 +1,42 @@
+@use "_base.scss";
+@use "_colors.scss";
+
+.stdntDetailCntnr{
+    
+    @include base.flex(center, center);
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    .stdntHeader{
+        margin: 5vh 0;
+        @include base.flex(center, center);
+        width: 100%;
+        height: 10%;
+        h1{
+            @include base.gradientText();
+            font-size: 3rem;
+        }
+    }
+    .stdntDetails{
+        padding: 0 1.5vw;
+        width: 100%;
+       table{
+           width: 100%;
+           text-align: center;                
+           border: 1px solid colors.$red-11;           
+           th{
+               font-size: 1.4rem;                              
+                padding: 10px;              
+                border-bottom: 1px solid colors.$red-11;                 
+           }
+           td{
+               font-size: 1.25rem;
+               padding: 5px;               
+           }
+           .leftText{
+               text-align: left;
+               padding-left: 20px;
+           }
+       }
+    }
+}

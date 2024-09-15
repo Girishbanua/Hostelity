@@ -1,0 +1,147 @@
+ [
+  {
+  "day": "Monday",
+  "lunch":
+    {      
+      "veg": "true",
+      "nonVeg": "false",
+      "food": "Rice, Dal fry,Mixed veg, Papad",
+      "image1": "/images/foodImages/rice.jpeg.jpg",
+      "image2": "/images/foodImages/dal fry.jpg",
+      "image3": "/images/foodImages/mix veg.jpg",
+      "image4": "/images/foodImages/pampad.jpg"
+    },
+  "dinner":
+    {      
+      "veg": "true",      
+      "food": "Rice / Roti, Dal fry, Soyabean curry",
+      "image1": "/images/foodImages/rice22.jpeg.jpg",
+      "image2": "/images/foodImages/rooti.jpg",
+      "image3": "/images/foodImages/dal fry.jpg",
+      "image4": "/images/foodImages/soyabean.jpeg.jpg"
+    }
+},
+{
+  "day": "Tuesday",
+  "lunch": 
+  {
+    "veg": "true",    
+    "food": "Rice, Dal fry,Rajma curry, Dahi Bondi",
+    "image1": "/images/foodImages/rice11.jpeg.jpg",
+    "image2": "/images/foodImages/dal fry.jpg",
+    "image3": "/images/foodImages/Rajma curry.jpg",
+    "image4": "/images/foodImages/dahi boondi.jpeg.jpg"
+  },
+  "dinner":
+  {
+    "veg": "true",
+    "food": "Rice / Roti, Dal fry, Chole masala",
+    "image1": "/images/foodImages/rice.jpeg.jpg",
+    "image2": "/images/foodImages/rooti.jpg",
+    "image3": "/images/foodImages/dal fry.jpg",
+    "image4": "/images/foodImages/chole curry.jpeg.jpg"
+  }
+},
+{
+  "day": "Wednesday",
+  "lunch": {
+    "veg": "false",
+    "food": "Rice, Dal fry, Fish curry/ Mushroom curry",
+    "image1": "/images/foodImages/rice22.jpeg.jpg" ,
+    "image2": "/images/foodImages/dal fry.jpg" ,
+    "image3": "/images/foodImages/fish curry.jpg" ,
+    "image4": "/images/foodImages/Mushroom.jpg"
+  },
+  "dinner":
+  {
+    "veg": "true",
+    "food": "Rice / Roti, Dal fry, Chole masala",
+    "image1": "/images/foodImages/rice11.jpeg.jpg",
+    "image2": "/images/foodImages/rooti.jpg",
+    "image3": "/images/foodImages/dal fry.jpg",
+    "image4": "/images/foodImages/chole curry.jpeg.jpg"
+  }
+},
+{
+  "day": "Thursday",
+  "lunch": {
+    "veg": "true",
+    "food": "Rice, Dal fry, Matar Paneer, Pickel",
+    "image1": "/images/foodImages/rice.jpeg.jpg",
+    "image2": "/images/foodImages/dal fry.jpg",
+    "image3": "/images/foodImages/Rajma curry.jpg",
+    "image4": "/images/foodImages/dahi boondi.jpeg.jpg"
+  },
+  "dinner":
+  {
+    "veg": "true",
+    "food": "Rice / Roti, Dal fry, Kobi chili, Salad",
+    "image1": "/images/foodImages/rice22.jpeg.jpg",
+    "image2": "/images/foodImages/roti11.jpg",
+    "image3": "/images/foodImages/kobi chilli.jpeg.jpg",
+    "image4": "/images/foodImages/salad.jpg"    
+  }
+},
+{
+  "day": "Friday",
+  "lunch": {
+    "veg": "false",
+    "food": "Rice, Dal fry, Egg curry/ Besan curry",
+    "image1": "/images/foodImages/rice11.jpeg.jpg",
+    "image2": "/images/foodImages/dal fry.jpg",
+    "image3": "/images/foodImages/Egg curry.jpg",
+    "image4": "/images/foodImages/besan.jpeg.jpg"            
+  },
+  "dinner":
+  {
+    "veg": "true",
+    "food": "Rice / Roti, Dal fry, Paneer Butter Masala/ Prawn curry",
+    "image1": "/images/foodImages/rice11.jpeg.jpg",
+    "image2": "/images/foodImages/rooti.jpg",
+    "image3": "/images/foodImages/prawn.jpeg.jpg",
+    "image4": "/images/foodImages/matar paneer.jpeg.jpg"
+  }
+},
+{
+  "day": "Saturday",
+  "lunch": {
+    "veg": "false",
+    "food": "Rice, Dal fry, Kobi curry, Salad",
+    "image1": "/images/foodImages/rice11.jpeg.jpg",
+    "image2": "/images/foodImages/dal fry.jpg",
+    "image3": "/images/foodImages/kobi curry.jpg",
+    "image4": "/images/foodImages/salad.jpg"
+  },
+  "dinner":
+  {
+    "veg": "true",
+    "food": "Puri, Alu dum, Simei, Rasagola",
+    "image1": "/images/foodImages/puri.jpeg.jpg",
+    "image2": "/images/foodImages/alu dum.jpeg.jpg",
+    "image3": "/images/foodImages/rasagola.jpeg.jpg",
+    "image4": "/images/foodImages/simei.jpg"
+  }
+},
+{
+  "day": "Sunday",
+  "lunch": {
+    "veg": "false",
+    "food": "Rice, Dal fry, Chicken curry, Salad, Pampad",
+    "image2": "/images/foodImages/rice11.jpeg.jpg",
+    "image1": "/images/foodImages/chicken.jpeg.jpg",
+    "image3": "/images/foodImages/salad.jpg",
+    "image4": "/images/foodImages/pampad.jpg"
+  },
+  "dinner":
+  {
+    "veg": "true",
+    "food": "Rice / Roti, Dal fry, Egg curry/ Mushroom curry",
+    "image1": "/images/foodImages/rice11.jpeg.jpg",
+    "image2": "/images/foodImages/rooti.jpg",
+    "image3": "/images/foodImages/Egg curry.jpg",
+    "image4": "/images/foodImages/Mushroom.jpg"
+  }
+}
+ ]
+
+

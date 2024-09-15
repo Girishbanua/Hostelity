@@ -13,23 +13,47 @@ export const LoginSignup = () => {
   // const [action, setAction] = useState("Login");
   const [name, setName] = useState();
   const [email, setEmail] = useState();
+  const [phone, setPhone] = useState();
+  const [college, setCollege] = useState();
+  const [admission, setAdmission] = useState();
+  const [department, setDepartment] = useState();
+  const [semester, setSemester] = useState(1);
+  const [duration, setDuration] = useState(1);
   const [pass, setPass] = useState();
+  const [confirm, setConfirm] = useState();
+  const [mess, setMess] = useState();
+  const [date, setDate] = useState();
 
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-      .post("http://localhost:4000/login", { name, email, pass })
+      .post("http://localhost:4000/login", {
+        name,
+        email,
+        phone,
+        college,
+        admission,
+        department,
+        semester,
+        duration,
+        pass,
+        confirm,
+        mess,
+        date
+      })
       .then((res) => {
         console.log(res);
+        alert("Registered Successfully");
       })
       .catch((err) => console.log(err));
+    document.getElementById("signupForm").reset();
   };
   return (
     <>
       <div className="signupContainer">
         <div className="signupBox">
           <h1>Sign Up</h1>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit} id="signupForm" method="POST">
             <div>
               <label htmlFor="name">Name</label>
               <input
@@ -52,8 +76,8 @@ export const LoginSignup = () => {
                 onChange={(e) => setEmail(e.target.value)}
               />
             </div>
-              {/*Phone Number*/}
-              <div>
+            {/*Phone Number*/}
+            <div>
               <label htmlFor="phnNumber">Phone Number</label>
               <input
                 type="text"
@@ -61,11 +85,12 @@ export const LoginSignup = () => {
                 required
                 autoComplete="off"
                 id="phnNumber"
+                onChange={(e) => setPhone(e.target.value)}
               />
             </div>
-            
+
             {/*\College Name*/}
-             <div>
+            <div>
               <label htmlFor="clgName">College Name</label>
               <input
                 type="text"
@@ -73,10 +98,11 @@ export const LoginSignup = () => {
                 required
                 autoComplete="off"
                 id="clgName"
+                onChange={(e) => setCollege(e.target.value)}
               />
             </div>
-          {/*Admission Number*/}
-          <div>
+            {/*Admission Number*/}
+            <div>
               <label htmlFor="admsnNumber">Admission Number</label>
               <input
                 type="text"
@@ -84,10 +110,11 @@ export const LoginSignup = () => {
                 required
                 autoComplete="off"
                 id="admsnNumber"
+                onChange={(e) => setAdmission(e.target.value)}
               />
             </div>
             {/*Department Name*/}
-             <div>
+            <div>
               <label htmlFor="deptName">Department Name</label>
               <input
                 type="text"
@@ -95,13 +122,19 @@ export const LoginSignup = () => {
                 required
                 autoComplete="off"
                 id="deptName"
+                onChange={(e) => setDepartment(e.target.value)}
               />
-            </div>            
-             
+            </div>
+
             {/*Semester- choose between 1 to 6 considering three years courses also*/}
-             <div>
-              <label htmlFor="semester">Semester</label>            
-              <select name="semester" id="semester">
+            <div>
+              <label htmlFor="semester">Semester</label>
+              <select
+                name="semester"
+                id="semester"
+                value={semester}
+                onChange={(e) => setSemester(e.target.value)}
+              >
                 <option value="1">1</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
@@ -111,15 +144,20 @@ export const LoginSignup = () => {
               </select>
             </div>
             {/*Total Duration maximum 3 years*/}
-             <div>
+            <div>
               <label htmlFor="totalDuration">Total Duration</label>
-              <select name="duration" id="totalDuration">
+              <select
+                name="duration"
+                id="totalDuration"
+                value={duration}
+                onChange={(e) => setDuration(e.target.value)}
+              >
                 <option value="1">1</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
               </select>
             </div>
-            
+
             {/*Password*/}
             <div>
               <label htmlFor="pass">Password</label>
@@ -134,13 +172,14 @@ export const LoginSignup = () => {
             </div>
             {/*Confirm Password*/}
             <div>
-             <label htmlFor="confirmPass">Confirm Password</label>
+              <label htmlFor="confirmPass">Confirm Password</label>
               <input
                 type="password"
                 id="confirmPass"
                 placeholder="Enter a strong password"
                 required
                 autoComplete="off"
+                onChange={(e) => setConfirm(e.target.value)}
               />
             </div>
             {/*Choose Mess Yes or No*/}
@@ -148,11 +187,31 @@ export const LoginSignup = () => {
               <label htmlFor="messChoice">Do you want our Mess service?</label>
               <div>
                 <label htmlFor="yes">Yes</label>
-                <input type="radio" name="choice" id="yes" />
+                <input
+                  type="radio"
+                  name="choice"
+                  id="yes"
+                  onClick={() => setMess("on")}
+                />
               </div>
               <div>
                 <label htmlFor="no">No</label>
-                <input type="radio" name="choice" id="no" />
+                <input
+                  type="radio"
+                  name="choice"
+                  id="no"
+                  onClick={() => setMess("off")}
+                />
+              </div>
+              <div>
+                <label htmlFor="dateOfJoin">Date of Joining</label>
+                <input
+                  type="date"
+                  name="dateOfJoin"
+                  id="dateOfJoin"                  
+                  onChange={(e) => setDate(e.target.value)}
+                  autoComplete="off"
+                />
               </div>
             </div>
             <div className="formBtns">
