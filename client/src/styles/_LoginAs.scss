@@ -1,0 +1,68 @@
+@use "_base.scss";
+@use "_colors.scss" as color;
+
+.LoginasContainer {
+  @include base.flex(center, center, column);
+  height: 100vh;
+  padding: 20px;
+  border-radius: 15px;  
+}
+.LoginasContainer section {
+  @include base.flex(center, center);
+  gap: 2vw;
+}
+.LoginasContainer h1 {
+  @include base.gradientText();
+  font-size: 4.25rem;
+  font-weight: 500;
+  text-align: center;
+  margin-bottom: 50px;
+}
+.LoginasContainer section > div {
+    background: white;
+  min-width: 300px;
+  min-height: 300px;  
+  padding: 20px;
+  font-size: 2rem;
+  @include base.flex(center, center, column);
+  gap: 5vh;
+  border-radius: 15px;  
+  box-shadow: 1px 2px 7px rgb(194, 194, 194);  
+}
+.LoginasContainer section > div p {
+  font-weight: bold;
+  color: base.$lightColor;
+}
+.LoginasContainer section > div div {
+  width: 100%;
+  @include base.flex(center, space-between);
+  gap: 2vw;
+}
+.LoginasContainer section > div div button {
+  @include base.btn(white, color.$red-9);
+  font-size: 1rem;
+  border: 1px solid color.$red-9;
+}
+.LoginasContainer .laImg{
+    background: linear-gradient(120deg, base.$lightColor, color.$red-3);
+    border-radius: 50%;
+    width: 100px;    
+    height: 100px;
+  padding: 10px;
+}
+.LoginasContainer section > div img {  
+    width: 100%;
+    height: 100%;    
+    padding: 5px;
+  filter: invert(1) brightness(100%) ;  
+}
+.LoginasContainer .lalbtn{
+    @include base.btn( base.$darkColor, white);
+}
+.LoginasContainer a{
+  margin-top: 10vh;
+  @include base.btn(white, base.$darkColor);
+  width: 200px;
+  text-align: center;
+  border: 1px solid base.$darkColor;
+}

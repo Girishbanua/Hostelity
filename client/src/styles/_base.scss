@@ -44,6 +44,7 @@ body{
   border-radius: 10px;
   padding: 10px;
   transition: ease-in-out, 0.3s;  
+  width: 100%;
 }
 
 @mixin flex($align: center, $justify: center, $direction: row) {

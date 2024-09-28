@@ -1,36 +1,71 @@
 import FoodChart from "./components/FoodChart";
 import Home from "./components/Home";
-import { LoginSignup } from "./components/LoginSignup";
-import Students from "./components/Students";
-import UserDashboard from "./components/UserDashboard";
-import { createBrowserRouter, RouterProvider} from "react-router-dom";
+import LoginAs from "./components/LoginAs";
+import Students from "./components/Students/Students";
+import StudentLogin from "./components/Students/StudentLogin";
+import StudentSignUp from "./components/Students/StudentSignUp";
+import UserDashboard from "./components/Students/UserDashboard";
+import StaffLogin from "./components/MessStaff/StaffLogin";
+import StaffRegister from "./components/MessStaff/StaffRegister";
+import MessStaffDetails from "./components/MessStaff/MessStaffDetails";
+import AdminLogin from "./components/Admin/AdminLogin";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import AdminRegister from "./components/Admin/AdminRegister";
 
 export default function App() {
   const router = createBrowserRouter([
     {
       path: "/",
-      element: <Home/>
+      element: <Home />,
     },
     {
       path: "/user",
-      element: <UserDashboard/>
+      element: <UserDashboard />,
     },
     {
-      path: "/login",
-      element: <LoginSignup />
+      path: "/loginas",
+      element: <LoginAs />,
+    },
+    {
+      path: "/studentRegister",
+      element: <StudentSignUp />,
+    },  
+    {
+      path: "/studentLogin",
+      element: <StudentLogin />,
+    },
+    {
+      path: "/staffLogin",
+      element: <StaffLogin />
+    },
+    {
+      path: "/staffRegister",
+      element: <StaffRegister />
+    },
+    {
+      path: "/staffDetails",
+      element: <MessStaffDetails />
+    },
+    {
+      path: "/adminlogin",
+      element: <AdminLogin />
+    },
+    {
+      path: "/adminregister",
+      element: <AdminRegister />
     },
     {
       path: "/messMenu",
-      element: <FoodChart />
+      element: <FoodChart />,
     },
     {
       path: "/students",
-      element: <Students />
-    }
-  ])
+      element: <Students />,
+    },
+  ]);
   return (
     <>
-    <RouterProvider router={router}/>
+      <RouterProvider router={router} />
     </>
-  )
+  );
 }
