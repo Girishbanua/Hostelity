@@ -1,23 +1,38 @@
 import "../../styles/_UserDashboard.scss";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export default function UserDashboard() {
+  const navigate = useNavigate();
+  const [count, setCount] = useState(null);
+  useEffect(() => {
+    axios
+      .get("http://localhost:4000/count")
+      .then((response) => setCount(response.data.count))
+      .catch((error) => console.log("Error fetching count", error));
+  }, []);
+
   return (
-    <>           
+    <>
       <div className="dashboard_container">
-      <div className="dashboard_navbar">        
-        <div className="userMenu">
-          <img src="/images/Dashboard/AvatarPlaceholder.png" alt="user_icon" />
-          <p>
-            Welcome <span>User</span>
-          </p>
-          <select name="user_Menu" id=""></select>
+        <div className="dashboard_navbar">
+          <div className="userMenu">
+            <img
+              src="/images/Dashboard/AvatarPlaceholder.png"
+              alt="user_icon"
+            />
+            <p>
+              Welcome <span>User</span>
+            </p>
+            <select name="user_Menu" id=""></select>
+          </div>
         </div>
-      </div>
         <h1>Hello, User!</h1>
         <div className="details">
           <div className="info">
             <div className="info_txt">
-              <h2>19</h2>
+              <h2>{count}</h2>
               <p>Registerd Students</p>
             </div>
             <img src="/images/Dashboard/people.png" alt="" />
@@ -35,23 +50,39 @@ export default function UserDashboard() {
               <p>Booked Rooms</p>
             </div>
             <img src="/images/Dashboard/book.png" alt="" />
-          </div>
-          <div className="info">
+          </div>        
+          <div className="action_menu">
             <div className="info_txt">
-              <h2>9</h2>
-              <p>Featured</p>
+              <h3>Change Room</h3>
             </div>
-            <img src="/images/Dashboard/application.png" alt="" />
+            <img src="/images/Dashboard/change.png" alt="change_icon" />
+            <button onClick={() => navigate("/changeRoom")}>Change</button>
+          </div>
+          <div className="action_menu">
+            <div className="info_txt">
+              <h3>Raise an Issue</h3>
+            </div>
+            <img src="/images/Dashboard/report-issue.png" alt="" />
+            <button onClick={() => navigate("/studentIssue")} >Raise</button>
+          </div>
+          <div className="action_menu">
+            <div className="info_txt">
+              <h3>Mess Menu</h3>
+            </div>
+            <img src="/images/Dashboard/qr-menu.png" alt="" />
+            <button onClick={() => navigate("/messMenu")} >View</button>
           </div>
         </div>
       </div>
       <div className="sideBar">
-      <div className="logo">
-        <a href="/"><img src="/images/Home_Page/hostelity_logo.png" alt="logo" /></a>          
+        <div className="logo">
+          <a href="/">
+            <img src="/images/Home_Page/hostelity_logo.png" alt="logo" />
+          </a>
         </div>
         <div className="title">
-            <img src="/images/Dashboard/Icon.png" alt="dashboard_icon" />
-            <h3>Dashboard</h3>
+          <img src="/images/Dashboard/Icon.png" alt="dashboard_icon" />
+          <h3>Dashboard</h3>
         </div>
         <div className="features">
           <h2>Features</h2>
