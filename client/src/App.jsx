@@ -11,6 +11,8 @@ import MessStaffDetails from "./components/MessStaff/MessStaffDetails";
 import AdminLogin from "./components/Admin/AdminLogin";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import AdminRegister from "./components/Admin/AdminRegister";
+import ChangeRoom from "./components/Students/ChangeRoom";
+import Issue from "./components/Students/Issue";
 
 export default function App() {
   const router = createBrowserRouter([
@@ -29,30 +31,30 @@ export default function App() {
     {
       path: "/studentRegister",
       element: <StudentSignUp />,
-    },  
+    },
     {
       path: "/studentLogin",
       element: <StudentLogin />,
     },
     {
       path: "/staffLogin",
-      element: <StaffLogin />
+      element: <StaffLogin />,
     },
     {
       path: "/staffRegister",
-      element: <StaffRegister />
+      element: <StaffRegister />,
     },
     {
       path: "/staffDetails",
-      element: <MessStaffDetails />
+      element: <MessStaffDetails />,
     },
     {
       path: "/adminlogin",
-      element: <AdminLogin />
+      element: <AdminLogin />,
     },
     {
       path: "/adminregister",
-      element: <AdminRegister />
+      element: <AdminRegister />,
     },
     {
       path: "/messMenu",
@@ -61,6 +63,14 @@ export default function App() {
     {
       path: "/students",
       element: <Students />,
+    },
+    {
+      path: "/changeRoom",
+      element: <ChangeRoom />,
+    },
+    {
+      path: "/studentIssue",
+      element: <Issue />,
     },
   ]);
   return (

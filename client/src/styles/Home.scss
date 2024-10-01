@@ -89,8 +89,14 @@ nav {
   }
   .explore {
     @include base.btn($bgcolor: base.$gradient1);
+    @include base.flex();
+    gap: 10px;
     &:hover {
       background: base.$gradient2;
+    }
+    img{
+      width: 18px;      
+      filter: invert(1) brightness(100%);
     }
   }
   .book_stay {

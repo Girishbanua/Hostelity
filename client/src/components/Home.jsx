@@ -1,103 +1,6 @@
 import "../styles/Home.scss";
 import { useNavigate } from "react-router-dom";
-import gsap from "gsap";
-import { useGSAP } from "@gsap/react";
-export default function Home() {
-  
-
-  //   gsap.from(slideDown.current, {
-  //     opacity: 0,
-  //     y: -100,      
-  //     duration: 1.75,             
-  //     ease: "power1.inOut"      
-  //   })  
-  //   gsap.to(slideDown.current, {
-  //     opacity: 1,
-  //     y: 0,
-  //     duration: 1.75,
-  //     ease: "power1.inOut",
-  //   })    
-  //   gsap.from(fadeIn.current.children, {
-  //     opacity: 0,
-  //     duration: 1.75,             
-  //     ease: "power1.inOut" ,
-  //     stagger: 0.5       
-  //   })  
-  //   gsap.to(fadeIn.current.children, {
-  //     opacity: 1,
-  //     duration: 1.75,
-  //     ease: "power1.inOut",
-  //     stagger: 0.5
-  //   })                                
-  // },[])
-  // useGSAP(() => {
-  //   gsap.from("nav",{
-  //     opacity: 0,
-  //     y: -100,      
-  //     duration: 1.5,             
-  //     ease: "power1.inOut",
-  //     stagger: 0.2
-  //   })    
-  //   gsap.to("nav", {
-  //     opacity: 1,
-  //     y: 0,
-  //     duration: 1.5,
-  //     ease: "power1.inOut",
-  //   })
-  // });
-  const tl = gsap.timeline();  
-  useGSAP(() => {
-    tl.from("nav",{      
-      opacity: 0,
-      y:-50,    
-      duration: 1.5,
-      ease: "power1.inout"
-    })
-    tl.from(".hero_divider_img",{
-      opacity: 0,
-      y: 50,
-      duration: 1,
-      ease: "power1.inOut"
-    })
-    tl.from([".hero h4", ".hero h1", ".hero p", ".hero .hero_btns"],{
-      opacity: 0,
-      scale: 0.7,
-      duration: 1,
-      stagger: 0.5,
-      ease: "power2.inOut"
-    })
-    tl.from("#about_sec_1",{
-      opacity: 0,
-      y: 100,
-      delay: 1,
-      duration: 1.5,
-      ease: "power1.inOut",
-      scrollTrigger: "#about_sec_1" 
-    })
-    tl.from("#about_sec_2", {
-      opacity: 0,
-      y: 100,
-      delay: 1,
-      duration: 1.5,
-      ease: "power1.inOut",
-      scrollTrigger: "#about_sec_2" 
-    })
-    tl.from("#div_txt",{
-      opacity: 0,
-      y: -100,
-      delay: 1,
-      duration: 1.5,
-      ease: "power1.inOut",
-      scrollTrigger: "#div_txt" 
-    })
-    tl.from(".gallery img",{
-      opacity: 0,
-      x: -500,
-      duration: 1.5,
-      ease: "power2.in",
-      stagger: 0.3
-    })
-  },[])
+export default function Home() {  
   const navigate = useNavigate();
   return (
     <>
@@ -148,7 +51,8 @@ export default function Home() {
             </p>
             <div className="hero_btns">
               <button className="explore">
-                Explore Now <img src="/images/Home_Page/diagonal-arrows.png" alt="in" />
+                Explore Now{" "}
+                <img src="/images/Home_Page/diagonal-arrows.png" alt="in" />
               </button>
               <button
                 className="book_stay"
@@ -159,7 +63,7 @@ export default function Home() {
             </div>
           </div>
         </div>
-        <div className="hero_divider_img">
+        <div className="hero_divider_img" id="hero_dvd_img">
           <img
             src="/images/Home_Page/hero_divider_lines.png"
             alt="divider_image"
