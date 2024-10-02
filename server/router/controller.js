@@ -1,4 +1,5 @@
 const StudentModel = require("../models/Student");
+const bcrypt = require("bcryptjs");
 
 const home = async (req, res) => {
   try {
@@ -9,34 +10,69 @@ const home = async (req, res) => {
 };
 
 const stdntSignup = async (req, res) => {
-
-  //formatting the date
-  const formatDate = (dateString) => {
-    const [year, month, day] = dateString.split("-");
-    return `${day}/${month}/${year}`;
-  };
-
   try {
+    let {
+      name,
+      email,
+      phone,
+      college,
+      admission,
+      department,
+      semester,
+      duration,
+      pass,
+      confirm,
+      mess,
+      date,
+      pdone,
+      hpay,
+      mpay,
+    } = req.body;
 
+    //formatting the date
+    let formatDate = (dateString) => {
+      let [year, month, day] = dateString.split("-");
+      return `${day}/${month}/${year}`;
+    };
     //formatting the date before saving
-    const formattedDate = formatDate(req.body.date);
+    let formattedDate = formatDate(req.body.date);
 
     // replace the original date with the formatted date
-    req.body.date = formattedDate;
+    date = formattedDate;
 
     //check if the student already exists
-    await StudentModel.findOne({ email: req.body.email }).then((student) => {
+    let userExists = await StudentModel.findOne({ email });
 
-      if (student) {
-        res.json({ message: "Already Registered" });
-        alert("This email has already been registered");
-      } 
-      else {
-        StudentModel.create(req.body)
-          .then((students) => res.json(students))
-          .catch((err) => res.json(err));
-      }
+    if (userExists) {
+      alert("This email has already been registered");
+      res.json.status(400).json({ message: "Already Registered" });
+      return;
+    }
+    //hashing the password
+    let salt = await bcrypt.genSalt(10);
+    let hash = await bcrypt.hash(pass, salt);
+
+     await StudentModel.create({
+      name,
+      email,
+      phone,
+      college,
+      admission,
+      department,
+      semester,
+      duration,
+      pass: hash,
+      confirm,
+      mess,
+      date,
+      pdone,
+      hpay,
+      mpay,
     });
+
+    console.log("userCreated");    
+
+    res.status(201).json({ message: "user created" });
   } catch (err) {
     console.log(err);
   }
@@ -44,21 +80,21 @@ const stdntSignup = async (req, res) => {
 
 const stdntDetails = async (req, res) => {
   try {
-    StudentModel.find()
-    .then((students) => res.json(students))
-    .catch((err) => res.json(err));
+    await StudentModel.find()
+      .then((students) => res.json(students))
+      .catch((err) => res.json(err));
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 };
 
 const totalStdnt = async (req, res) => {
-    try {
-      const count = await StudentModel.countDocuments();
-      res.json({ count });
-    } catch (err) {
-      res.status(500).json({ error: err.message });
-    }
-}
+  try {
+    const count = await StudentModel.countDocuments();
+    res.json({ count });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
 
 module.exports = { home, stdntSignup, stdntDetails, totalStdnt };
