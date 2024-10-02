@@ -3,7 +3,6 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 // import { Link } from "react-router-dom";
 import "../../styles/_StudentSignUp.scss";
-import Modal from "../Modal";
 
 export default function StudentSignUp() {
   const navigate = useNavigate();
@@ -19,11 +18,14 @@ export default function StudentSignUp() {
   const [confirm, setConfirm] = useState();
   const [mess, setMess] = useState();
   const [date, setDate] = useState();
+  const [pdone, setPdone] = useState();
+  const [hpay, setHpay] = useState();
+  const [mpay, setMpay] = useState();
 
   const handleSubmit = (e) => {
     e.preventDefault();
     axios
-      .post("http://localhost:4000/studentSignup", {
+      .post("http://localhost:4000/api/studentSignup", {
         name,
         email,
         phone,
@@ -36,6 +38,9 @@ export default function StudentSignUp() {
         confirm,
         mess,
         date,
+        pdone,
+        hpay,
+        mpay,
       })
       .then((res) => {
         console.log(res);        
@@ -45,7 +50,7 @@ export default function StudentSignUp() {
   };
   return (
     <>
-    <Modal onSubmit={null} message="Registered Successfully" onClose={null} />
+    {/* <Modal onSubmit={null} message="Registered Successfully" onClose={null} /> */}
       <div className="signupContainer">
         <div className="signupBox">
           <h1>Sign Up</h1>
@@ -84,7 +89,6 @@ export default function StudentSignUp() {
                 onChange={(e) => setPhone(e.target.value)}
               />
             </div>
-
             {/*\College Name*/}
             <div>
               <label htmlFor="clgName">College Name</label>
@@ -121,7 +125,6 @@ export default function StudentSignUp() {
                 onChange={(e) => setDepartment(e.target.value)}
               />
             </div>
-
             {/*Semester- choose between 1 to 6 considering three years courses also*/}
             <div>
               <label htmlFor="semester">Semester</label>
@@ -153,7 +156,6 @@ export default function StudentSignUp() {
                 <option value="3">3 years</option>
               </select>
             </div>
-
             {/*Password*/}
             <div>
               <label htmlFor="pass">Password</label>
@@ -186,19 +188,19 @@ export default function StudentSignUp() {
                 id="dateOfJoin"
                 onChange={(e) => setDate(e.target.value)}
                 autoComplete="off"
+                required
               />
             </div>
             <div className="paymentChoice">
-              <label htmlFor="">Payment Done?</label>
+              <label>Payment Done?</label>
               <label htmlFor="pyes">Yes</label>
-              <input type="radio" name="pchoice" id="pyes" />
+              <input type="radio" name="pchoice" id="pyes" onClick={() => setPdone("yes")} />
               <label htmlFor="pno">No</label>
-              <input type="radio" name="pchoice" id="pno" />
+              <input type="radio" name="pchoice" id="pno" onClick={() => setPdone("no")} />
               <div className="messChoice">
-                <label htmlFor="messChoice">
+                <label>
                   Do you want our Mess service?
                 </label>
-
                 <label htmlFor="yes">Yes</label>
                 <input
                   type="radio"
@@ -206,7 +208,6 @@ export default function StudentSignUp() {
                   id="yes"
                   onClick={() => setMess("on")}
                 />
-
                 <label htmlFor="no">No</label>
                 <input
                   type="radio"
@@ -216,10 +217,9 @@ export default function StudentSignUp() {
                 />
               </div>
             </div>            
-
             <div>
               <label htmlFor="hPayment">Hostel Payment:</label>
-              <select name="payment" id="hpay">
+              <select name="payment" id="hpay" onChange={(e) => setHpay(e.target.value)}>
                 <option value="12000">₹12,000</option>
                 <option value="24000">₹24,000</option>
                 <option value="36000">₹36,000</option>
@@ -227,7 +227,7 @@ export default function StudentSignUp() {
             </div>
             <div>
               <label htmlFor="mPayment">Mess Payment:</label>
-             <input type="text" placeholder="Enter amount paid" />
+             <input type="text" placeholder="Enter amount paid" onChange={(e) => setMpay(e.target.value)} />
             </div>
             <div className="formBtns">
               <a onClick={() => navigate("/loginas")}>Cancel</a>
