@@ -1,6 +1,8 @@
+import "../../styles/_ChangeRoom.scss"
+
 const ChangeRoom = () => {
   return (
-    <>
+    <div className="changeRoom">
       <h1>Change Room</h1>
       <div className="roomType">
         <label htmlFor="proom">Present Room Type: </label>
@@ -20,10 +22,11 @@ const ChangeRoom = () => {
           <option value="4">Quad Sharing Room</option>
         </select>
       </div>
-      <div>
-        <button>Change</button>
+      <div className="buttons">
+        <button>Request change</button>
+        <button>Cancel</button>
       </div>
-    </>
+    </div>
   );
 };
 

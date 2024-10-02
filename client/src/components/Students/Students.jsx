@@ -7,7 +7,7 @@ export default function Students() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:4000/students")
+      .get("http://localhost:4000/api/registered_Students")
       .then((response) => {
         setStudents(response.data);
       })

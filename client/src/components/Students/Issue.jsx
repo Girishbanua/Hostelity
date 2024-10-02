@@ -1,6 +1,8 @@
+import "../../styles/_StudentIssue.scss"
+
 const Issue = () => {
   return (
-    <>
+    <div className="issueContainer">
       <h1>Raise an Issue</h1>
       <div>
         <label htmlFor="issue">Issue Type</label>
@@ -10,7 +12,7 @@ const Issue = () => {
           <option value="3">Payment related issue</option>          
         </select>
       </div>
-    </>
+    </div>
   )
 }
 
