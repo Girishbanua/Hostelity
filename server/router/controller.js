@@ -1,6 +1,6 @@
 const StudentModel = require("../models/Student");
 
-const home = async () => {
+const home = async (req, res) => {
   try {
     res.json({ message: "Welcome to Hostelity" });
   } catch (err) {
