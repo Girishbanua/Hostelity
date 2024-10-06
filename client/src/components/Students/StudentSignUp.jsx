@@ -20,12 +20,13 @@ export default function StudentSignUp() {
   const [date, setDate] = useState();
   const [pdone, setPdone] = useState();
   const [hpay, setHpay] = useState();
-  const [mpay, setMpay] = useState();
+  const [mpay, setMpay] = useState();  
+
+  const  URL = "http://localhost:4000/api/studentSignup"
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios
-      .post("http://localhost:4000/api/studentSignup", {
+    axios.post(URL, {
         name,
         email,
         phone,
@@ -40,13 +41,14 @@ export default function StudentSignUp() {
         date,
         pdone,
         hpay,
-        mpay,
+        mpay,        
       })
       .then((res) => {
-        console.log(res);        
+        console.log(res); 
+        alert(res.data.message);
       })
       .catch((err) => console.log(err));
-    document.getElementById("signupForm").reset();
+    document.getElementById("signupForm").reset();       
   };
   return (
     <>
