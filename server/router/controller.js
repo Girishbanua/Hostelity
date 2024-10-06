@@ -1,4 +1,4 @@
-const StudentModel = require("../models/Student");
+const {StudentModel, stdntLoginModel} = require("../models/Student");
 const bcrypt = require("bcryptjs");
 
 const home = async (req, res) => {
@@ -35,8 +35,7 @@ const stdntSignup = async (req, res) => {
       return `${day}/${month}/${year}`;
     };
     //formatting the date before saving
-    let formattedDate = formatDate(req.body.date);
-
+    let formattedDate = formatDate(date);
     // replace the original date with the formatted date
     date = formattedDate;
 
@@ -44,15 +43,14 @@ const stdntSignup = async (req, res) => {
     let userExists = await StudentModel.findOne({ email });
 
     if (userExists) {
-      alert("This email has already been registered");
-      res.json.status(400).json({ message: "Already Registered" });
+      res.status(400).json({ message: "Already Registered" });
       return;
     }
     //hashing the password
-    let salt = await bcrypt.genSalt(10);
-    let hash = await bcrypt.hash(pass, salt);
+    const salt = await bcrypt.genSalt(5);
+    const hash = await bcrypt.hash(pass, salt);
 
-     await StudentModel.create({
+    let userCreated = await StudentModel.create({
       name,
       email,
       phone,
@@ -62,7 +60,7 @@ const stdntSignup = async (req, res) => {
       semester,
       duration,
       pass: hash,
-      confirm,
+      confirm: hash,
       mess,
       date,
       pdone,
@@ -70,9 +68,39 @@ const stdntSignup = async (req, res) => {
       mpay,
     });
 
-    console.log("userCreated");    
+    res.status(201).json(userCreated);
+    console.log("userCreated");
+  } catch (err) {
+    console.log(err);
+  }
+};
 
-    res.status(201).json({ message: "user created" });
+const stdntLogin = async (req, res) => {
+  try {
+    const { email, pass } = req.body;
+    const user = await StudentModel.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    const isMatch = await bcrypt.compare(pass, user.pass);
+    if (!isMatch) {
+      return res.status(401).json({ message: "Invalid credentials" });
+    }
+    const token = await user.generateToken();
+    //formatting the date
+    let date = new Date();
+    let dateString = date.toLocaleDateString();        
+    const loginDate = dateString;    
+    const loginTime = date.toLocaleTimeString();
+    const loggedUser = await stdntLoginModel.create({
+      name: user.name,
+      email: user.email,
+      token: token,      
+      loginDate: loginDate,
+      loginTime: loginTime,
+    });
+    res.status(200).json({loggedUser,message: "Login successful", token, userID: user._id.toString() });
+    console.log("Login successful");
   } catch (err) {
     console.log(err);
   }
@@ -96,5 +124,4 @@ const totalStdnt = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
-
-module.exports = { home, stdntSignup, stdntDetails, totalStdnt };
+module.exports = { home, stdntSignup, stdntLogin, stdntDetails, totalStdnt };
