@@ -3,18 +3,20 @@ const { z } = require("zod");
 const stdntSignupValidCheck = z.object({
   name: z
     .string({ required_error: "Name is required" })
+    .regex(/^[a-zA-Z ]+$/, { message: "Name must be a string" })
     .min(3, { message: "Name must be at least 3 characters" })
     .max(50, { message: "Name must be less than 50 characters" }),
   email: z
     .string({ required_error: "Email is required" })
     .email({ message: "Invalid email" }),
   phone: z
-    .string({ required_error: "Phone number is required" })
+  .string({ required_error: "Phone number is required" })
+  .regex(/^[0-9]+$/, { message: "Phone number must be a number" })
     .min(10, { message: "Phone number must be at least 10 digits" })
-    .max(10, { message: "Phone number cannot be more than 10 digits" })
-    .regex(/^[0-9]+$/, { message: "Phone number must be a number" }),
+    .max(10, { message: "Phone number cannot be more than 10 digits" }),
   college: z
     .string({ required_error: "College name is required" })
+    .regex(/^[a-zA-Z ]+$/, { message: "College name must be a string" })
     .min(3, { message: "College name must be at least 3 characters" })
     .max(50, { message: "College name must be less than 50 characters" }),
   admission: z
@@ -23,18 +25,15 @@ const stdntSignupValidCheck = z.object({
     .max(10, { message: "Admission number cannot be more than 10 characters" }),
   department: z
     .string({ required_error: "Department name is required" })
+    .regex(/^[a-zA-Z ]+$/, { message: "Department name must be a string" })
     .min(3, { message: "Department name must be at least 3 characters" })
     .max(50, { message: "Department name must be less than 50 characters" }),
   semester: z
     .string({ required_error: "Semester is required" })
-    .min(1, { message: "Semester must be at least 1 character" })
-    .max(1, { message: "Semester cannot be more than 1 character" })
-    .regex(/^[1-6]$/, { message: "Semester must be a number between 1 to 6" }),
+    .regex(/^[1-6]$/, { message: "Semester must be a number between 1 to 6" }),    
   duration: z
     .string({ required_error: "Duration is required" })
-    .min(1, { message: "Duration must be at least 1 character" })
-    .max(1, { message: "Duration cannot be more than 1 character" })
-    .regex(/^[1-6]$/, { message: "Duration must be a number between 1 to 6" }),
+    .regex(/^[1-6]$/, { message: "Duration must be a number between 1 to 6" }),    
   pass: z
     .string({ required_error: "Password is required" })
     .min(6, { message: "Password must be at least 6 characters" })
@@ -44,27 +43,20 @@ const stdntSignupValidCheck = z.object({
     .min(6, { message: "Confirm password must be at least 6 characters and same as password" })
     .max(50, { message: "Confirm password must be less than 50 characters and same as password" }),   
   mess: z
-    .string({ required_error: "Mess name is required" })
-    .min(2, { message: "Mess name must be at least 3 characters" })
-    .max(3, { message: "Mess name must be less than 3 characters" }),
+    .string({ required_error: "Please choose a mess option" }),  
   date: z
     .string({ required_error: "Date is required" })
     .min(10, { message: "Date must be at least 10 character" })
     .max(10, { message: "Date cannot be more than 10 character" }),
   pdone: z
-    .string({ required_error: "Payment done is required" })
-    .min(2, { message: "Payment done must be at least 2 character" })
-    .max(3, { message: "Payment done cannot be more than 3 character" }),
+    .string({ required_error: "Payment must be done before registration!" }),        
   hpay: z
-    .string({ required_error: "Hostel payment is required" })
-    .min(4, { message: "Hostel payment must be at least 4 digits" })
-    .max(5, { message: "Hostel payment cannot be more than 5 digits" })
-    .regex(/^[0-9]+$/, { message: "Mess payment must be a number" }),
+    .string({ required_error: "Please choose one of the hostel payment option" }),    
   mpay: z
     .string({ required_error: "Mess payment is required" })
-    .min(4, { message: "Mess payment must be at least 4 digits" })
-    .max(5, { message: "Mess payment cannot be more than 5 digits" })
-    .regex(/^[0-9]+$/, { message: "Mess payment must be a number" }),
-}).refine((value) => value.pass === value.confirm, {message: "Password and Confirm password must be same", path: ["confirm"]});
+    .regex(/^[0-9]+$/, { message: "Mess payment must be a number" })
+      .min(4, { message: "Mess payment must be at least 4 digits" })
+      .max(5, { message: "Mess payment cannot be more than 5 digits" })
+}).refine((value) => value.pass === value.confirm, {message: "Password and Confirm password must be same", path: ["confirm"]})
 
 module.exports = stdntSignupValidCheck;
