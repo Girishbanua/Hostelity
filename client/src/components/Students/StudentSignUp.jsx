@@ -1,8 +1,9 @@
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-// import { Link } from "react-router-dom";
 import "../../styles/_StudentSignUp.scss";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function StudentSignUp() {
   const navigate = useNavigate();
@@ -12,21 +13,22 @@ export default function StudentSignUp() {
   const [college, setCollege] = useState();
   const [admission, setAdmission] = useState();
   const [department, setDepartment] = useState();
-  const [semester, setSemester] = useState(1);
-  const [duration, setDuration] = useState(1);
+  const [semester, setSemester] = useState("1");
+  const [duration, setDuration] = useState("1");
   const [pass, setPass] = useState();
   const [confirm, setConfirm] = useState();
-  const [mess, setMess] = useState();
   const [date, setDate] = useState();
-  const [pdone, setPdone] = useState();
+  const [pdone, setPdone] = useState("no");
+  const [mess, setMess] = useState("off");
   const [hpay, setHpay] = useState();
-  const [mpay, setMpay] = useState();  
+  const [mpay, setMpay] = useState("0000");
 
-  const  URL = "http://localhost:4000/api/studentSignup"
+  const URL = "http://localhost:4000/api/studentSignup";
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    axios.post(URL, {
+    try {
+      const response = await axios.post(URL, {
         name,
         email,
         phone,
@@ -41,22 +43,27 @@ export default function StudentSignUp() {
         date,
         pdone,
         hpay,
-        mpay,        
-      })
-      .then((res) => {
-        console.log(res); 
-        alert(res.data.message);
-      })
-      .catch((err) => console.log(err));
-    document.getElementById("signupForm").reset();       
+        mpay,
+      });
+      console.log("response: ", response);
+      if (response.data.message === "User created successfully") {
+        alert("Registered successfully");
+        document.getElementById("signupForm").reset();
+        navigate("/");
+      }
+    } catch (err) {
+      const error = err.response.data.message;
+      console.log("Error while signup\n", error);
+      toast.error(`${error}`);
+      console.log("Error while signup\n", err.name, err.message);
+    }
   };
   return (
     <>
-    {/* <Modal onSubmit={null} message="Registered Successfully" onClose={null} /> */}
       <div className="signupContainer">
         <div className="signupBox">
           <h1>Sign Up</h1>
-          <form onSubmit={handleSubmit} id="signupForm" method="POST">
+          <form onSubmit={handleSubmit} id="signupForm">
             <div>
               <label htmlFor="name">Name</label>
               <input
@@ -196,41 +203,65 @@ export default function StudentSignUp() {
             <div className="paymentChoice">
               <label>Payment Done?</label>
               <label htmlFor="pyes">Yes</label>
-              <input type="radio" name="pchoice" id="pyes" onClick={() => setPdone("yes")} />
+              <input
+                type="radio"
+                name="pchoice"
+                id="pyes"
+                onClick={() => setPdone("yes")}
+              />
               <label htmlFor="pno">No</label>
-              <input type="radio" name="pchoice" id="pno" onClick={() => setPdone("no")} />
-              <div className="messChoice">
-                <label>
-                  Do you want our Mess service?
-                </label>
-                <label htmlFor="yes">Yes</label>
+              <input
+                type="radio"
+                name="pchoice"
+                id="pno"
+                onClick={() => setPdone("no")}
+              />
+              {pdone === "yes" && (
+                <div className="messChoice">
+                  <label>Do you want our Mess service?</label>
+                  <label htmlFor="yes">Yes</label>
+                  <input
+                    type="radio"
+                    name="choice"
+                    id="yes"
+                    onClick={() => setMess("on")}
+                  />
+                  <label htmlFor="no">No</label>
+                  <input
+                    type="radio"
+                    name="choice"
+                    id="no"
+                    onClick={() => setMess("off")}
+                  />
+                </div>
+              )}
+            </div>
+            {pdone === "yes" && (
+              <div>
+                <label htmlFor="hPayment">Hostel Payment:</label>
+                <select
+                  name="hpay"
+                  id="hpay"
+                  onChange={(e) => setHpay(e.target.value)}
+                >
+                  <option value="12000">₹12,000</option>
+                  <option value="24000">₹24,000</option>
+                  <option value="36000">₹36,000</option>
+                </select>
+              </div>
+            )}
+            {mess === "on" && pdone === "yes" && (
+              <div>
+                <label htmlFor="mPayment">Mess Payment:</label>
                 <input
-                  type="radio"
-                  name="choice"
-                  id="yes"
-                  onClick={() => setMess("on")}
-                />
-                <label htmlFor="no">No</label>
-                <input
-                  type="radio"
-                  name="choice"
-                  id="no"
-                  onClick={() => setMess("off")}
+                  name="mpay"
+                  id="mpay"
+                  type="text"
+                  placeholder="Enter amount paid"
+                  onChange={(e) => setMpay(e.target.value)}
                 />
               </div>
-            </div>            
-            <div>
-              <label htmlFor="hPayment">Hostel Payment:</label>
-              <select name="payment" id="hpay" onChange={(e) => setHpay(e.target.value)}>
-                <option value="12000">₹12,000</option>
-                <option value="24000">₹24,000</option>
-                <option value="36000">₹36,000</option>
-              </select>
-            </div>
-            <div>
-              <label htmlFor="mPayment">Mess Payment:</label>
-             <input type="text" placeholder="Enter amount paid" onChange={(e) => setMpay(e.target.value)} />
-            </div>
+            )}
             <div className="formBtns">
               <a onClick={() => navigate("/loginas")}>Cancel</a>
               <button type="submit">Sign Up</button>
