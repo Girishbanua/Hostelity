@@ -28,7 +28,46 @@ const stdntSignup = async (req, res) => {
       hpay,
       mpay,
     } = req.body;
-
+    if(name == "" || email == "" || pass == "" || confirm == "" || mess == "" || date == "" || pdone == "" || hpay == "" || mpay == ""){
+      res.status(400).json({ message: "Please fill all the fields" });
+      return;
+    }
+    if (name.length < 3) {
+      res.status(400).json({ message: "Name must be atleast 3 characters long" });
+      return;
+    }
+    if (email.length < 3) {
+      res.status(400).json({ message: "Email must be atleast 3 characters long" });
+      return;
+    }
+    if(college.length < 3){
+      res.status(400).json({ message: "College name must be atleast 3 characters long" });
+      return;
+    }
+    if(admission.length < 9){
+      res.status(400).json({ message: "Admission number must be atleast 9 characters long" });
+      return;
+    }
+    if(department.length < 3){
+      res.status(400).json({ message: "Enter complete department name" });
+      return;
+    }                                           
+    if (phone.length != 10) {
+      res.status(400).json({ message: "Phone number must be 10 digits long" });
+      return;
+    }
+    if(pass.length < 6){
+      res.status(400).json({ message: "Password must be atleast 6 characters long" });
+      return;
+    }                                                
+    if (pass !== confirm) {
+      res.status(400).json({ message: "Passwords do not match" });
+      return;
+    }
+    if(pdone == "no"){
+      res.status(400).json({ message: "Payment must be done before registration!" });
+      return;      
+    }
     //formatting the date
     let formatDate = (dateString) => {
       let [year, month, day] = dateString.split("-");
@@ -68,7 +107,7 @@ const stdntSignup = async (req, res) => {
       mpay,
     });
 
-    res.status(201).json(userCreated);
+    res.status(201).json(userCreated,{message: "User created successfully"});
     console.log("userCreated");
   } catch (err) {
     console.log(err);
