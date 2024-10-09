@@ -1,0 +1,48 @@
+@use "_base.scss";
+
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 10;
+    @include base.flex(center, center);
+    .modal_content {
+        position: relative;
+        background-color: white;
+        padding: 20px;
+        border-radius: 25px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        width: 600px;
+        height: 250px;
+        @include base.flex(center, center, column);
+        gap: 20px;
+        h1{
+            font-size: 2rem;
+            @include base.gradientText();                        
+        }
+        p{
+            font-size: 1.3rem;
+            line-height: calc(1.3rem * 0.5);
+        }
+    }    
+    .modalFooter{
+        @include base.flex(center, center);
+        gap: 20px;
+        margin-top: 30px;
+        button{
+            @include base.btn(white, base.$darkColor);
+            width: 200px;
+            text-align: center;
+            border: 1px solid base.$darkColor;
+        }
+        button:not(.closeBtn){
+            @include base.btn(base.$lightColor, white);
+            width: 200px;
+            text-align: center;
+        }
+    }
+}

@@ -32,7 +32,7 @@
                 font-size: 1.5rem;
                 @include base.gradientText();
             }
-            input{
+            input:not([type="radio"]){
                 width: 100%;
                 height: 50px;
                 border-radius: 5px;
@@ -47,16 +47,38 @@
                 width: 50px;
                 padding: 10px;
                 color: base.$lightColor;
-                background: white
-            }      
-            .messChoice{
+                background: white;
+                width: 100%;  
+                text-align: center;                
+            }  
+         .account{
+            @include base.flex(center, center, column);                                    
+            padding: 10px;
+            border: 1px solid base.$extraLightColor;
+            border-radius: 10px;            
+            h1{
+                letter-spacing: 1px;
+                font-size: 2.75rem;
+                margin-top: 0;
+            }
+            button{
+                @include base.btn(white, base.$darkColor);
+                border: 1px solid base.$darkColor;
+                width: 150px;
+                margin-top: 0;
+                margin-bottom: 10px;
+            }
+         }
+            .messChoice, .paymentChoice{
                 width: 100%;
                 input{
                     width: auto;
                     outline: none;                    
                 }
-                input[radio]{
-                    outline-color: base.$lightColor;
+                input[type=radio]{                    
+                    width: 20px;
+                    height: 20px;   
+                    accent-color: base.$extraLightColor;
                 }
                 label{
                     width: auto;

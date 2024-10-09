@@ -59,7 +59,7 @@
 .LoginasContainer .lalbtn{
     @include base.btn( base.$darkColor, white);
 }
-.LoginasContainer a{
+.LoginasContainer .cancel{
   margin-top: 10vh;
   @include base.btn(white, base.$darkColor);
   width: 200px;

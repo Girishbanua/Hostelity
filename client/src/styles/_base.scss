@@ -17,7 +17,7 @@ $bodyBg: #fce5dd39;
 //Gradients
 $gradient1: linear-gradient(to right, #ff6243, #ff8350, #ff9e81);
 $gradient2: linear-gradient(to right, #ff9e81, #ff8350, #ff6243);
-
+$gradient3: linear-gradient(120deg, #ffd6ca, #ff9e81, #ff6243);
 /* Margins */
 $containerMargin: 0 5vw;
 
@@ -27,7 +27,6 @@ $containerMargin: 0 5vw;
   box-sizing: border-box;
   scroll-behavior: smooth;    
 }
-
 body{
   font-family: $primaryFont;
   background-color: $bodyBg;

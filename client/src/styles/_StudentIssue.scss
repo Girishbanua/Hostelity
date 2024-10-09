@@ -1,0 +1,40 @@
+@use "_base.scss";
+
+.issueContainer{
+    @include base.flex(flex-start, center, column);    
+    margin: 10vh 5vw;    
+    h1{
+        @include base.gradientText();
+        font-size: 3rem;
+        font-weight: 500;        
+        margin-bottom: 50px;
+    }
+    label{
+        font-size: 1.3rem;
+    }
+    select{
+        font-size: 1.3rem;
+        padding: 10px;
+        background: white;        
+        border: 1px solid base.$extraLightColor;
+        border-radius: 10px;
+        color: base.$lightColor;
+    }
+    option{
+        background-color: base.$lightColor;
+        color: white;
+    }
+    .buttons{
+        @include base.flex(flex-start, space-between);
+        gap: 30px;
+        button{
+            @include base.gradientText();
+            font-size: 1.3rem;
+            padding: 10px;
+            border-radius: 10px;
+            border: none;
+            color: white;
+            cursor: pointer;
+        }
+    }
+}
