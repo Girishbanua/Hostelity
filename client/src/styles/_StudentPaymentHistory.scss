@@ -1,0 +1,34 @@
+@use "_base.scss";
+.stdntpayHistory{
+    margin: 10vh 5vw;    
+    h1{
+        @include base.gradientText();
+        font-size: 3rem;
+        font-weight: 500;        
+        margin-bottom: 50px;
+    }
+    table{
+        text-align: left;
+        border: 1px solid base.$lightColor;
+        padding: 15px;
+        border-radius: 10px;            
+        tr{
+            th{
+                font-size: 1.3rem;                    
+            }
+            td{
+                font-size: 1.2rem;                
+                padding: 10px;
+            }
+        }
+    }
+    .actnBtns {
+        margin-top: 7vh;
+        @include base.flex(center, left);
+        gap: 20px;
+        button{            
+            @include base.btn();
+            width: 200px;
+        }
+    }
+}

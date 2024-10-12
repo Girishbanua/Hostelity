@@ -1,28 +1,54 @@
 @use "_base.scss";
 
 .changeRoom{
-    @include base.flex(flex-start, center, column);
+    @include base.flex(flex-start, left, column);
     gap: 30px;
-    margin: 10vh 5vw;
+    width: 70vw;
+    margin: auto 2vw;   
+    flex-wrap: wrap;
     h1{
         @include base.gradientText();        
         font-size: 2.5rem;
         font-weight: 500;
     }
+    .rbox{
+        @include base.flex(flex-start, space-between);        
+        width: 100%;
+        gap: 20px;
+        flex-wrap: wrap;
+        .roomNumber{
+            @include base.flex(center, space-between);
+            gap: 10px;            
+            font-size: 1.3rem;  
+            flex-basis: 40%;    
+                               
+        }
+        .roomType{
+            @include base.flex(center, space-between);
+            gap: 20px;
+            flex-basis: 50%;          
+        }
+    }
     label{
         font-size: 1.3rem;
+        flex-basis: 50%;
     }
     select{
+        flex-basis: 50%;
         font-size: 1.3rem;
         padding: 10px;
         background: white;        
         border: 1px solid base.$extraLightColor;
         border-radius: 10px;
         color: base.$lightColor;
+        width: 100%;
+        option{
+            background-color: base.$lightColor;
+            color: white;            
+        }
     }
-    option{
-        background-color: base.$lightColor;
-        color: white;
+    p{
+        color: base.$darkColor;
     }
    .buttons{
        @include base.flex(flex-start, space-between);
