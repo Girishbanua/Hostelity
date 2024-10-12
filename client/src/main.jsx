@@ -17,6 +17,6 @@ createRoot(document.getElementById("root")).render(
       draggable
       pauseOnHover
       theme="colored"
-    />
+    />   
   </React.StrictMode>
 );
