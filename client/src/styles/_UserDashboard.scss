@@ -27,6 +27,7 @@
     border-radius: 30px;
     font-size: 1.2rem;
     @include base.flex(center, flex-end);
+    cursor: pointer;
     gap: 30px;
     h3 {
       font-weight: 400;

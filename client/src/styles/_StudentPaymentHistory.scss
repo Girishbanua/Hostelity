@@ -1,6 +1,8 @@
 @use "_base.scss";
 .stdntpayHistory{
-    margin: 10vh 5vw;    
+    margin: auto 2vw; 
+    width: 70vw;   
+    @include base.flex(center, center, column);
     h1{
         @include base.gradientText();
         font-size: 3rem;
