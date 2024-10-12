@@ -1,29 +1,34 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const StudentLogin = () => {
   const navigate = useNavigate();
   const [usermail, setUsermail] = useState("");
   const [password, setPassword] = useState("");
 
-  const URL = "http://localhost:4000/api/studentLogin";
+  const LOGIN_URL = "http://localhost:4000/api/studentLogin";
+  
 
   const handleLogin = async (e) => {
     e.preventDefault();
      
     try {
-      const response = await axios.post(URL, {email: usermail, pass: password});
+      const response = await axios.post(LOGIN_URL, {email: usermail, pass: password});
+      console.log("response: ",response);      
+      
       if (response.data.message === "Login successful") {
         localStorage.setItem("studentToken", response.data.token);
         localStorage.setItem("studentID", response.data.userID);
-        navigate("/");
-        alert("Login successful");
+        navigate("/user");
+        toast.success("Login successful");
       } else {
         alert("Invalid credentials");
       }
     } catch (error) {
       console.log("Error while login\n", error.code, error.name);
+      toast.error(`Invalid Credentials!!`);
     }
   };
   return (
@@ -35,11 +40,12 @@ const StudentLogin = () => {
             <div>
               <label htmlFor="name">User Mail</label>
               <input
-                type="text"
+                type="email"
                 id="name"
+                name="email"
                 placeholder="Enter your registered email"
                 required
-                autoComplete="off"
+                autoComplete="off"                
                 value={usermail}
                 onChange={(e) => setUsermail(e.target.value)}
               />
@@ -49,6 +55,7 @@ const StudentLogin = () => {
               <input
                 type="password"
                 id="pass"
+                name="pass"
                 placeholder="Enter your password"
                 required
                 autoComplete="off"

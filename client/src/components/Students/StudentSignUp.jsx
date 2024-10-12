@@ -46,10 +46,15 @@ export default function StudentSignUp() {
         mpay,
       });
       console.log("response: ", response);
-      if (response.data.message === "User created successfully") {
-        alert("Registered successfully");
+      if (
+        response.data.message === "User created successfully" ||
+        response.status === 201
+      ) {
+        toast.success("Registered successfully");
         document.getElementById("signupForm").reset();
-        navigate("/");
+        navigate("/loginas");
+      } else {
+        toast.error(`Please fill the data properly`);
       }
     } catch (err) {
       const error = err.response.data.message;
@@ -58,6 +63,7 @@ export default function StudentSignUp() {
       console.log("Error while signup\n", err.name, err.message);
     }
   };
+
   return (
     <>
       <div className="signupContainer">
@@ -207,15 +213,24 @@ export default function StudentSignUp() {
                 type="radio"
                 name="pchoice"
                 id="pyes"
-                onClick={() => setPdone("yes")}
+                onClick={() => setPdone("yes")}                
               />
               <label htmlFor="pno">No</label>
               <input
                 type="radio"
                 name="pchoice"
                 id="pno"
-                onClick={() => setPdone("no")}
+                onClick={() => setPdone("no")}                
               />
+              {pdone === "no" && (
+                <div className="account">
+                  <label htmlFor="AccountNumber">Account Number</label>
+                  <h1>55267763718</h1>
+                  <div>
+                    <button onClick={() => {setPdone("yes") }}>Done</button>                    
+                  </div>
+                </div>
+              )}
               {pdone === "yes" && (
                 <div className="messChoice">
                   <label>Do you want our Mess service?</label>
