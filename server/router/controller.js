@@ -1,4 +1,4 @@
-const {StudentModel, stdntLoginModel} = require("../models/Student");
+const { StudentModel, stdntLoginModel } = require("../models/Student");
 const bcrypt = require("bcryptjs");
 
 const home = async (req, res) => {
@@ -28,45 +28,69 @@ const stdntSignup = async (req, res) => {
       hpay,
       mpay,
     } = req.body;
-    if(name == "" || email == "" || pass == "" || confirm == "" || mess == "" || date == "" || pdone == "" || hpay == "" || mpay == ""){
+    if (
+      name == "" ||
+      email == "" ||
+      pass == "" ||
+      confirm == "" ||
+      mess == "" ||
+      date == "" ||
+      pdone == "" ||
+      hpay == "" ||
+      mpay == ""
+    ) {
       res.status(400).json({ message: "Please fill all the fields" });
       return;
     }
     if (name.length < 3) {
-      res.status(400).json({ message: "Name must be atleast 3 characters long" });
+      res
+        .status(400)
+        .json({ message: "Name must be atleast 3 characters long" });
       return;
     }
     if (email.length < 3) {
-      res.status(400).json({ message: "Email must be atleast 3 characters long" });
+      res
+        .status(400)
+        .json({ message: "Email must be atleast 3 characters long" });
       return;
     }
-    if(college.length < 3){
-      res.status(400).json({ message: "College name must be atleast 3 characters long" });
+    if (college.length < 3) {
+      res
+        .status(400)
+        .json({ message: "College name must be atleast 3 characters long" });
       return;
     }
-    if(admission.length < 9){
-      res.status(400).json({ message: "Admission number must be atleast 9 characters long" });
+    if (admission.length < 9) {
+      res
+        .status(400)
+        .json({
+          message: "Admission number must be atleast 9 characters long",
+        });
       return;
     }
-    if(department.length < 3){
+    if (department.length < 3) {
       res.status(400).json({ message: "Enter complete department name" });
       return;
-    }                                           
+    }
     if (phone.length != 10) {
       res.status(400).json({ message: "Phone number must be 10 digits long" });
       return;
     }
-    if(pass.length < 6){
-      res.status(400).json({ message: "Password must be atleast 6 characters long" });
+    if (pass.length < 6) {
+      res
+        .status(400)
+        .json({ message: "Password must be atleast 6 characters long" });
       return;
-    }                                                
+    }
     if (pass !== confirm) {
       res.status(400).json({ message: "Passwords do not match" });
       return;
     }
-    if(pdone == "no"){
-      res.status(400).json({ message: "Payment must be done before registration!" });
-      return;      
+    if (pdone == "no") {
+      res
+        .status(400)
+        .json({ message: "Payment must be done before registration!" });
+      return;
     }
     //formatting the date
     let formatDate = (dateString) => {
@@ -99,7 +123,7 @@ const stdntSignup = async (req, res) => {
       semester,
       duration,
       pass: hash,
-      confirm: hash,
+      confirm,
       mess,
       date,
       pdone,
@@ -107,7 +131,7 @@ const stdntSignup = async (req, res) => {
       mpay,
     });
 
-    res.status(201).json(userCreated,{message: "User created successfully"});
+    res.status(201).json({userCreated, message: "User created successfully" });
     console.log("userCreated");
   } catch (err) {
     console.log(err);
@@ -128,17 +152,24 @@ const stdntLogin = async (req, res) => {
     const token = await user.generateToken();
     //formatting the date
     let date = new Date();
-    let dateString = date.toLocaleDateString();        
-    const loginDate = dateString;    
+    let dateString = date.toLocaleDateString();
+    const loginDate = dateString;
     const loginTime = date.toLocaleTimeString();
     const loggedUser = await stdntLoginModel.create({
       name: user.name,
       email: user.email,
-      token: token,      
+      token: token,
       loginDate: loginDate,
       loginTime: loginTime,
     });
-    res.status(200).json({loggedUser,message: "Login successful", token, userID: user._id.toString() });
+    res
+      .status(200)
+      .json({
+        loggedUser,
+        message: "Login successful",
+        token,
+        userID: user._id.toString(),
+      });
     console.log("Login successful");
   } catch (err) {
     console.log(err);
@@ -163,4 +194,23 @@ const totalStdnt = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
-module.exports = { home, stdntSignup, stdntLogin, stdntDetails, totalStdnt };
+
+const loggedStudents = async (req, res) => {
+  try {
+    await stdntLoginModel
+      .find()
+      .then((lgdStdnts) => res.status(200).json({ lgdStdnts: lgdStdnts }))
+      .catch((err) => res.json(err));
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+module.exports = {
+  home,
+  stdntSignup,
+  stdntLogin,
+  stdntDetails,
+  totalStdnt,
+  loggedStudents,
+};
