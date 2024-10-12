@@ -1,8 +1,8 @@
-import { useNavigate } from "react-router-dom";
+
 import "../../styles/_StudentPaymentHistory.scss";
 
-const StudentPaymentHistory = () => {
-  const navigate = useNavigate()
+const StudentPaymentHistory = ({onCancel}) => {
+  
   return (
     <div className="stdntpayHistory">
       <h1>Payment Log</h1>
@@ -42,7 +42,7 @@ const StudentPaymentHistory = () => {
       </table>
       <div className="actnBtns">
         <button>Pay</button>
-        <button onClick={() => navigate("/user")}>Cancel</button>
+        <button onClick={onCancel}>Cancel</button>
       </div>
     </div>
   );

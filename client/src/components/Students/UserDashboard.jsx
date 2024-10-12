@@ -8,8 +8,8 @@ import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import StudentPaymentHistory from "./StudentPaymentHistory";
 import ChangeRoom from "./ChangeRoom";
-import UserContext from "../../context/UserContext";
-import UserContextProvider from "../../context/UserContextProvider";
+import RoomInfo from "./RoomInfo";
+import Issue from "./Issue";
 
 export default function UserDashboard() {
   const LOGD_STDNTS_URL = "http://localhost:4000/api/loggedStudents";
@@ -71,77 +71,93 @@ export default function UserDashboard() {
       stagger: 0.2,
     });
   });
-  //*************** ContextAPI variables ****************  
+  //*************** ContextAPI variables ****************
   //Home Page
+  const [visible, setVisible] = useState("home");
+  const handleVisibility = (compName) => {
+    setVisible(compName);
+  };
+  const handleCancel = () => {
+    setVisible("home");
+    console.log(visible);
+  };
   const DashboardHome = () => {
-    const { visible, handleVisibility } = useContext(UserContext);
+ 
     return (
-      visible && (
-        <div className="dashboard_container">
-          <div className="dashboard_navbar">
-            <div className="userMenu">
-              <img
-                src="/images/Dashboard/AvatarPlaceholder.png"
-                alt="user_icon"
-              />
-              <p>
-                Welcome <span>{`${stdntname}`}</span>
-              </p>
-              <select name="user_Menu" id="">
-                <option value="logout">Logout</option>
-                <option value="settings">Settings</option>
-              </select>
+      <>
+        {visible === "home" && (
+          <div className="dashboard_container">
+            <div className="dashboard_navbar">
+              <div className="userMenu">
+                <img
+                  src="/images/Dashboard/AvatarPlaceholder.png"
+                  alt="user_icon"
+                />
+                <p>
+                  Welcome <span>{`${stdntname}`}</span>
+                </p>
+                <select name="user_Menu" id="">
+                  <option value="logout">Logout</option>
+                  <option value="settings">Settings</option>
+                </select>
+              </div>
+            </div>
+            <h1>{`Hello ${stdntname.split(" ")[0]}`}</h1>
+            <div className="details">
+              <div className="info">
+                <div className="info_txt">
+                  <h2>{count}</h2>
+                  <p>Registerd Students</p>
+                </div>
+                <img src="/images/Dashboard/people.png" alt="" />
+              </div>
+              <div className="info">
+                <div className="info_txt">
+                  <h2>15</h2>
+                  <p>Total Rooms</p>
+                </div>
+                <img src="/images/Dashboard/bed.png" alt="" />
+              </div>
+              <div className="info">
+                <div className="info_txt">
+                  <h2>7</h2>
+                  <p>Booked Rooms</p>
+                </div>
+                <img src="/images/Dashboard/book.png" alt="" />
+              </div>
+              <div className="action_menu">
+                <div className="info_txt">
+                  <h3>Switch Room</h3>
+                </div>
+                <img src="/images/Dashboard/change.png" alt="change_icon" />
+                <button onClick={() => handleVisibility("changeRoom")}>
+                  Change
+                </button>
+              </div>
+              <div className="action_menu">
+                <div className="info_txt">
+                  <h3>Raise an Issue</h3>
+                </div>
+                <img src="/images/Dashboard/report-issue.png" alt="" />
+                <button onClick={() => handleVisibility("issue")}>Raise</button>
+              </div>
+              <div className="action_menu">
+                <div className="info_txt">
+                  <h3>Payments</h3>
+                </div>
+                <img src="/images/Dashboard/qr-menu.png" alt="" />
+                <button onClick={() => handleVisibility("payHistory")}>
+                  View
+                </button>
+              </div>
             </div>
           </div>
-          <h1>{`Hello ${stdntname.split(" ")[0]}`}</h1>
-          <div className="details">
-            <div className="info">
-              <div className="info_txt">
-                <h2>{count}</h2>
-                <p>Registerd Students</p>
-              </div>
-              <img src="/images/Dashboard/people.png" alt="" />
-            </div>
-            <div className="info">
-              <div className="info_txt">
-                <h2>15</h2>
-                <p>Total Rooms</p>
-              </div>
-              <img src="/images/Dashboard/bed.png" alt="" />
-            </div>
-            <div className="info">
-              <div className="info_txt">
-                <h2>7</h2>
-                <p>Booked Rooms</p>
-              </div>
-              <img src="/images/Dashboard/book.png" alt="" />
-            </div>
-            <div className="action_menu">
-              <div className="info_txt">
-                <h3>Switch Room</h3>
-              </div>
-              <img src="/images/Dashboard/change.png" alt="change_icon" />
-              <button onClick={() => handleVisibility()}>Change</button>
-            </div>
-            <div className="action_menu">
-              <div className="info_txt">
-                <h3>Raise an Issue</h3>
-              </div>
-              <img src="/images/Dashboard/report-issue.png" alt="" />
-              <button onClick={() => navigate("/studentIssue")}>Raise</button>
-            </div>
-            <div className="action_menu">
-              <div className="info_txt">
-                <h3>Payments</h3>
-              </div>
-              <img src="/images/Dashboard/qr-menu.png" alt="" />
-              <button onClick={() => navigate("/studentPayHistory")}>
-                View
-              </button>
-            </div>
-          </div>
-        </div>
-      )
+        )}
+        {visible === "roomInfo" && <RoomInfo onCancel={handleCancel} />}
+        {visible === "changeRoom" && <ChangeRoom onCancel={handleCancel} />}
+        {visible === "issue" && <Issue onCancel={handleCancel} />}
+        {visible === "payHistory" && <StudentPaymentHistory onCancel={handleCancel} />}
+      </>
     );
   };
   const SideBar = () => {
@@ -152,15 +168,15 @@ export default function UserDashboard() {
             <img src="/images/Home_Page/hostelity_logo.png" alt="logo" />
           </a>
         </div>
-        <div className="title">
+        <div className="title" onClick={() => handleVisibility("home")}>
           <img src="/images/Dashboard/Icon.png" alt="dashboard_icon" />
-          <h3 onClick={() => navigate("/user")}>Dashboard</h3>
+          <h3>Dashboard</h3>
         </div>
         <div className="features">
           <h2>Features</h2>
           <div className="feature">
             <img src="/images/Dashboard/Vector-2.png" alt="icon" />
-            <p onClick={() => navigate("/roomInfo")}>Room Info</p>
+            <p onClick={() => handleVisibility("roomInfo")}>Room Info</p>
           </div>
           <div className="feature">
             <img src="/images/Dashboard/Vector-1.png" alt="icon2" />
@@ -179,11 +195,7 @@ export default function UserDashboard() {
     <>
       <div className="userDashboard">
         <SideBar />
-        <UserContextProvider>
-          <DashboardHome />
-          <ChangeRoom />
-        </UserContextProvider>
-        {/* {!visible && <StudentPaymentHistory />} */}
+        <DashboardHome />
       </div>
     </>
   );

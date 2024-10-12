@@ -1,6 +1,6 @@
 import "../../styles/_StudentIssue.scss"
 
-const Issue = () => {
+const Issue = ({onCancel}) => {
   return (
     <div className="issueContainer">
       <h1>Raise an Issue</h1>
@@ -12,6 +12,7 @@ const Issue = () => {
           <option value="3">Payment related issue</option>          
         </select>
       </div>
+      <button onClick={onCancel}>Cancel</button>
     </div>
   )
 }

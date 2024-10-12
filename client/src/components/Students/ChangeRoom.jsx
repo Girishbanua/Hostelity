@@ -1,15 +1,16 @@
 
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable react/prop-types */
-import { useContext } from "react";
-import "../../styles/_ChangeRoom.scss";
-import UserContext  from "../../context/UserContext";
 
-const RoomNumber = ({ lblMsg }) => {
+import "../../styles/_ChangeRoom.scss";
+
+
+const RoomNumber = ({ lblMsg, newOption }) => {
   return (
     <div className="roomNumber">
       <label htmlFor="prnum">{lblMsg}</label>
       <select name="prnum" id="proomnum">
+        <option value="rndm">{newOption}</option>
         <option value="1">1</option>
         <option value="2">2</option>
         <option value="3">3</option>
@@ -45,18 +46,17 @@ const RoomType = ({ lblMsg, newOption }) => {
 };
 
 
-const ChangeRoom = () => {  
-  const {visible, handleVisibility} = useContext(UserContext);
-  return ( !visible &&
+const ChangeRoom = ({onCancel}) => {    
+  return ( 
     <div className="changeRoom">      
       <h1>Change Room</h1>
       <div className="rbox">
-        <RoomNumber lblMsg="Present Room Number: " />
+        <RoomNumber lblMsg="Present Room Number: " newOption="Select"/>
         <RoomType lblMsg="Present Room Type: " newOption="Select" />
       </div>
       <p>(* If you don't know the new room number, please select random)</p>
       <div className="rbox">
-        <RoomNumber lblMsg="New Room Number: " />
+        <RoomNumber lblMsg="New Room Number: " newOption="Random"/>
         <RoomType lblMsg="New Room Type: " newOption="Random"/>
       </div>
       <div className="chngMsg">
@@ -67,7 +67,7 @@ const ChangeRoom = () => {
 
       <div className="buttons">
         <button>Request change</button>
-        <button onClick={() => handleVisibility()}>Cancel</button>
+        <button onClick={onCancel}>Cancel</button>
       </div>
     </div>
   );
