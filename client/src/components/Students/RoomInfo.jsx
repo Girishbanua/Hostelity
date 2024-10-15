@@ -1,8 +1,9 @@
 /* eslint-disable react/prop-types */
 import "../../styles/_RoomInfo.scss";
+import { motion } from "framer-motion";
 const RoomInfo = ({ onCancel }) => {
   return (
-    <div className="roomInfo">
+    <motion.div className="roomInfo" initial={{ opacity: 0 }} exit={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{duration: 0.5, delay: 0.25}}>
       <h1>Room No. 05</h1>
       <div>
         <h3>Room Type: </h3>
@@ -10,7 +11,7 @@ const RoomInfo = ({ onCancel }) => {
       </div>
       <div>
         <h3>Boarders: </h3>
-        <table border={1}>
+        <table>
           <thead>
             <tr>
               <th>Sl.No.</th>
@@ -45,7 +46,7 @@ const RoomInfo = ({ onCancel }) => {
       <div>
         <button onClick={onCancel}>return</button>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

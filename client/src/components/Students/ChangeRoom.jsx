@@ -3,7 +3,7 @@
 /* eslint-disable react/prop-types */
 
 import "../../styles/_ChangeRoom.scss";
-
+import {motion} from "framer-motion";
 
 const RoomNumber = ({ lblMsg, newOption }) => {
   return (
@@ -48,7 +48,7 @@ const RoomType = ({ lblMsg, newOption }) => {
 
 const ChangeRoom = ({onCancel}) => {    
   return ( 
-    <div className="changeRoom">      
+    <motion.div className="changeRoom" initial={{ opacity: 0 }} exit={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{duration: 0.5, delay: 0.25}}>      
       <h1>Change Room</h1>
       <div className="rbox">
         <RoomNumber lblMsg="Present Room Number: " newOption="Select"/>
@@ -69,7 +69,7 @@ const ChangeRoom = ({onCancel}) => {
         <button>Request change</button>
         <button onClick={onCancel}>Cancel</button>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

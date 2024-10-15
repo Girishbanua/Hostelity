@@ -1,8 +1,9 @@
 import "../../styles/_StudentIssue.scss"
+import { motion } from "framer-motion"
 
 const Issue = ({onCancel}) => {
   return (
-    <div className="issueContainer">
+    <motion.div className="issueContainer"initial={{ opacity: 0 }} exit={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{duration: 0.5, delay: 0.25}}>
       <h1>Raise an Issue</h1>
       <div>
         <label htmlFor="issue">Issue Type</label>
@@ -13,7 +14,7 @@ const Issue = ({onCancel}) => {
         </select>
       </div>
       <button onClick={onCancel}>Cancel</button>
-    </div>
+    </motion.div>
   )
 }
 

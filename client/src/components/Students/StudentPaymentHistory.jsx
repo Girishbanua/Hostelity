@@ -1,10 +1,11 @@
 
 import "../../styles/_StudentPaymentHistory.scss";
+import { motion } from "framer-motion";
 
 const StudentPaymentHistory = ({onCancel}) => {
   
   return (
-    <div className="stdntpayHistory">
+    <motion.div className="stdntpayHistory"initial={{ opacity: 0 }} exit={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5, delay: 0.25 }} >
       <h1>Payment Log</h1>
       <table>
         <tr>
@@ -44,7 +45,7 @@ const StudentPaymentHistory = ({onCancel}) => {
         <button>Pay</button>
         <button onClick={onCancel}>Cancel</button>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
