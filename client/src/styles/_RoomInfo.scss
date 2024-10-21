@@ -9,8 +9,7 @@
     }
     div{      
         margin-top: 50px;
-        @include base.flex(flex-start, left, column);                         
-        gap: 5px;
+        @include base.flex(flex-start, left, column);                                 
         h3{
             font-size: 1.5rem;
             font-weight: 600;
@@ -19,21 +18,22 @@
             font-size: 2rem;
         } 
         table{
-            text-align: center;
-            border-collapse: collapse; 
-            border-color: base.$darkColor;            
-            padding: 15px;                        
-            tr{                
+            text-align: center;            
+            border-color: base.$darkColor;                                                         
+            tr{                                
                 th{
                     font-size: 1.7rem;
-                    font-weight: 600;  
-                    border-color: base.$darkColor;  
-                    padding: 10px;                
+                    font-weight: 600;                    
+                    color: base.$darkColor;                    
+                    padding: 10px;  
+                    border: 1px solid base.$darkColor;
+                    border-radius: 10px;              
                 }
                 td{
                     font-size: 1.5rem;
                     padding: 10px;
-                    border-color: base.$darkColor;
+                    border: 1px solid base.$darkColor;
+                    border-radius: 10px;                    
                 }
                 td:not(:nth-child(1)){
                     text-align: left;
@@ -44,8 +44,7 @@
         button{
             @include base.btn();
             width: 200px;
-            text-transform: capitalize;
-            margin-top: 30px;
+            text-transform: capitalize;            
             font-size: 1.3rem;
         }     
     }

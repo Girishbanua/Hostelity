@@ -1,0 +1,85 @@
+@use "_base.scss";
+.messAttendance{
+    text-align: center;
+    margin: 10vh 5vw;
+    h1{
+        @include base.gradientText();
+        font-size: 3rem;
+        font-weight: 500;        
+        margin-bottom: 50px;
+    }
+    table{        
+        border-collapse: collapse;
+        font-size: 1.3rem;
+        width: 100%;
+        thead{
+            background: base.$lightColor;            
+        }
+        tr{                 
+            th{                
+                padding: 10px;  
+                color: beige;               
+                margin-bottom: 10px;
+            }
+            border-bottom: 1px solid base.$lightColor;
+            td{
+                padding: 10px;                
+                button{
+                    @include base.btn();
+                    width: 70px;
+                    margin-left: 10px; 
+                    transition: all 300ms ease-in-out;                               
+                    border:1px solid rgb(252, 44, 44);
+                    background-color: transparent;
+                    color: rgb(252, 44, 44);                 
+                }                  
+                button:hover{
+                    background-color: rgb(74, 232, 95);
+                    color: black;
+                    border: 1px solid rgb(74, 232, 95);                    
+                }   
+                button:active{
+                    scale: 0.9;
+                    transform: translateY(2px);
+                    font-weight: bold;                                        
+                    color: black;
+                }              
+            }       
+            .btnDiv{
+                @include base.flex();
+                gap: 10px;                
+                text-align: center;
+                button{
+                    font-size: 2rem;
+                    padding: 0;
+                    width: 50px;    
+                    margin: 0;                
+                }
+                button:first-child:hover{
+                    background-color: rgb(232, 74, 74);
+                }
+                p{
+                    width: 20px
+                }
+            }     
+        }
+    }
+    .summary{
+        @include base.flex();
+        gap: 30px;
+        margin-top: 30px;
+        span{
+            font-size: 2rem;
+            color: base.$lightColor;
+        }
+    }
+    >button{
+        @include base.btn();
+        width: 200px;
+        font-size: 1.2rem;
+        font-weight: bold;
+        &:active{
+            scale: 0.9;
+        }
+    }
+}
