@@ -13,6 +13,8 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import AdminRegister from "./components/Admin/AdminRegister";
 import Issue from "./components/Students/Issue";
 import RoomInfo from "./components/Students/RoomInfo";
+import StaffDashboard from "./components/MessStaff/StaffDashboard";
+import MessAttendance from "./components/MessStaff/MessAttendance";
 
 export default function App() {
   const router = createBrowserRouter([
@@ -47,6 +49,14 @@ export default function App() {
     {
       path: "/staffDetails",
       element: <MessStaffDetails />,
+    },
+    {
+      path: "/staffDashboard",
+      element: <StaffDashboard />,
+    },
+    {
+      path: "/messAttendance",
+      element: <MessAttendance />,
     },
     {
       path: "/adminlogin",
