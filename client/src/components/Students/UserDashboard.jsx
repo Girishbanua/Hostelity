@@ -1,16 +1,13 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable no-unused-vars */
 import "../../styles/_UserDashboard.scss";
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import gsap from "gsap";
-import { useGSAP } from "@gsap/react";
 import StudentPaymentHistory from "./StudentPaymentHistory";
 import ChangeRoom from "./ChangeRoom";
 import RoomInfo from "./RoomInfo";
 import Issue from "./Issue";
 import { motion, AnimatePresence } from "framer-motion";
+import ProfileSettings from "./ProfileSettings";
 
 export default function UserDashboard() {
   const LOGD_STDNTS_URL = "http://localhost:4000/api/loggedStudents";
@@ -18,78 +15,43 @@ export default function UserDashboard() {
   const navigate = useNavigate();
   const [stdntname, setStdntname] = useState("");
   const [count, setCount] = useState(null);
-  //Data Fetching
+
+  // Data Fetching
   useEffect(() => {
-    axios
-      .get(LOGD_STDNTS_URL)
-      .then((res) => {
+    const fetchData = async () => {
+      try {
+        const res = await axios.get(LOGD_STDNTS_URL);
         const stdnt_Name = res.data.lgdStdnts;
-        console.log(stdnt_Name[stdnt_Name.length - 1].name);
-        setStdntname(stdnt_Name[stdnt_Name.length - 1].name);
-      })
-      .catch((err) => console.log("Error fetching name", err));
-    console.log(stdntname);
-    axios
-      .get(TOTL_STDNTS_URL)
-      .then((response) => setCount(response.data.count))
-      .catch((error) => console.log("Error fetching count", error));
-  }, [count]);
-  //SideBar Animations
-  const tl = gsap.timeline();
-  useGSAP(() => {
-    tl.from(
-      [
-        ".sideBar",
-        ".sideBar .logo",
-        ".sideBar .title",
-        ".sideBar .title h3",
-        ".sideBar .title p",
-        ".sideBar .features h2",
-        ".sideBar .features .feature img",
-        ".sideBar .features .feature p",
-      ],
-      {
-        opacity: 0,
-        x: -100,
-        duration: 1,
-        ease: "power1.inOut",
-        stagger: 0.2,
+        const lastStudentName = stdnt_Name[stdnt_Name.length - 1].name;
+        setStdntname(lastStudentName);
+
+        const response = await axios.get(TOTL_STDNTS_URL);
+        setCount(response.data.count);
+      } catch (err) {
+        console.log("Error fetching data", err);
       }
-    );
-    gsap.from(".dashboard_navbar", {
-      opacity: 0,
-      x: 100,
-      delay: 0.3,
-      duration: 1,
-      ease: "power1.inOut",
-    });
-    gsap.from([".dashboard_container h1", ".info", ".action_menu"], {
-      opacity: 0,
-      scale: 0.2,
-      delay: 0.3,
-      duration: 1,
-      ease: "power1.inOut",
-      stagger: 0.2,
-    });
-  });
-  //*************** ContextAPI variables ****************
-  //Home Page
+    };
+
+    fetchData(); // Call the async function
+  }, []); // Empty dependency array ensures this runs only once
+
+  // Home Page Visibility
   const [visible, setVisible] = useState("home");
   const handleVisibility = (compName) => {
     setVisible(compName);
   };
   const handleCancel = () => {
     setVisible("home");
-    console.log(visible);
   };
+  
   const DashboardHome = () => {
     return (
       <>
         <AnimatePresence>
-          {visible === "home" && (
+          {visible === "home" && ( 
             <motion.div
               className="dashboard_container"
-              initial={{ opacity: 0 }}
+              initial={{ opacity: 0 }} 
               exit={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 1, delay: 0.25 }}
@@ -99,6 +61,7 @@ export default function UserDashboard() {
                   <img
                     src="/images/Dashboard/AvatarPlaceholder.png"
                     alt="user_icon"
+                    onClick={() => handleVisibility("profileSettings")}
                   />
                   <p>
                     Welcome <span>{`${stdntname}`}</span>
@@ -107,7 +70,7 @@ export default function UserDashboard() {
                     <option value="logout" onClick={() => navigate("/")}>
                       Logout
                     </option>
-                    <option value="settings">Settings</option>
+                    <option value="settings" onClick={() => handleVisibility("profileSettings")}>Settings</option>
                   </select>
                 </div>
               </div>
@@ -116,7 +79,7 @@ export default function UserDashboard() {
                 <div className="info">
                   <div className="info_txt">
                     <h2>{count}</h2>
-                    <p>Registerd Students</p>
+                    <p>Registered Students</p>
                   </div>
                   <img src="/images/Dashboard/people.png" alt="" />
                 </div>
@@ -170,47 +133,78 @@ export default function UserDashboard() {
           {visible === "payHistory" && (
             <StudentPaymentHistory onCancel={handleCancel} />
           )}
+          {
+            visible === "profileSettings" && (
+              <ProfileSettings onCancel={handleCancel} />
+            )
+          }
         </AnimatePresence>
       </>
     );
   };
+
+  const sidebarVariants = {
+    hidden: { opacity: 0, x: -150 },
+    visible: {
+      opacity: 1,
+      x: 0,
+      transition: { duration: 1, staggerChildren: 0.5 },
+    },
+    stay: {
+      opacity: 1,
+    },
+  };
+
+  const hasAnimatedRef = useRef(false); // Ref to track if animation has occurred
+
   const SideBar = () => {
     return (
-      <div className="sideBar">
-        <div className="logo">
+      <motion.div
+        className="sideBar"
+        variants={sidebarVariants}
+        initial={!hasAnimatedRef.current ? "hidden" : "stay"}
+        animate={!hasAnimatedRef.current ? "visible" : "stay"}
+        transition={{ staggerChildren: 0.5 }}
+        onAnimationComplete={() => {
+          hasAnimatedRef.current = true; // Set the ref to true after animation completes
+        }}
+      >
+        <motion.div className="logo" variants={sidebarVariants}>
           <a href="/">
             <img src="/images/Home_Page/hostelity_logo.png" alt="logo" />
           </a>
-        </div>
-        <div className="title" onClick={() => handleVisibility("home")}>
+        </motion.div>
+        <motion.div
+          className="title"
+          onClick={() => handleVisibility("home")}
+          variants={sidebarVariants}
+        >
           <img src="/images/Dashboard/Icon.png" alt="dashboard_icon" />
           <h3>Dashboard</h3>
-        </div>
-        <div className="features">
-          <h2>Features</h2>
-          <div className="feature">
+        </motion.div>
+        <motion.div className="features" variants={sidebarVariants}>
+          <motion.h2 variants={sidebarVariants}>Features</motion.h2>
+          <motion.div className="feature" variants={sidebarVariants}>
             <img src="/images/Dashboard/Vector-2.png" alt="icon" />
             <p onClick={() => handleVisibility("roomInfo")}>Room Info</p>
-          </div>
-          <div className="feature">
+          </motion.div>
+          <motion.div className="feature" variants={sidebarVariants}>
             <img src="/images/Dashboard/Vector-1.png" alt="icon2" />
             <p onClick={() => navigate("/messMenu")}>Mess Menu</p>
-          </div>
-          <div className="feature">
+          </motion.div>
+          <motion.div className="feature" variants={sidebarVariants}>
             <img src="/images/Dashboard/Vector.png" alt="icon3" />
             <p>Log Activities</p>
-          </div>
-        </div>
-      </div>
+          </motion.div>
+        </motion.div>
+      </motion.div>
     );
   };
 
   return (
-    <>
-      <div className="userDashboard">
-        <SideBar />
-        <DashboardHome />
-      </div>
-    </>
+    <div className="userDashboard">
+      <SideBar />
+      <DashboardHome />
+    </div>
   );
 }

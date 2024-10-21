@@ -18,10 +18,14 @@ export default function StudentSignUp() {
   const [pass, setPass] = useState();
   const [confirm, setConfirm] = useState();
   const [date, setDate] = useState();
+  const [seater, setSeater] = useState("4");
   const [pdone, setPdone] = useState("no");
   const [mess, setMess] = useState("off");
-  const [hpay, setHpay] = useState();
-  const [mpay, setMpay] = useState("0000");
+  const [hpay, setHpay] = useState("12000");
+  const [mpay, setMpay] = useState("16000");
+  const handleMessPay = (e) => {
+    mess === "off" ? setMpay("0000") : setMpay(e.target.value);
+  }
 
   const URL = "http://localhost:4000/api/studentSignup";
 
@@ -41,6 +45,7 @@ export default function StudentSignUp() {
         confirm,
         mess,
         date,
+        seater,
         pdone,
         hpay,
         mpay,
@@ -94,7 +99,7 @@ export default function StudentSignUp() {
             </div>
             {/*Phone Number*/}
             <div>
-              <label htmlFor="phnNumber">Phone Number</label>
+              <label htmlFor="phnNumber">Contact Number</label>
               <input
                 type="text"
                 placeholder="Enter your phone number"
@@ -195,6 +200,7 @@ export default function StudentSignUp() {
                 onChange={(e) => setConfirm(e.target.value)}
               />
             </div>
+              {/*Date of Joining*/}
             <div>
               <label htmlFor="dateOfJoin">Date of Joining</label>
               <input
@@ -206,6 +212,16 @@ export default function StudentSignUp() {
                 required
               />
             </div>
+              {/*Seater*/}
+            <div>
+              <label htmlFor="seater">Seater</label>
+              <select name="seater" id="seater" onChange={(e) => setSeater(e.target.value)} required>
+                <option value="1">Single</option>
+                <option value="2">Double</option>
+                <option value="3">Triple Sharing</option>
+                <option value="4">Quad Sharing</option>
+              </select>
+            </div>
             <div className="paymentChoice">
               <label>Payment Done?</label>
               <label htmlFor="pyes">Yes</label>
@@ -213,21 +229,29 @@ export default function StudentSignUp() {
                 type="radio"
                 name="pchoice"
                 id="pyes"
-                onClick={() => setPdone("yes")}                
+                onClick={() => setPdone("yes")}
               />
               <label htmlFor="pno">No</label>
               <input
                 type="radio"
                 name="pchoice"
                 id="pno"
-                onClick={() => setPdone("no")}                
+                onClick={() => setPdone("no")}
               />
               {pdone === "no" && (
                 <div className="account">
                   <label htmlFor="AccountNumber">Account Number</label>
                   <h1>55267763718</h1>
+                  <h2><b>Hostel:</b> ₹12,000</h2>
+                  <h2><b>Mess:</b> ₹16,000 <small>(if required)</small></h2>
                   <div>
-                    <button onClick={() => {setPdone("yes") }}>Done</button>                    
+                    <button
+                      onClick={() => {
+                        setPdone("yes");
+                      }}
+                    >
+                      Done
+                    </button>
                   </div>
                 </div>
               )}
@@ -256,7 +280,7 @@ export default function StudentSignUp() {
                 <label htmlFor="hPayment">Hostel Payment:</label>
                 <select
                   name="hpay"
-                  id="hpay"
+                  id="hPayment"
                   onChange={(e) => setHpay(e.target.value)}
                 >
                   <option value="12000">₹12,000</option>
@@ -268,13 +292,12 @@ export default function StudentSignUp() {
             {mess === "on" && pdone === "yes" && (
               <div>
                 <label htmlFor="mPayment">Mess Payment:</label>
-                <input
-                  name="mpay"
-                  id="mpay"
-                  type="text"
-                  placeholder="Enter amount paid"
-                  onChange={(e) => setMpay(e.target.value)}
-                />
+                <select name="mpay" id="mPayment" onChange={(e) => handleMessPay(e)}>
+                <option value="16000">₹16,000</option>
+                <option value="24000">₹24,000</option>
+                <option value="32000">₹32,000</option>
+                <option value="48000">₹48,000</option>
+              </select>
               </div>
             )}
             <div className="formBtns">
