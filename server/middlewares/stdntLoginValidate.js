@@ -4,6 +4,8 @@ const stdntLoginValidate = (schema) => async (req, res, next) => {
         req.body = parseBody
         next()
     }catch(err){
+        console.log(err.errors);
+        
         const status = 422
         const message = "Fill the input properly"  
         const extraInfo = err.errors[0].message;

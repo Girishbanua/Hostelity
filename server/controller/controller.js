@@ -1,9 +1,25 @@
 const { StudentModel, stdntLoginModel } = require("../models/Student");
+const { MessMenuModel } = require("../models/messMenu");
 const bcrypt = require("bcryptjs");
 
 const home = async (req, res) => {
   try {
     res.json({ message: "Welcome to Hostelity" });
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const messMenu = async (req, res) => {
+  try {
+    await MessMenuModel.find()
+      .then((data) => {
+        res.status(200).json(data);
+        console.log(data);
+      })
+      .catch((err) => {
+        res.json(err);
+      });
   } catch (err) {
     console.log(err);
   }
@@ -62,11 +78,9 @@ const stdntSignup = async (req, res) => {
       return;
     }
     if (admission.length < 9) {
-      res
-        .status(400)
-        .json({
-          message: "Admission number must be atleast 9 characters long",
-        });
+      res.status(400).json({
+        message: "Admission number must be atleast 9 characters long",
+      });
       return;
     }
     if (department.length < 3) {
@@ -133,7 +147,7 @@ const stdntSignup = async (req, res) => {
       mpay,
     });
 
-    res.status(201).json({userCreated, message: "User created successfully" });
+    res.status(201).json({ userCreated, message: "User created successfully" });
     console.log("userCreated", userCreated);
   } catch (err) {
     console.log(err);
@@ -161,17 +175,16 @@ const stdntLogin = async (req, res) => {
       name: user.name,
       email: user.email,
       token: token,
+      id: user._id.toString(),
       loginDate: loginDate,
       loginTime: loginTime,
     });
-    res
-      .status(200)
-      .json({
-        loggedUser,
-        message: "Login successful",
-        token,
-        userID: user._id.toString(),
-      });
+    res.status(200).json({
+      loggedUser,
+      message: "Login successful",
+      token,
+      userID: user._id.toString(),
+    });
     console.log("Login successful");
   } catch (err) {
     console.log(err);
@@ -208,6 +221,27 @@ const loggedStudents = async (req, res) => {
   }
 };
 
+//to send user data- user logic
+const user = async (req, res) => {
+  try {
+    const userData = req.user;
+    console.log(userData);
+    return res.status(200).json({ msg: userData });
+  } catch (err) {
+    console.log("error from user", err);
+  }
+};
+
+// update user
+const userUpdate = async (req, res) => {
+  try {
+    res.status(201).json({ msg: "User updated successfully" });
+  }
+  catch (err) {
+    console.log(err);
+  }
+}
+
 module.exports = {
   home,
   stdntSignup,
@@ -215,4 +249,7 @@ module.exports = {
   stdntDetails,
   totalStdnt,
   loggedStudents,
+  user,
+  messMenu,
+  userUpdate
 };

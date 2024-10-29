@@ -8,6 +8,18 @@ const messAtndSchema = new mongoose.Schema({
       time: String,
     }
   ],
+  summary: {
+    present: String,
+    absent: String,    
+    guest: String,
+  },
+  guests: [
+    {
+      name: String,
+      guest: String,
+      time: String,
+  }],
+  messAttender: String,
   date: String,
 });
 
