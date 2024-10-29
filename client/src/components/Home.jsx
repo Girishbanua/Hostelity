@@ -1,7 +1,10 @@
 import "../styles/Home.scss";
 import { useNavigate } from "react-router-dom";
-export default function Home() {  
-  const navigate = useNavigate();  
+import { UseAuth } from "../store/auth";
+
+export default function Home() {
+  const navigate = useNavigate();
+  const { isLoggedIn } = UseAuth();
   return (
     <>
       <main>
@@ -31,14 +34,25 @@ export default function Home() {
                   <a href="#contact">Contact</a>
                 </li>
               </ul>
-              <button
-                className="book_now"
-                onClick={() => {
-                  navigate("/loginas");
-                }}
-              >
-                Login
-              </button>
+              {isLoggedIn ? (
+                <button
+                  className="book_now"
+                  onClick={() => {
+                    navigate("/logout");
+                  }}
+                >
+                  Logout
+                </button>
+              ) : (
+                <button
+                  className="book_now"
+                  onClick={() => {
+                    navigate("/loginas");
+                  }}
+                >
+                  Login
+                </button>
+              )}
             </div>
           </nav>
           <div className="hero">

@@ -2,10 +2,14 @@
 import { useEffect, useState } from "react";
 import "../../styles/_MessAttendance.scss";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const MessAttendance = () => {
+  //this is the url where the data will be stored
   const MES_ATND_URL = "http://localhost:4000/api/messAttend";
   const [students, setStudents] = useState([]);
+  const navigate = useNavigate();
+  //Using useEffect to fetch the data from the database
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -20,18 +24,19 @@ const MessAttendance = () => {
     };
     fetchData();
   }, []);
-
-  //remove the row on click and increase the present
+  
+  //selecting students who have opted for mess
   const messStdnt = students.filter((student) => student.mess === "on");
-  const total = messStdnt.length;
-  const [present, setPresent] = useState(0);
-  const [absent, setAbsent] = useState(0);
+  const total = messStdnt.length;  
 
   // the following variables are for the total calculation at the end of the day
   const [totalPresent, setTotalPresent] = useState(0);
   const [totalAbsent, setTotalAbsent] = useState(0);
   const [totalGuest, setTotalGuest] = useState(0);
+  //the following array contains the details of the students who had their meal on that particular day
   const [totalStdnt, setTotalStdnt] = useState([]);
+  const guestList = totalStdnt.filter((stdnt) => stdnt.guest > 0 );   
+  const summary = { present: totalPresent, absent: totalAbsent, guest: totalGuest };
 
   //Mess Component, where individual student details are displayed
   const MessComp = ({ id, student }) => {
@@ -42,21 +47,9 @@ const MessAttendance = () => {
         <td>{student.name}</td>
         <td>No</td>
         <td className="btnDiv">
-          <button
-            onClick={() => {
-              guest > 0 && setGuest(guest - 1);
-            }}
-          >
-            -
-          </button>
+          <button onClick={() => guest > 0 && setGuest(guest - 1)}> - </button>
           <p>{guest}</p>
-          <button
-            onClick={() => {
-              guest < 4 && setGuest(guest + 1);
-            }}
-          >
-            +
-          </button>
+          <button onClick={() => guest < 4 && setGuest(guest + 1)}> + </button>
         </td>
         <td>
           <button onClick={(e) => addMeal(e, student.name, guest, id)}>
@@ -66,14 +59,18 @@ const MessAttendance = () => {
       </tr>
     );
   };
+  //add the row on click and increase the present
   const addMeal = (e, name, guest, rid) => {
-    e.preventDefault();
-    const time = new Date();
-    const crntTime = time.toLocaleTimeString();
-    const newStdnt = { name, guest, time: crntTime };
+    const time = new Date().toLocaleTimeString();
+    e.preventDefault();    
+    const newStdnt = { name, guest, time };
     setTotalStdnt((prevStdnt) => [...prevStdnt, newStdnt]);
     removeRow(rid);
     console.log("unique id:", rid);
+    setTotalPresent(totalPresent + 1);
+    setTotalAbsent(total - 1);
+    setTotalGuest(totalGuest + guest);           
+    console.log("guest list:", guestList);  
   };
   // remove the row on click and increase the present
   const removeRow = (rid) => {
@@ -83,15 +80,17 @@ const MessAttendance = () => {
     console.log("not remove", notRemove);
   };
   useEffect(() => {
-    console.log("Total student list updated:", totalStdnt); // Log when the total student list updates
+    console.log("Total student list updated:", totalStdnt); // Log when the total student list updates    
+    console.log("Guest list updated:", guestList); // Log when the guest list updates    
   }, [totalStdnt]);
 
-  //submit the data
+  //submit the data after the day is over
   const submitData = async (e) => {
     e.preventDefault();
     try {
-       await axios.post(MES_ATND_URL, {student: totalStdnt});
-      console.log("attendance data submitted successfully");      
+       await axios.post(MES_ATND_URL, {student: totalStdnt, summary, guests: guestList, messAttender: "admin"});
+      console.log("attendance data submitted successfully");         
+      navigate("/staffDashboard"); 
     } catch (err) {
       console.log("Error submitting data", err);
     }
@@ -118,10 +117,10 @@ const MessAttendance = () => {
                 <MessComp
                   key={student._id}
                   id={id}
-                  student={student}
+                  student={student}                  
                   setTotalGuest={setTotalGuest}
                   totalGuest={totalGuest}
-                  rid={student._id}
+                  rid={student._id}                
                 />
               ))}
           </tbody>

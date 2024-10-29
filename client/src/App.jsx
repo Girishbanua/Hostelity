@@ -10,11 +10,11 @@ import StaffRegister from "./components/MessStaff/StaffRegister";
 import MessStaffDetails from "./components/MessStaff/MessStaffDetails";
 import AdminLogin from "./components/Admin/AdminLogin";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import AdminRegister from "./components/Admin/AdminRegister";
 import Issue from "./components/Students/Issue";
 import RoomInfo from "./components/Students/RoomInfo";
 import StaffDashboard from "./components/MessStaff/StaffDashboard";
 import MessAttendance from "./components/MessStaff/MessAttendance";
+import Logout from "./components/Logout";
 
 export default function App() {
   const router = createBrowserRouter([
@@ -63,8 +63,8 @@ export default function App() {
       element: <AdminLogin />,
     },
     {
-      path: "/adminregister",
-      element: <AdminRegister />,
+      path: "/logout",
+      element: <Logout />,
     },
     {
       path: "/messMenu",

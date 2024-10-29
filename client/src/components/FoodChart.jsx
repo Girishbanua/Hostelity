@@ -1,7 +1,23 @@
+import { useEffect, useState } from "react";
 import "../styles/_messMenu.scss";
-import meals from "../data/meals.json";
+import axios from "axios";
 
 export default function FoodChart() {
+  const [meals, setMeals] = useState([]);
+  //importing the data from the database
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await axios.get("http://localhost:4000/api/messMenu")
+        setMeals(res.data);
+        console.log(res)        
+      } catch (error) {
+        console.log("Error fetching data", error);
+      }
+    }
+    fetchData();
+  }, []);
+  console.log("meals", meals);
   return (
     <>
       <div className="MenuContainer">

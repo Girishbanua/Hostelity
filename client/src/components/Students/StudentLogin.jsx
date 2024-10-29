@@ -2,27 +2,30 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { UseAuth } from "../../store/auth";
 
 const StudentLogin = () => {
+  const {storeTokenInLS} = UseAuth();
   const navigate = useNavigate();
   const [usermail, setUsermail] = useState("");
   const [password, setPassword] = useState("");
 
   const LOGIN_URL = "http://localhost:4000/api/studentLogin";
-  
 
   const handleLogin = async (e) => {
     e.preventDefault();
-     
+
     try {
-      const response = await axios.post(LOGIN_URL, {email: usermail, pass: password});
-      console.log("response: ",response);      
-      
-      if (response.data.message === "Login successful") {
-        localStorage.setItem("studentToken", response.data.token);
-        localStorage.setItem("studentID", response.data.userID);
+      const response = await axios.post(LOGIN_URL, {
+        email: usermail,
+        pass: password,
+      });
+      console.log("response: ", response.data);
+
+      if (response.status === 200) {            
         navigate("/user");
         toast.success("Login successful");
+        await storeTokenInLS(response.data.token, response.data.userID);
       } else {
         alert("Invalid credentials");
       }
@@ -45,7 +48,7 @@ const StudentLogin = () => {
                 name="email"
                 placeholder="Enter your registered email"
                 required
-                autoComplete="off"                
+                autoComplete="off"
                 value={usermail}
                 onChange={(e) => setUsermail(e.target.value)}
               />

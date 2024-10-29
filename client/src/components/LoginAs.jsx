@@ -47,8 +47,7 @@ export default function LoginAs() {
             <section className="laImg"><img src="/images/loginasImages/setting.png" alt="admin icon" loading="lazy" /></section>
             <p>Admin</p>
             <div>
-              <button className="lalbtn" onClick={() => navigate("/adminlogin")}>Login</button>
-              <button onClick={() => navigate("/adminregister")}>Register</button>
+              <button className="lalbtn" onClick={() => navigate("/adminlogin")}>Login</button>              
             </div>
           </div>
         </section>
