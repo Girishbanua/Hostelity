@@ -11,11 +11,16 @@ import ProfileSettings from "./ProfileSettings";
 
 export default function UserDashboard() {
   const LOGD_STDNTS_URL = "http://localhost:4000/api/loggedStudents";
-  const TOTL_STDNTS_URL = "http://localhost:4000/api/total_Students";
+  const REGSTRD_STDNTS_URL = "http://localhost:4000/api/registered_Students";
   const navigate = useNavigate();
   const [stdntname, setStdntname] = useState("");
-  const [count, setCount] = useState(null);
-
+  const [hpay, setHpay] = useState("0.00");
+  const [mpay, setMpay] = useState("0.00");
+  const [stdntData, setStdntData] = useState();
+  const [pdate, setPdate] = useState("");
+  const [totalHExpInNDays, setTotalHExpInNDays] = useState("");
+  const [totalMExpInNDays, setTotalMExpInNDays] = useState("");
+  const [nDays, setNdays] = useState(0);
   // Data Fetching
   useEffect(() => {
     const fetchData = async () => {
@@ -24,16 +29,61 @@ export default function UserDashboard() {
         const stdnt_Name = res.data.lgdStdnts;
         const lastStudentName = stdnt_Name[stdnt_Name.length - 1].name;
         setStdntname(lastStudentName);
-
-        const response = await axios.get(TOTL_STDNTS_URL);
-        setCount(response.data.count);
+  
+        const res2 = await axios.get(REGSTRD_STDNTS_URL);
+        const lastStudentEmail = stdnt_Name[stdnt_Name.length - 1].email;
+        const lastStudentData = res2.data.filter(
+          (student) => student.email === lastStudentEmail
+        );
+        console.log("res2 data:", lastStudentData);
+        setHpay(lastStudentData[0].hpay);
+        setMpay(lastStudentData[0].mpay);
+        setPdate(lastStudentData[0].date);
+        setStdntData(lastStudentData);
       } catch (err) {
         console.log("Error fetching data", err);
       }
     };
+    fetchData();
+  }, []);
+  
+  useEffect(() => {
+    if (stdntData && stdntData.length > 0) {
+      const hExpnsPday = () => {
+        let crntDt = new Date();
+        let DoJ = stdntData[0].date;
+        let [day, month, year] = DoJ.split("/").map(Number);
+        let DoJDate = new Date(year, month - 1, day);
+  
+        let diff = crntDt - DoJDate;
+        let days = Math.floor(diff / (1000 * 60 * 60 * 24));        
+  
+        let pDayExpns = 100;
+        setTotalHExpInNDays(hpay - (pDayExpns * days));
+        setTotalMExpInNDays(mpay - (pDayExpns * days));
+        setNdays(days);
+      };
+      hExpnsPday();
+    }    
+  }, [stdntData, hpay, totalHExpInNDays, totalMExpInNDays, mpay]);      
+  
 
-    fetchData(); // Call the async function
-  }, []); // Empty dependency array ensures this runs only once
+      
+  const lpay = String(Number(hpay) + Number(mpay));
+  
+  //function for adding a comma inbetween the number
+  const addComma = (num) => {
+    return (num = num.slice(0, 2) + "," + num.slice(2));
+  };
+
+  //function to calculate the total expenses
+  // const totalExpenses = () => {
+  //   const nDays = hExpnsPday();
+  //   const perDayExpense = 100;
+  //   const totalHExpInNDays = hpay - (HperDayExpense * nDays);
+  //   return totalHExpInNDays;    
+  // }H;
+  // const totalExp = totalExpenses();
 
   // Home Page Visibility
   const [visible, setVisible] = useState("home");
@@ -43,15 +93,15 @@ export default function UserDashboard() {
   const handleCancel = () => {
     setVisible("home");
   };
-  
+  const messOn = mpay > 0 ? true : false;
   const DashboardHome = () => {
     return (
       <>
         <AnimatePresence>
-          {visible === "home" && ( 
+          {visible === "home" && (
             <motion.div
               className="dashboard_container"
-              initial={{ opacity: 0 }} 
+              initial={{ opacity: 0 }}
               exit={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 1, delay: 0.25 }}
@@ -70,34 +120,29 @@ export default function UserDashboard() {
                     <option value="logout" onClick={() => navigate("/")}>
                       Logout
                     </option>
-                    <option value="settings" onClick={() => handleVisibility("profileSettings")}>Settings</option>
+                    <option
+                      value="settings"
+                      onClick={() => handleVisibility("profileSettings")}
+                    >
+                      Settings
+                    </option>
                   </select>
                 </div>
               </div>
               <h1>{`Hello ${stdntname.split(" ")[0]}`}</h1>
               <div className="details">
-                <div className="info">
-                  <div className="info_txt">
-                    <h2>{count}</h2>
-                    <p>Registered Students</p>
-                  </div>
-                  <img src="/images/Dashboard/people.png" alt="" />
+                <div className="info hdue">
+                  <h3>Hostel Balance</h3>
+                  <h2>₹{addComma(String(totalHExpInNDays))}</h2>
                 </div>
-                <div className="info">
-                  <div className="info_txt">
-                    <h2>15</h2>
-                    <p>Total Rooms</p>
+                {messOn && (
+                  <div className="info mdue">
+                    <h3>Mess Balance</h3>
+                    <h2>₹{addComma(String(totalMExpInNDays))}</h2>
                   </div>
-                  <img src="/images/Dashboard/bed.png" alt="" />
-                </div>
-                <div className="info">
-                  <div className="info_txt">
-                    <h2>7</h2>
-                    <p>Booked Rooms</p>
-                  </div>
-                  <img src="/images/Dashboard/book.png" alt="" />
-                </div>
-                <div className="action_menu">
+                )}
+
+                <div className="action_menu menu1">
                   <div className="info_txt">
                     <h3>Switch Room</h3>
                   </div>
@@ -106,7 +151,7 @@ export default function UserDashboard() {
                     Change
                   </button>
                 </div>
-                <div className="action_menu">
+                <div className="action_menu menu2">
                   <div className="info_txt">
                     <h3>Raise an Issue</h3>
                   </div>
@@ -115,7 +160,7 @@ export default function UserDashboard() {
                     Raise
                   </button>
                 </div>
-                <div className="action_menu">
+                <div className="action_menu menu3">
                   <div className="info_txt">
                     <h3>Payments</h3>
                   </div>
@@ -131,13 +176,20 @@ export default function UserDashboard() {
           {visible === "roomInfo" && <RoomInfo onCancel={handleCancel} />}
           {visible === "issue" && <Issue onCancel={handleCancel} />}
           {visible === "payHistory" && (
-            <StudentPaymentHistory onCancel={handleCancel} />
+            <StudentPaymentHistory
+              onCancel={handleCancel}
+              name={stdntname}
+              lpay={addComma(lpay)}
+              pdate={pdate}
+              messOn={messOn}
+              balance={addComma(String(totalHExpInNDays + totalMExpInNDays))}
+              days={nDays}
+              mrem={(mpay/100)-(nDays*2)}
+          H  />
           )}
-          {
-            visible === "profileSettings" && (
-              <ProfileSettings onCancel={handleCancel} />
-            )
-          }
+          {visible === "profileSettings" && (
+            <ProfileSettings onCancel={handleCancel} stdntData={stdntData} />
+          )}
         </AnimatePresence>
       </>
     );

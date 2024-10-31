@@ -1,20 +1,10 @@
 /* eslint-disable react/prop-types */
 import "../../styles/_ProfileSettings.scss";
 import { motion } from "framer-motion";
-import axios from "axios";
-import { useEffect, useState } from "react";
 
-const ProfileSettings = ({ onCancel }) => {
-  const [stdntData, setStdntData] = useState([]);
-  useEffect( () => {
-    const fetchData = async () =>{
-      const res = await axios.get("http://localhost:4000/api/registered_Students")
-      const stdnt = localStorage.getItem("StudentID")
-      setStdntData(res.data.find((student) => student._id === stdnt))      
-    } 
-    fetchData()
-  },[])
-  return (
+const ProfileSettings = ({ onCancel, stdntData }) => {  
+  console.log("stdnt data:",stdntData)   
+  return (         
     <motion.div
       className="profileSettings"
       initial={{ opacity: 0, y: -100 }}
@@ -25,32 +15,32 @@ const ProfileSettings = ({ onCancel }) => {
       <h1>Profile Settings</h1>
       <div className="profileContainer">
         <label>
-          Name: <input type="text" placeholder={stdntData.name} />
+          Name: <input type="text" placeholder={stdntData[0].name} />
         </label>
         <label>
-          Email: <input type="email" placeholder={stdntData.email} />
+          Email: <input type="email" placeholder={stdntData[0].email} />
         </label>
         <label>
-          Phone: <input type="text" placeholder={stdntData.phone} />
+          Phone: <input type="text" placeholder={stdntData[0].phone} />
         </label>
         <label>
-          Roll No: <input type="text" placeholder={stdntData.admission} />
+          Roll No: <input type="text" placeholder={stdntData[0].admission} />
         </label>
         <label>
           College:{" "}
-          <input type="text" placeholder={stdntData.college} />
+          <input type="text" placeholder={stdntData[0].college} />
         </label>
         <label>
           Department:{" "}
-          <input type="text" placeholder={stdntData.department} />
+          <input type="text" placeholder={stdntData[0].department} />
         </label>
       </div>
       <div className="profilebuttons">
         <button>Update</button>
         <button onClick={onCancel}>Cancel</button>
       </div>
-    </motion.div>
-  );
+    </motion.div>    
+  ); 
 };
 
 export default ProfileSettings;
