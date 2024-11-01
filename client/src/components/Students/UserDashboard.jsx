@@ -29,7 +29,7 @@ export default function UserDashboard() {
         const stdnt_Name = res.data.lgdStdnts;
         const lastStudentName = stdnt_Name[stdnt_Name.length - 1].name;
         setStdntname(lastStudentName);
-  
+
         const res2 = await axios.get(REGSTRD_STDNTS_URL);
         const lastStudentEmail = stdnt_Name[stdnt_Name.length - 1].email;
         const lastStudentData = res2.data.filter(
@@ -46,7 +46,7 @@ export default function UserDashboard() {
     };
     fetchData();
   }, []);
-  
+
   useEffect(() => {
     if (stdntData && stdntData.length > 0) {
       const hExpnsPday = () => {
@@ -54,36 +54,34 @@ export default function UserDashboard() {
         let DoJ = stdntData[0].date;
         let [day, month, year] = DoJ.split("/").map(Number);
         let DoJDate = new Date(year, month - 1, day);
-  
+
         let diff = crntDt - DoJDate;
-        let days = Math.floor(diff / (1000 * 60 * 60 * 24));        
-  
+        let days = Math.floor(diff / (1000 * 60 * 60 * 24));
+
         let pDayExpns = 100;
-        setTotalHExpInNDays(hpay - (pDayExpns * days));
-        setTotalMExpInNDays(mpay - (pDayExpns * days));
+        setTotalHExpInNDays(hpay - pDayExpns * days);
+        Number(mpay) === 0
+          ? setTotalMExpInNDays(0)
+          : setTotalMExpInNDays(mpay - pDayExpns * days);
         setNdays(days);
       };
       hExpnsPday();
-    }    
-  }, [stdntData, hpay, totalHExpInNDays, totalMExpInNDays, mpay]);      
-  
+    }
+  }, [stdntData, hpay, totalHExpInNDays, totalMExpInNDays, mpay]);
 
-      
   const lpay = String(Number(hpay) + Number(mpay));
-  
+
   //function for adding a comma inbetween the number
   const addComma = (num) => {
-    return (num = num.slice(0, 2) + "," + num.slice(2));
+    if (num.length > 3) {
+      if (num.length > 4) {
+        if (num.length > 5) num = num.slice(0, 3) + "," + num.slice(3);
+        else num = num.slice(0, 2) + "," + num.slice(2);
+      } 
+      else num = num.slice(0, 1) + "," + num.slice(1);
+    }
+    return num;
   };
-
-  //function to calculate the total expenses
-  // const totalExpenses = () => {
-  //   const nDays = hExpnsPday();
-  //   const perDayExpense = 100;
-  //   const totalHExpInNDays = hpay - (HperDayExpense * nDays);
-  //   return totalHExpInNDays;    
-  // }H;
-  // const totalExp = totalExpenses();
 
   // Home Page Visibility
   const [visible, setVisible] = useState("home");
@@ -184,8 +182,9 @@ export default function UserDashboard() {
               messOn={messOn}
               balance={addComma(String(totalHExpInNDays + totalMExpInNDays))}
               days={nDays}
-              mrem={(mpay/100)-(nDays*2)}
-          H  />
+              mrem={mpay / 100 - nDays * 2}
+              H
+            />
           )}
           {visible === "profileSettings" && (
             <ProfileSettings onCancel={handleCancel} stdntData={stdntData} />
