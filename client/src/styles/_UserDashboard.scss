@@ -100,26 +100,36 @@
     font-size: 2.5rem;
     @include base.gradientText();
   }
+
   .details {
-    @include base.flex(flex-start, left);
+    // @include base.flex(flex-start, left);
     margin-top: 45px;
+    // gap: 20px;
+    // width: 80%;
+    // flex-wrap: wrap;
+    display: grid;
+    grid-template-areas: 
+    "hdue hdue hdue mdue mdue mdue"
+    "menu1 menu1 menu2 menu2 menu3 menu3";
     gap: 20px;
-    width: 80%;
-    flex-wrap: wrap;
     .info {
       height: 100px;
-      width: 250px;
       background-color: white;
       padding: 10px 15px;
       border-radius: 10px;
       box-shadow: 1px 2px 7px gray;
       @include base.flex(center, space-between);
       h2 {
-        font-size: 2.5rem;
+        font-size: 2rem;
+        font-weight: 500;
+        color: base.$lightColor;
       }
-      img {
-        opacity: 0.6;
+      h3{
+        font-size: 1.5rem;
       }
+      // img {
+      //   opacity: 0.6;
+      // }
     }
     .action_menu {
       width: 250px;
@@ -141,5 +151,20 @@
         font-weight: bold;
       }
     }
+  }
+  .hdue {
+    grid-area: hdue;
+  }
+  .mdue {
+    grid-area: mdue;
+  }
+  .menu1 {
+    grid-area: menu1;
+  }
+  .menu2 {
+    grid-area: menu2;
+  }
+  .menu3 {
+    grid-area: menu3;
   }
 }
