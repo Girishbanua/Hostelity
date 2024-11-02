@@ -4,11 +4,12 @@ const StaffLogin = () => {
   const navigate = useNavigate();
   return (
     <>
-      <div className="signupContainer">
+      <div className="signupContainer" style={{margin: "10vh 0"}}>
         <div className="signupBox">
           <h1>Staff Login</h1>
           <form>
-            <div>
+            <section>
+              <div>
             <label htmlFor="name">User name</label>
               <input
                 type="text"
@@ -18,6 +19,8 @@ const StaffLogin = () => {
                 autoComplete="off"                
               />
             </div>
+            </section>
+            <section>
             <div>
               <label htmlFor="pass">Password</label>
               <input
@@ -28,6 +31,7 @@ const StaffLogin = () => {
                 autoComplete="off"                
               />
             </div>
+            </section>
             <div className="formBtns">
             <a onClick={() => navigate("/loginas")}>Cancel</a>
               <button type="submit">Login</button>
