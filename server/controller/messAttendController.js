@@ -34,4 +34,14 @@ const messAttend = async (req, res) => {
   }
 };
 
-module.exports = { messAttend };
+const getTodayAttendance = async (req, res) => {
+  try {
+    const result = await MessAtndModel.find();
+    res.status(200).json({ result });
+  } catch (error) {
+    console.error("Error fetching today's attendance:", error);
+    res.status(500).json({ error: "Failed to fetch today's attendance" });
+  }
+};
+
+module.exports = { messAttend, getTodayAttendance };

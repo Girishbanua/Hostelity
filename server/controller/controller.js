@@ -75,7 +75,10 @@ const stdntSignup = async (req, res) => {
     const salt = await bcrypt.genSalt(5);
     const hash = await bcrypt.hash(pass, salt);
 
-    let room = await RoomModel.findOne({ roomStatus: "vacant", roomType: seater});
+    let room = await RoomModel.findOne({
+      roomStatus: "vacant",
+      roomType: seater,
+    });
     console.log("room", room);
 
     if (!room) {
@@ -87,10 +90,10 @@ const stdntSignup = async (req, res) => {
         { roomNumber: roomnum },
         {
           $push: {
-            students: { name, phone }
-          }
+            students: { name, phone },
+          },
         }
-       );
+      );
     }
 
     let userCreated = await StudentModel.create({
@@ -147,7 +150,7 @@ const stdntLogin = async (req, res) => {
     const checkPrevLogin = await stdntLoginModel.findOne({ email: user.email });
 
     if (checkPrevLogin) {
-     const loggedUser = await stdntLoginModel.findOneAndUpdate(
+      const loggedUser = await stdntLoginModel.findOneAndUpdate(
         { email: user.email },
         {
           $push: {
@@ -157,7 +160,7 @@ const stdntLogin = async (req, res) => {
             },
           },
         }
-      )
+      );
       res.status(200).json({
         loggedUser,
         message: "Login successful",
@@ -166,24 +169,24 @@ const stdntLogin = async (req, res) => {
       });
     } else {
       const loggedUser = await stdntLoginModel.create({
-      name: user.name,
-      email: user.email,
-      token: token,
-      id: user._id.toString(),
-      logins: [
-        {
-          loginDate,
-          loginTime,
-        },
-      ],
-    });
-    res.status(200).json({
-      loggedUser,
-      message: "Login successful",
-      token,
-      userID: user._id.toString(),
-    });
-    }        
+        name: user.name,
+        email: user.email,
+        token: token,
+        id: user._id.toString(),
+        logins: [
+          {
+            loginDate,
+            loginTime,
+          },
+        ],
+      });
+      res.status(200).json({
+        loggedUser,
+        message: "Login successful",
+        token,
+        userID: user._id.toString(),
+      });
+    }
     console.log("Login successful");
   } catch (err) {
     console.log(err);
@@ -234,7 +237,7 @@ const user = async (req, res) => {
 // update user
 const userUpdate = async (req, res) => {
   try {
-    const {
+    let {
       name,
       email,
       phone,
@@ -248,7 +251,23 @@ const userUpdate = async (req, res) => {
       rltn,
       cnumber,
     } = req.body;
-
+    if (
+      (name =
+        "" ||
+        email == "" ||
+        phone == "" ||
+        admission == "" ||
+        college == "" ||
+        department == "" ||
+        semester == "" ||
+        duration == "" ||
+        paddress == "" ||
+        pname == "" ||
+        rltn == "" ||
+        cnumber == "")
+    ) {
+      return res.status(400).json({ message: "All fields are required" });
+    }
     const updateData = { ...req.body };
     const result = await StudentModel.findOneAndUpdate({ email }, updateData, {
       new: true,
@@ -272,6 +291,47 @@ const userUpdate = async (req, res) => {
   }
 };
 
+const paymentUpdate = async (req, res) => {
+  try {
+    const { students } = req.body;
+    
+    const studentsToUpdate = await StudentModel.find({ name: { $in: students } });
+    
+    const updatedStudents = await Promise.all(studentsToUpdate.map(async (student) => {
+      let currentMpay = parseFloat(student.mpay) || 0; // Convert mpay to a number, or default to 0 if invalid
+      let newMpay = (currentMpay - 50).toString(); // Subtract 50 and convert back to a string
+      
+      return await StudentModel.updateOne(
+        { _id: student._id },
+        { $set: { mpay: newMpay } }
+      );
+    }));
+    
+    res.status(200).json({ msg: "Payment updated successfully", updatedStudents });
+  } catch (err) {
+    console.log("Error from paymentUpdate", err);
+    res.status(500).json({ msg: "Internal server error" });
+  }
+};
+
+const changeRoom = async (req, res) => {
+  try {
+    const { sid, nRoomNum, nRoomType } = req.body;
+    const result = await StudentModel.findOneAndUpdate(
+      { _id: sid },
+      { roomnum: nRoomNum, seater: nRoomType },
+      { new: true }
+    );
+    if (!result) {
+      return res.status(404).json({ msg: "User not found" });
+    }
+    res
+      .status(200)
+      .json({ msg: "Room changed successfully", nRoomNum, nRoomType });
+  } catch (error) {
+    console.log("Error Changing Room", error);
+  }
+};
 module.exports = {
   home,
   stdntSignup,
@@ -282,4 +342,6 @@ module.exports = {
   user,
   messMenu,
   userUpdate,
+  changeRoom,
+  paymentUpdate
 };

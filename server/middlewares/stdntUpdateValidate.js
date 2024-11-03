@@ -6,9 +6,8 @@ const stdntUpdateValidate = (schema) => async (req, res, next) => {
     } catch (err) {
         console.log(err.errors);        
         const status = 422
-        const message = "Fill the input properly"  
-        const extraInfo = err.errors[0].message;
-        const error = {status, message, extraInfo}
+        const message = "Fill the input properly"          
+        const error = {status, message}
         next(error)        
         console.log("Error while updating student",error);
     }
