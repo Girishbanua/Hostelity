@@ -42,10 +42,10 @@ const StudentLogin = () => {
           <form onSubmit={handleLogin}>
             <section>
               <div>
-                <label htmlFor="name">User Mail</label>
+                <label htmlFor="mail">User Mail</label>
                 <input
                   type="email"
-                  id="name"
+                  id="mail"
                   name="email"
                   placeholder="Enter your registered email"
                   required

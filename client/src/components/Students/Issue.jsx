@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import "../../styles/_StudentIssue.scss"
 import { motion } from "framer-motion"
 

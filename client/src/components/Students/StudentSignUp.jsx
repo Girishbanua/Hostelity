@@ -10,6 +10,7 @@ export default function StudentSignUp() {
   const [name, setName] = useState();
   const [email, setEmail] = useState();
   const [phone, setPhone] = useState();
+  const [paddress, setPaddress] = useState();
   const [college, setCollege] = useState();
   const [admission, setAdmission] = useState();
   const [department, setDepartment] = useState();
@@ -23,6 +24,13 @@ export default function StudentSignUp() {
   const [mess, setMess] = useState("off");
   const [hpay, setHpay] = useState("12000");
   const [mpay, setMpay] = useState("16000");
+  const [pname, setPname] = useState();
+  const [rltn, setRltn] = useState();
+  const [cnumber, setCnumber] = useState();
+  const [caddress, setCaddress] = useState();
+  const [href, setHref] = useState();
+  const [mref, setMref] = useState();
+
   const handleMessPay = (e) => {
     mess === "off" ? setMpay("0000") : setMpay(e.target.value);
   };
@@ -36,6 +44,11 @@ export default function StudentSignUp() {
         name,
         email,
         phone,
+        paddress,
+        pname,
+        rltn,
+        cnumber,
+        caddress,
         college,
         admission,
         department,
@@ -49,6 +62,8 @@ export default function StudentSignUp() {
         pdone,
         hpay,
         mpay,
+        href,
+        mref,
       });
       console.log("response: ", response);
       if (
@@ -73,8 +88,11 @@ export default function StudentSignUp() {
     <>
       <div className="signupContainer">
         <div className="signupBox">
+          <button className="closeBtn" onClick={() => navigate("/loginas")}>
+            X
+          </button>
           <h1>Sign Up</h1>
-          <form onSubmit={handleSubmit} id="signupForm">
+          <form onSubmit={handleSubmit} id="signupForm" autoComplete="off">
             <section className="personalInfo">
               <h2 className="heading">Personal Information</h2>
               {/*Name*/}
@@ -84,8 +102,7 @@ export default function StudentSignUp() {
                   type="text"
                   id="name"
                   placeholder="Enter your Name"
-                  required
-                  autoComplete="off"
+                  required                  
                   onChange={(e) => setName(e.target.value)}
                 />
               </div>
@@ -116,11 +133,16 @@ export default function StudentSignUp() {
               {/*Permanent Address*/}
               <div className="">
                 <label htmlFor="paddrs">Permanent Address</label>
-                <textarea id="paddrs" cols="20" rows="5"></textarea>
-              </div>              
+                <textarea
+                  id="paddrs"
+                  cols="20"
+                  rows="5"
+                  onChange={(e) => setPaddress(e.target.value)}
+                ></textarea>
+              </div>
             </section>
             <section>
-            <h2>Academic Information</h2>
+              <h2>Academic Information</h2>
               {/*\College Name*/}
               <div className="">
                 <label htmlFor="clgName">College Name</label>
@@ -199,7 +221,7 @@ export default function StudentSignUp() {
                   placeholder="Enter your parent/guardian name"
                   required
                   autoComplete="off"
-                  onChange={(e) => setName(e.target.value)}
+                  onChange={(e) => setPname(e.target.value)}
                 />
               </div>
               <div>
@@ -210,7 +232,7 @@ export default function StudentSignUp() {
                   placeholder="Enter relationship with applicant"
                   required
                   autoComplete="off"
-                  // onChange={(e) => setName(e.target.value)}
+                  onChange={(e) => setRltn(e.target.value)}
                 />
               </div>
               <div>
@@ -221,12 +243,30 @@ export default function StudentSignUp() {
                   placeholder="Enter contact number of parent/guardian"
                   required
                   autoComplete="off"
-                  // onChange={(e) => setName(e.target.value)}
+                  onChange={(e) => setCnumber(e.target.value)}
                 />
               </div>
               <div>
                 <label htmlFor="addrs">Address</label>
-                <textarea id="addrs" cols="20" rows="5"></textarea>
+                <textarea
+                  id="addrs"
+                  cols="20"
+                  rows="5"
+                  value={caddress}
+                  onChange={(e) => setCaddress(e.target.value)}
+                ></textarea>
+              </div>
+              <div>
+                <label htmlFor="sameAddrs" style={{ flexBasis: "70%" }}>
+                  Same as Permanent Address
+                </label>
+                <input
+                  style={{ width: "30px" }}
+                  type="checkbox"
+                  onChange={(e) => {
+                    e.target.checked ? setCaddress(paddress) : setCaddress("");
+                  }}
+                />
               </div>
             </section>
             <section className="hostelInfo">
@@ -258,7 +298,7 @@ export default function StudentSignUp() {
                   <option value="3">Triple Sharing</option>
                   <option value="4">Quad Sharing</option>
                 </select>
-              </div>              
+              </div>
               <div className="paymentChoice">
                 <label>Payment Done?</label>
                 <label htmlFor="pyes">Yes</label>
@@ -267,6 +307,7 @@ export default function StudentSignUp() {
                   name="pchoice"
                   id="pyes"
                   onClick={() => setPdone("yes")}
+                  checked={pdone === "yes"}
                 />
                 <label htmlFor="pno">No</label>
                 <input
@@ -274,82 +315,119 @@ export default function StudentSignUp() {
                   name="pchoice"
                   id="pno"
                   onClick={() => setPdone("no")}
-                />                
+                  checked={pdone === "no"}
+                />
               </div>
-              {pdone === "no" && (                
-                  <div className="account">
-                    <p>Payment must be done before registration</p>
-                    <label htmlFor="AccountNumber">Account Number</label>
-                    <h1>55267763718</h1>
-                    <h2>
-                      <b>Hostel:</b> ₹12,000
-                    </h2>
-                    <h2>
-                      <b>Mess:</b> ₹16,000 <small>(if required)</small>
-                    </h2>
-                    <div>
-                      <button
-                        onClick={() => {
-                          setPdone("yes");
-                        }}
-                      >
-                        Done
-                      </button>
-                    </div>
+              {pdone === "no" && (
+                <div className="account">
+                  <p>
+                    <i>*Payment must be done before registration</i>
+                  </p>
+                  <span>Account Number</span>
+                  <h2>55267763718</h2>
+                  <h3>
+                    <b>Hostel: </b> ₹12,000 <span>/ 6 months</span>
+                  </h3>
+                  <h3>
+                    <b>Mess: </b> ₹16,000{" "}
+                    <span>
+                      / 6 months <small>(if required)</small>
+                    </span>
+                  </h3>
+                  <div>
+                    <button
+                      onClick={() => {
+                        setPdone("yes");
+                      }}
+                    >
+                      Done
+                    </button>
                   </div>
-                )}
-                {pdone === "yes" && (
-                  <div className="messChoice">
-                    <label>Do you want our Mess service?</label>
-                    <label htmlFor="yes">Yes</label>
-                    <input
-                      type="radio"
-                      name="choice"
-                      id="yes"
-                      onClick={() => setMess("on")}
-                    />
-                    <label htmlFor="no">No</label>
-                    <input
-                      type="radio"
-                      name="choice"
-                      id="no"
-                      onClick={() => setMess("off")}
-                    />
-                  </div>
-                )}
+                </div>
+              )}
+
               {pdone === "yes" && (
-                <div>
-                  <label htmlFor="hPayment">Hostel Payment:</label>
-                  <select
-                    name="hpay"
-                    id="hPayment"
-                    onChange={(e) => setHpay(e.target.value)}
-                  >
-                    <option value="12000">₹12,000</option>
-                    <option value="24000">₹24,000</option>
-                    <option value="36000">₹36,000</option>
-                  </select>
+                <>
+                 <div>
+                    <label htmlFor="hrefrnce">Enter Reference ID:</label>
+                    <input
+                      type="text"
+                      name="hrefrnce"
+                      id="hrefrnce"
+                      required
+                      placeholder="Enter Transaction/Reference ID"
+                      onChange={(e) => setHref(e.target.value)}
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="hPayment">Hostel Payment:</label>
+                    <select
+                      name="hpay"
+                      id="hPayment"
+                      onChange={(e) => setHpay(e.target.value)}
+                      required                      
+                    >
+                      <option value="12000">₹12,000</option>
+                      <option value="24000">₹24,000</option>
+                      <option value="36000">₹36,000</option>
+                    </select>
+                  </div>
+                 
+                </>
+              )}
+              {pdone === "yes" && (
+                <div className="messChoice">
+                  <label>Do you want our Mess service?</label>
+                  <label htmlFor="yes">Yes</label>
+                  <input
+                    type="radio"
+                    name="choice"
+                    id="yes"
+                    onClick={() => setMess("on")}
+                  />
+                  <label htmlFor="no">No</label>
+                  <input
+                    type="radio"
+                    name="choice"
+                    id="no"
+                    onClick={() => setMess("off")}
+                  />
                 </div>
               )}
               {mess === "on" && pdone === "yes" && (
+                <>
                 <div>
-                  <label htmlFor="mPayment">Mess Payment:</label>
-                  <select
-                    name="mpay"
-                    id="mPayment"
-                    onChange={(e) => handleMessPay(e)}
-                  >
-                    <option value="16000">₹16,000</option>
-                    <option value="24000">₹24,000</option>
-                    <option value="32000">₹32,000</option>
-                    <option value="48000">₹48,000</option>
-                  </select>
-                </div>
+                    <label htmlFor="mrefrnce">Enter Reference ID:</label>
+                    <input
+                      type="text"
+                      name="mrefrnce"
+                      id="mrefrnce"
+                      required
+                      placeholder="Enter Transaction/Reference ID"
+                      onChange={(e) => setMref(e.target.value)}
+                    />
+                  </div>
+                  <div>
+                    <label htmlFor="mPayment">Mess Payment:</label>
+                    <select
+                      name="mpay"
+                      id="mPayment"
+                      onChange={(e) => handleMessPay(e)}
+                      required
+                    >
+                      <option value="16000">₹16,000</option>
+                      <option value="24000">₹24,000</option>
+                      <option value="32000">₹32,000</option>
+                      <option value="48000">₹48,000</option>
+                    </select>
+                  </div>
+                  
+                </>
               )}
             </section>
 
-            <section>
               {/*Password*/}
+            <section>
               <div>
                 <label htmlFor="pass">Password</label>
                 <input
@@ -374,10 +452,11 @@ export default function StudentSignUp() {
                 />
               </div>
             </section>
+            {/*Declaration */}
             <section>
-            <h2>Declaration</h2>
+              <h2>Declaration</h2>
               <div>
-                <input type="checkbox" name="" id="" />
+                <input type="checkbox" required />
                 <p>
                   I hereby declare that all the information provided above is
                   correct to the best of my knowledge.

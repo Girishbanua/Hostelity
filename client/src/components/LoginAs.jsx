@@ -50,10 +50,8 @@ export default function LoginAs() {
               <button className="lalbtn" onClick={() => navigate("/adminlogin")}>Login</button>              
             </div>
           </div>
-        </section>
-        <div className="cancel">
-          <a onClick={() => navigate("/")}>Cancel</a>
-        </div>
+        </section>        
+          <button className="cancel" onClick={() => navigate("/")}>Cancel</button>        
       </div>
     </>
   );

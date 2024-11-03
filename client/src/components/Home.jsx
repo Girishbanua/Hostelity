@@ -28,8 +28,11 @@ export default function Home() {
                   <a href="#about">About</a>
                 </li>
                 <li>
-                  <a href="user">Room</a>
+                  <a href="#">FAQs</a>
                 </li>
+                { 
+                  isLoggedIn && <li><a href="/user">My room</a></li>
+                }
                 <li>
                   <a href="#contact">Contact</a>
                 </li>
@@ -64,10 +67,15 @@ export default function Home() {
               <i>Mess accounting & management made easy for all.</i>
             </p>
             <div className="hero_btns">
-              <button className="explore">
-                Explore Now{" "}
-                <img src="/images/Home_Page/diagonal-arrows.png" alt="in" />
-              </button>
+              <a
+                href="#about"
+                style={{ textDecoration: "none", color: "white" }}
+              >
+                <button className="explore">
+                  Explore Now{" "}
+                  <img src="/images/Home_Page/diagonal-arrows.png" alt="in" />
+                </button>
+              </a>
               <button
                 className="book_stay"
                 onClick={() => navigate("/loginas")}
