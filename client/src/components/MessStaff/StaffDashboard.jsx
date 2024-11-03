@@ -69,7 +69,7 @@ export default function StaffDashboard() {
                     onClick={() => handleVisibility("profileSettings")}
                   />
                   <p>
-                    Welcome <span>{`${stdntname}`}</span>
+                    Welcome <span>{`Mess Staff`}</span>
                   </p>
                   <select name="user_Menu" id="">
                     <option value="logout" onClick={() => navigate("/")}>
@@ -79,29 +79,9 @@ export default function StaffDashboard() {
                   </select>
                 </div>
               </div>
-              <h1>{`Hello ${stdntname.split(" ")[0]}`}</h1>
+              <h1>{`Hello Mess Staff`}</h1>
               <div className="details">
-                <div className="info">
-                  <div className="info_txt">
-                    <h2>{count}</h2>
-                    <p>Registered Students</p>
-                  </div>
-                  <img src="/images/Dashboard/people.png" alt="" />
-                </div>
-                <div className="info">
-                  <div className="info_txt">
-                    <h2>15</h2>
-                    <p>Total Rooms</p>
-                  </div>
-                  <img src="/images/Dashboard/bed.png" alt="" />
-                </div>
-                <div className="info">
-                  <div className="info_txt">
-                    <h2>7</h2>
-                    <p>Booked Rooms</p>
-                  </div>
-                  <img src="/images/Dashboard/book.png" alt="" />
-                </div>
+                                                
                 <div className="action_menu">
                   <div className="info_txt">
                     <h3>Switch Room</h3>
@@ -122,10 +102,10 @@ export default function StaffDashboard() {
                 </div>
                 <div className="action_menu">
                   <div className="info_txt">
-                    <h3>Payments</h3>
+                    <h3>Put Attendance</h3>
                   </div>
                   <img src="/images/Dashboard/qr-menu.png" alt="" />
-                  <button onClick={() => handleVisibility("payHistory")}>
+                  <button onClick={() => navigate("/messAttendance")}>
                     View
                   </button>
                 </div>

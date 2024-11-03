@@ -8,6 +8,7 @@ const MessAttendance = () => {
   //this is the url where the data will be stored
   const MES_ATND_URL = "http://localhost:4000/api/messAttend";
   const [students, setStudents] = useState([]);
+  const [attndData, setAttndData] = useState([]);
   const navigate = useNavigate();
   //Using useEffect to fetch the data from the database
   useEffect(() => {
@@ -24,10 +25,35 @@ const MessAttendance = () => {
     };
     fetchData();
   }, []);
-  
+  const MES_ATND_TODAY_URL = "http://localhost:4000/api/getTodayAttendance";
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const res = await axios.get(MES_ATND_TODAY_URL);
+        const result = res.data.result;
+        const today = new Date();
+        let dateToday = today.toLocaleDateString();
+        const [month, day, year] = dateToday.split("/").map(Number);
+        dateToday = `${day}/${month}/${year}`;
+        console.log("dateToday: ", dateToday);
+
+        const filteredData = result.filter((data) => data.date === dateToday);
+
+        const stdnts = filteredData[0].student.map((data)=>(data.name))
+
+        setAttndData(stdnts);
+        console.log(
+          "stdnts: ", Array.isArray(stdnts), stdnts
+        );
+      } catch (err) {
+        console.log("Error fetching data", err);
+      }
+    };
+    fetchData();
+  }, []);
   //selecting students who have opted for mess
   const messStdnt = students.filter((student) => student.mess === "on");
-  const total = messStdnt.length;  
+  const total = messStdnt.length;
 
   // the following variables are for the total calculation at the end of the day
   const [totalPresent, setTotalPresent] = useState(0);
@@ -35,8 +61,12 @@ const MessAttendance = () => {
   const [totalGuest, setTotalGuest] = useState(0);
   //the following array contains the details of the students who had their meal on that particular day
   const [totalStdnt, setTotalStdnt] = useState([]);
-  const guestList = totalStdnt.filter((stdnt) => stdnt.guest > 0 );   
-  const summary = { present: totalPresent, absent: totalAbsent, guest: totalGuest };
+  const guestList = totalStdnt.filter((stdnt) => stdnt.guest > 0);
+  const summary = {
+    present: totalPresent,
+    absent: totalAbsent,
+    guest: totalGuest,
+  };
 
   //Mess Component, where individual student details are displayed
   const MessComp = ({ id, student }) => {
@@ -62,15 +92,15 @@ const MessAttendance = () => {
   //add the row on click and increase the present
   const addMeal = (e, name, guest, rid) => {
     const time = new Date().toLocaleTimeString();
-    e.preventDefault();    
+    e.preventDefault();
     const newStdnt = { name, guest, time };
     setTotalStdnt((prevStdnt) => [...prevStdnt, newStdnt]);
     removeRow(rid);
     console.log("unique id:", rid);
     setTotalPresent(totalPresent + 1);
     setTotalAbsent(total - 1);
-    setTotalGuest(totalGuest + guest);           
-    console.log("guest list:", guestList);  
+    setTotalGuest(totalGuest + guest);
+    console.log("guest list:", guestList);
   };
   // remove the row on click and increase the present
   const removeRow = (rid) => {
@@ -78,23 +108,40 @@ const MessAttendance = () => {
     notRemove.splice(rid, 1);
     setStudents(notRemove);
     console.log("not remove", notRemove);
-  };
-  useEffect(() => {
-    console.log("Total student list updated:", totalStdnt); // Log when the total student list updates    
-    console.log("Guest list updated:", guestList); // Log when the guest list updates    
-  }, [totalStdnt]);
+  }; 
 
   //submit the data after the day is over
   const submitData = async (e) => {
     e.preventDefault();
     try {
-       await axios.post(MES_ATND_URL, {student: totalStdnt, summary, guests: guestList, messAttender: "admin"});
-      console.log("attendance data submitted successfully");         
-      navigate("/staffDashboard"); 
+      // First POST request
+      const res = await axios.post(MES_ATND_URL, {
+        student: totalStdnt,
+        summary,
+        guests: guestList,
+        messAttender: "admin",
+      });
+            
+      console.log("POST response:", res);
+  
+      // Second PATCH request, sending `attndData` as an array
+      
+      const res2 = await axios.patch("http://localhost:4000/api/messPayUpdate", { students: attndData });
+      console.log("attndData is",Array.isArray(attndData))
+      
+      if (res2.status !== 200) {
+        console.log("Data not updated");
+        return;
+      }
+      
+      console.log("PATCH response:", res2);
+      console.log("Attendance data submitted successfully");              
+      navigate("/staffDashboard");
     } catch (err) {
       console.log("Error submitting data", err);
     }
   };
+  
 
   return (
     <div className="messAttendance">
@@ -117,10 +164,10 @@ const MessAttendance = () => {
                 <MessComp
                   key={student._id}
                   id={id}
-                  student={student}                  
+                  student={student}
                   setTotalGuest={setTotalGuest}
                   totalGuest={totalGuest}
-                  rid={student._id}                
+                  rid={student._id}
                 />
               ))}
           </tbody>
@@ -137,8 +184,13 @@ const MessAttendance = () => {
           Guest Meal: <span>{totalGuest}</span>
         </h2>
       </div>
-      <h2>Submit Attendance</h2>
-      <button onClick={submitData}>Submit</button>
+
+      {totalPresent > 0 && (
+        <>
+          <h2>Submit Attendance</h2>
+          <button onClick={submitData}>Submit</button>
+        </>
+      )}
     </div>
   );
 };

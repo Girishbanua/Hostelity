@@ -10,7 +10,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import ProfileSettings from "./ProfileSettings";
 
 export default function UserDashboard() {
-  const LOGD_STDNTS_URL = "http://localhost:4000/api/loggedStudents";
+  // const LOGD_STDNTS_URL = "http://localhost:4000/api/loggedStudents";
   const REGSTRD_STDNTS_URL = "http://localhost:4000/api/registered_Students";
   const navigate = useNavigate();
   const [stdntname, setStdntname] = useState("");
@@ -21,25 +21,27 @@ export default function UserDashboard() {
   const [totalHExpInNDays, setTotalHExpInNDays] = useState("");
   const [totalMExpInNDays, setTotalMExpInNDays] = useState("");
   const [nDays, setNdays] = useState(0);
-  // Data Fetching
+  const [roomNum, setRoomNum] = useState("");
+  const [roomType, setRoomType] = useState("");
+  
+  //************* Logged student's Data Fetching*********************
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get(LOGD_STDNTS_URL);
-        const stdnt_Name = res.data.lgdStdnts;
-        const lastStudentName = stdnt_Name[stdnt_Name.length - 1].name;
-        setStdntname(lastStudentName);
-
-        const res2 = await axios.get(REGSTRD_STDNTS_URL);
-        const lastStudentEmail = stdnt_Name[stdnt_Name.length - 1].email;
-        const lastStudentData = res2.data.filter(
-          (student) => student.email === lastStudentEmail
-        );
-        console.log("res2 data:", lastStudentData);
-        setHpay(lastStudentData[0].hpay);
-        setMpay(lastStudentData[0].mpay);
-        setPdate(lastStudentData[0].date);
-        setStdntData(lastStudentData);
+        // const res = await axios.get(LOGD_STDNTS_URL);
+        // const stdnt_Name = res.data.lgdStdnts;
+        // const lastStudentName = stdnt_Name[stdnt_Name.length - 1].name;
+        const stId = localStorage.getItem("StudentID");
+        const res = await axios.get(REGSTRD_STDNTS_URL);
+        const StudentData = res.data.filter((student) => student._id === stId);
+        console.log("res data:", StudentData);
+        setStdntname(StudentData[0].name);
+        setHpay(StudentData[0].hpay);
+        setMpay(StudentData[0].mpay);
+        setPdate(StudentData[0].date);
+        setRoomNum(StudentData[0].roomnum);
+        setRoomType(StudentData[0].seater);
+        setStdntData(StudentData);
       } catch (err) {
         console.log("Error fetching data", err);
       }
@@ -47,6 +49,7 @@ export default function UserDashboard() {
     fetchData();
   }, []);
 
+  //***************Expense Calculation***************************
   useEffect(() => {
     if (stdntData && stdntData.length > 0) {
       const hExpnsPday = () => {
@@ -71,19 +74,21 @@ export default function UserDashboard() {
 
   const lpay = String(Number(hpay) + Number(mpay));
 
-  //function for adding a comma inbetween the number
+  //fetching data from the mess attendance
+  
+
+  //*******function for adding a comma inbetween the number*****
   const addComma = (num) => {
     if (num.length > 3) {
       if (num.length > 4) {
         if (num.length > 5) num = num.slice(0, 3) + "," + num.slice(3);
         else num = num.slice(0, 2) + "," + num.slice(2);
-      } 
-      else num = num.slice(0, 1) + "," + num.slice(1);
+      } else num = num.slice(0, 1) + "," + num.slice(1);
     }
     return num;
   };
 
-  // Home Page Visibility
+  //********* */ Home Page Visibility/*********** */
   const [visible, setVisible] = useState("home");
   const handleVisibility = (compName) => {
     setVisible(compName);
@@ -92,6 +97,7 @@ export default function UserDashboard() {
     setVisible("home");
   };
   const messOn = mpay > 0 ? true : false;
+  
   const DashboardHome = () => {
     return (
       <>
@@ -170,9 +176,19 @@ export default function UserDashboard() {
               </div>
             </motion.div>
           )}
-          {visible === "changeRoom" && <ChangeRoom onCancel={handleCancel} />}
-          {visible === "roomInfo" && <RoomInfo onCancel={handleCancel} />}
-          {visible === "issue" && <Issue onCancel={handleCancel} />}
+          {visible === "changeRoom" && (
+            <ChangeRoom onCancel={handleCancel} roomNum={roomNum} />
+          )}
+          {visible === "roomInfo" && (
+            <RoomInfo
+              onCancel={handleCancel}
+              roomNum={roomNum}
+              roomType={roomType}
+            />
+          )}
+          {visible === "issue" && (
+            <Issue onCancel={handleCancel} roomNum={roomNum} />
+          )}
           {visible === "payHistory" && (
             <StudentPaymentHistory
               onCancel={handleCancel}

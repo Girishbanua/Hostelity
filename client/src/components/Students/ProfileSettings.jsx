@@ -39,16 +39,18 @@ const ProfileSettings = ({ onCancel, stdntData }) => {
       } )            
       if (response.status === 200) {        
         toast.success("Profile updated successfully");        
-        onCancel();
+        window.location.reload();
       }
-      if (response.status === 400) {
-        toast.error("Profile update failed");
-      }   
+ 
     } catch (error) {
       console.log("Error while updating profile", error.response.status);    
       if (error.response.status === 304) {
         toast.warning("No changes made");
         onCancel();
+      }  
+      if (error.response.status > 304) {
+        toast.error(error.response.data.message);
+        return        
       }  
     }
   };
@@ -62,7 +64,7 @@ const ProfileSettings = ({ onCancel, stdntData }) => {
       transition={{ duration: 0.5, delay: 0.25 }}
     >
       <h1>Profile Settings</h1>
-      <form>
+      <form onSubmit={handleUpdate}>
       
       <div className="profileContainer">
         <label>
@@ -112,7 +114,7 @@ const ProfileSettings = ({ onCancel, stdntData }) => {
       </div>
       <div className="profilebuttons">
         <button onClick={onCancel}>Cancel</button>
-        <button onClick={handleUpdate} type="submit">Update</button>
+        <button onClick={console.log("clicked")} type="submit">Update</button>
       </div>
       </form>
     </motion.div>    
