@@ -15,6 +15,28 @@ const stdntSignupValidCheck = z
       .regex(/^[0-9]+$/, { message: "Phone number must be a number" })
       .min(10, { message: "Phone number must be at least 10 digits" })
       .max(10, { message: "Phone number cannot be more than 10 digits" }),
+    paddress: z
+      .string({ required_error: "Permanent address is required" })
+      .min(3, { message: "Please enter a valid address" })
+      .max(50, { message: "Permanent address must be less than 50 characters" }),
+    pname: z
+      .string({ required_error: "Name of the parent is required" })
+      .regex(/^[a-zA-Z ]+$/, { message: "Name of the parent must be a string" })
+      .min(3, { message: "Name of the parent must be at least 3 characters" })
+      .max(50, { message: "Name of the parent must be less than 50 characters" }),
+    rltn: z
+      .string({ required_error: "Relation with the parent is required" })
+      .min(3, { message: "Relation with the parent must be at least 3 characters" })
+      .max(50, { message: "Relation with the parent must be less than 50 characters" }),
+    cnumber: z
+      .string({ required_error: "Contact number is required" })
+      .regex(/^[0-9]+$/, { message: "Contact number must be a number" })
+      .min(10, { message: "Contact number must be at least 10 digits" })
+      .max(10, { message: "Contact number cannot be more than 10 digits" }),
+    caddress: z
+      .string({ required_error: " address is required" })
+      .min(3, { message: " Please enter a valid address" })
+      .max(50, { message: " Address must be less than 50 characters" }),
     college: z
       .string({ required_error: "College name is required" })
       .regex(/^[a-zA-Z ]+$/, { message: "College name must be a string" })
@@ -67,6 +89,20 @@ const stdntSignupValidCheck = z
     hpay: z.string({
       required_error: "Please choose one of the hostel payment option",
     }),
+    href: z
+      .string({ required_error: "Hostel payment reference is required" })      
+      .regex(/^[a-zA-Z0-9]+$/, {
+        message: "Hostel payment reference must be a string",
+      })
+      .max(12, { message: "Hostel payment reference cannot be more than 12 character" })
+      .min(10, { message: "Hostel payment reference must be at least 10 character" }),
+    mref: z
+      .string({ required_error: "Mess payment reference is required" })
+      .regex(/^[a-zA-Z0-9]+$/, {
+        message: "Mess payment reference must be a string",
+      })
+      .max(12, { message: "Hostel payment reference cannot be more than 12 character" })
+      .min(10, { message: "Hostel payment reference must be at least 10 character" }),
     mpay: z
       .string({ required_error: "Mess payment is required" })
       .regex(/^[0-9]+$/, { message: "Mess payment must be a number" }),

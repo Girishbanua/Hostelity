@@ -1,5 +1,6 @@
 const { StudentModel, stdntLoginModel } = require("../models/Student");
 const { MessMenuModel } = require("../models/messMenu");
+const { RoomModel } = require("../models/roomsModel");
 const bcrypt = require("bcryptjs");
 
 const home = async (req, res) => {
@@ -31,6 +32,11 @@ const stdntSignup = async (req, res) => {
       name,
       email,
       phone,
+      paddress,
+      pname,
+      rltn,
+      cnumber,
+      caddress,
       college,
       admission,
       department,
@@ -44,69 +50,10 @@ const stdntSignup = async (req, res) => {
       pdone,
       hpay,
       mpay,
+      href,
+      mref,
+      roomnum,
     } = req.body;
-    if (
-      name == "" ||
-      email == "" ||
-      pass == "" ||
-      confirm == "" ||
-      mess == "" ||
-      date == "" ||
-      pdone == "" ||
-      hpay == "" ||
-      mpay == ""
-    ) {
-      res.status(400).json({ message: "Please fill all the fields" });
-      return;
-    }
-    if (name.length < 3) {
-      res
-        .status(400)
-        .json({ message: "Name must be atleast 3 characters long" });
-      return;
-    }
-    if (email.length < 3) {
-      res
-        .status(400)
-        .json({ message: "Email must be atleast 3 characters long" });
-      return;
-    }
-    if (college.length < 3) {
-      res
-        .status(400)
-        .json({ message: "College name must be atleast 3 characters long" });
-      return;
-    }
-    if (admission.length < 9) {
-      res.status(400).json({
-        message: "Admission number must be atleast 9 characters long",
-      });
-      return;
-    }
-    if (department.length < 3) {
-      res.status(400).json({ message: "Enter complete department name" });
-      return;
-    }
-    if (phone.length != 10) {
-      res.status(400).json({ message: "Phone number must be 10 digits long" });
-      return;
-    }
-    if (pass.length < 6) {
-      res
-        .status(400)
-        .json({ message: "Password must be atleast 6 characters long" });
-      return;
-    }
-    if (pass !== confirm) {
-      res.status(400).json({ message: "Passwords do not match" });
-      return;
-    }
-    if (pdone == "no") {
-      res
-        .status(400)
-        .json({ message: "Payment must be done before registration!" });
-      return;
-    }
     //formatting the date
     let formatDate = (dateString) => {
       let [year, month, day] = dateString.split("-");
@@ -128,6 +75,24 @@ const stdntSignup = async (req, res) => {
     const salt = await bcrypt.genSalt(5);
     const hash = await bcrypt.hash(pass, salt);
 
+    let room = await RoomModel.findOne({ roomStatus: "vacant", roomType: seater});
+    console.log("room", room);
+
+    if (!room) {
+      res.status(400).json({ message: "No room available" });
+      return;
+    } else {
+      roomnum = room.roomNumber;
+      await RoomModel.findOneAndUpdate(
+        { roomNumber: roomnum },
+        {
+          $push: {
+            students: { name, phone }
+          }
+        }
+       );
+    }
+
     let userCreated = await StudentModel.create({
       name,
       email,
@@ -145,6 +110,14 @@ const stdntSignup = async (req, res) => {
       pdone,
       hpay,
       mpay,
+      href,
+      mref,
+      paddress,
+      pname,
+      rltn,
+      cnumber,
+      caddress,
+      roomnum,
     });
 
     res.status(201).json({ userCreated, message: "User created successfully" });
@@ -171,13 +144,38 @@ const stdntLogin = async (req, res) => {
     let dateString = date.toLocaleDateString();
     const loginDate = dateString;
     const loginTime = date.toLocaleTimeString();
-    const loggedUser = await stdntLoginModel.create({
+    const checkPrevLogin = await stdntLoginModel.findOne({ email: user.email });
+
+    if (checkPrevLogin) {
+     const loggedUser = await stdntLoginModel.findOneAndUpdate(
+        { email: user.email },
+        {
+          $push: {
+            logins: {
+              loginDate,
+              loginTime,
+            },
+          },
+        }
+      )
+      res.status(200).json({
+        loggedUser,
+        message: "Login successful",
+        token,
+        userID: user._id.toString(),
+      });
+    } else {
+      const loggedUser = await stdntLoginModel.create({
       name: user.name,
       email: user.email,
       token: token,
       id: user._id.toString(),
-      loginDate: loginDate,
-      loginTime: loginTime,
+      logins: [
+        {
+          loginDate,
+          loginTime,
+        },
+      ],
     });
     res.status(200).json({
       loggedUser,
@@ -185,6 +183,7 @@ const stdntLogin = async (req, res) => {
       token,
       userID: user._id.toString(),
     });
+    }        
     console.log("Login successful");
   } catch (err) {
     console.log(err);
@@ -235,12 +234,43 @@ const user = async (req, res) => {
 // update user
 const userUpdate = async (req, res) => {
   try {
-    res.status(201).json({ msg: "User updated successfully" });
-  }
-  catch (err) {
+    const {
+      name,
+      email,
+      phone,
+      admission,
+      college,
+      department,
+      semester,
+      duration,
+      paddress,
+      pname,
+      rltn,
+      cnumber,
+    } = req.body;
+
+    const updateData = { ...req.body };
+    const result = await StudentModel.findOneAndUpdate({ email }, updateData, {
+      new: true,
+    });
+    if (!result) {
+      return res.status(404).json({ msg: "User not found" });
+    }
+    // Check if any fields were actually modified
+    const isUpdated = Object.keys(updateData).some(
+      (key) => result[key] !== updateData[key]
+    );
+
+    if (!isUpdated) {
+      return res
+        .status(304)
+        .json({ message: "No changes were made, data is already up to date" });
+    }
+    res.status(200).json({ msg: "User updated successfully" });
+  } catch (err) {
     console.log(err);
   }
-}
+};
 
 module.exports = {
   home,
@@ -251,5 +281,5 @@ module.exports = {
   loggedStudents,
   user,
   messMenu,
-  userUpdate
+  userUpdate,
 };
