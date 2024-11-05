@@ -43,4 +43,6 @@ router.route("/updateRoom").patch(roomController.updateRoom);
 
 router.route("/changeRoom").patch(controller.changeRoom);
 
+router.route("/requestChangeRoom").post(controller.requestChangeRoom);
+
 module.exports = router;
