@@ -1,8 +1,26 @@
 @use "_base";
 
 .signupContainer{
-    @include base.flex(center, center);    
+    @include base.flex(center, center);   
     .signupBox{        
+        position: relative;
+        .closeBtn{
+            position: absolute;
+            top: 8.5vh;
+            right: 5vh;
+            cursor: pointer;
+            padding: 5px 15px;
+            color: base.$darkColor;
+            background: transparent;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-radius: 5px;
+            border: 1px solid base.$extraLightColor;
+            transition: all 0.3s ease-in-out;
+            &:hover{
+                background: base.$extraLightColor;
+                color: white;}
+        } 
         margin: 5vh 0;          
         gap: 20px;                   
         padding: 20px;
@@ -40,8 +58,21 @@
                     @include base.gradientText();
                 }
                 input, textarea, select {
-                    margin-right: 10px;
+                    margin-right: 10px;  
+                    font-size: 1rem;                                   
                 }
+                input[type="radio"]{
+                    appearance: none;
+                    width: 1rem;
+                    height: 1rem;
+                    border: 1px solid base.$extraLightColor;
+                    border-radius: 50%;
+                }
+                input[type="radio"]:checked{
+                    background: base.$lightColor;
+                    border: 3px solid white;
+                    outline: 1px solid base.$extraLightColor;
+                }                
                 input:not([type="radio"]){                    
                     width: 100%;
                     height: 50px;
@@ -59,7 +90,8 @@
                     color: base.$lightColor;
                     background: white;
                     width: 100%;  
-                    text-align: center;                
+                    text-align: center;   
+                    font-weight: bold;                
                 }   
                 textarea{
                     resize: none;
@@ -68,36 +100,50 @@
                     outline: 1px solid base.$extraLightColor;
                     border: none;
                     border-radius: 10px;
+                    font-size: 1rem;
+                    padding: 10px;                    
                 }    
                 input[type="checkbox"]{
                     width: 40px;
                     outline: none;
-                    accent-color: base.$extraLightColor;                                        
+                    accent-color: base.$extraLightColor;                              
                 }
                 p{
                     font-size: 1.1rem;
                 }
             }    
         .hostelInfo{
-            @include base.flex(left, center, column);
-            
+            @include base.flex(left, center, column);            
         }            
               
          .account{
             display: grid;
             padding: 10px;
-            border: 3px solid base.$lightColor;
+            background: base.$lightColor;
             border-radius: 10px;     
+            span{
+                font-size: 1.5rem;
+                color: rgba(255, 255, 255, 0.603);
+            }
             p{
                 font-weight: bold;
+                color: white;
             }       
-            h1{
+            h2{
                 letter-spacing: 1px;
                 font-size: 2.75rem;
-                margin: 0;                
+                margin: 0; 
+                color: white;                          
             }
-            h2{
-                margin: 0;                
+            h3{
+                margin: 0;      
+                color: white;    
+                font-size: 1.5rem;  
+                font-weight: 400;
+                b{
+                    font-size: 1.75rem;
+                    font-weight: 500;
+                }                              
             }
             button{
                 @include base.btn(white, base.$darkColor);

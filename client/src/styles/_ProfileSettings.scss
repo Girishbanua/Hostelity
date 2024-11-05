@@ -39,7 +39,7 @@
          @include base.btn(base.$lightColor);        
          width: 150px;
         }
-        button:last-child{            
+        button:first-child{            
             @include base.btn(transparent,base.$darkColor);
             border: 1px solid base.$darkColor;
             width: 150px;            

@@ -91,6 +91,9 @@ nav {
     @include base.btn($bgcolor: base.$gradient1);
     @include base.flex();
     gap: 10px;
+    width: 175px;
+    font-size: 1rem;
+    height: 50px;
     &:hover {
       background: base.$gradient2;
     }
@@ -102,6 +105,7 @@ nav {
   .book_stay {
     @include base.btn(transparent, base.$darkColor);
     border: 1px solid base.$darkColor;
+    font-size: 1rem;
     &:hover {
       letter-spacing: 2px;
     }

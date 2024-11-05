@@ -16,12 +16,12 @@
             background: base.$lightColor;            
         }
         tr{                 
+            border-bottom: 1px solid base.$lightColor;
             th{                
                 padding: 10px;  
                 color: beige;               
                 margin-bottom: 10px;
             }
-            border-bottom: 1px solid base.$lightColor;
             td{
                 padding: 10px;                
                 button{
