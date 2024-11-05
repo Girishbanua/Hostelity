@@ -1,66 +1,85 @@
 @use "_base.scss";
 
-.changeRoom{
-    @include base.flex(flex-start, left, column);
-    gap: 30px;
-    width: 70vw;
-    margin: auto 2vw;   
+.changeRoom {
+  @include base.flex(flex-start, left, column);
+  gap: 30px;
+  width: 70vw;
+  margin: auto 2vw;
+  flex-wrap: wrap;
+  position: relative;
+  .note {
+    position: absolute;
+    outline: 1px solid base.$extraLightColor;
+    border-radius: 10px;
+    backdrop-filter: blur(10px);
+    right: 10px;
+  }
+  p {
+    color: base.$lightColor;
+    max-width: 500px;
+    font-weight: bold;
+    padding: 10px;
+  }
+  h1 {
+    @include base.gradientText();
+    font-size: 2.5rem;
+    font-weight: 500;
+  }
+  form {
+    width: 100%;
+    @include base.flex(flex-start, space-between, column);
+    gap: 20px;
+  }
+  .rbox {
+    @include base.flex(flex-start, space-between);
+    width: 100%;
+    gap: 20px;
     flex-wrap: wrap;
-    h1{
-        @include base.gradientText();        
-        font-size: 2.5rem;
-        font-weight: 500;
+    .roomType {
+      @include base.flex(center, space-between);
+      gap: 20px;
+      flex-basis: 50%;
     }
-    .rbox{
-        @include base.flex(flex-start, space-between);        
-        width: 100%;
-        gap: 20px;
-        flex-wrap: wrap;
-        .roomNumber{
-            @include base.flex(center, space-between);
-            gap: 10px;            
-            font-size: 1.3rem;  
-            flex-basis: 40%;    
-                               
-        }
-        .roomType{
-            @include base.flex(center, space-between);
-            gap: 20px;
-            flex-basis: 50%;          
-        }
+  }
+  label {
+    font-size: 1.3rem;
+    flex-basis: 50%;
+  }
+  select {
+    flex-basis: 50%;
+    font-size: 1.3rem;
+    padding: 10px;
+    background: white;
+    border: 1px solid base.$extraLightColor;
+    border-radius: 10px;
+    color: base.$lightColor;
+    width: 100%;
+    option {
+      background-color: base.$lightColor;
+      color: white;
     }
-    label{
-        font-size: 1.3rem;
-        flex-basis: 50%;
+  }
+
+  textarea {
+    font-size: 1rem;
+    padding: 10px;
+    background: white;
+    border: 1px solid base.$extraLightColor;
+    border-radius: 10px;
+    color: base.$lightColor;
+    resize: none;
+  }
+  .buttons {
+    @include base.flex(flex-start, space-between);
+    gap: 30px;
+    button {
+      font-size: 1.3rem;
+      @include base.btn(base.$lightColor);
+      width: 350px;
     }
-    select{
-        flex-basis: 50%;
-        font-size: 1.3rem;
-        padding: 10px;
-        background: white;        
-        border: 1px solid base.$extraLightColor;
-        border-radius: 10px;
-        color: base.$lightColor;
-        width: 100%;
-        option{
-            background-color: base.$lightColor;
-            color: white;            
-        }
+    button:last-child {
+      @include base.btn(transparent, base.$darkColor);
+      border: 1px solid base.$darkColor;
     }
-    p{
-        color: base.$darkColor;
-    }
-   .buttons{
-       @include base.flex(flex-start, space-between);
-       gap: 30px;
-       button{
-        font-size: 1.3rem;
-        @include base.btn(base.$lightColor);        
-        width: 350px;
-       }
-       button:last-child{
-           @include base.btn(transparent,base.$darkColor);
-           border: 1px solid base.$darkColor;
-       }
-    }
+  }
 }
