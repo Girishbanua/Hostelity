@@ -1,48 +1,54 @@
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable react/prop-types */
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import "../../styles/_ChangeRoom.scss";
 import { motion } from "framer-motion";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { UseAuth } from "../../store/auth";
+import { Modal } from "react-responsive-modal";
+import "react-responsive-modal/styles.css";
 
-const ChangeRoom = ({ onCancel }) => {  
-  const [rooms, setRooms] = useState([]);  
-  const [newRoomNum, setNewRoomNum] = useState("");
-  const [newRoomType, setNewRoomType] = useState("");
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(
-          "http://localhost:4000/api/getAllRoom"
-        );
-        const result = response.data.result;
-        const roomsArray = result.map((room) => room.roomNumber);
-        setRooms(roomsArray);               
-      } catch (error) {
-        console.log("Error fetching data for rooms", error);
-      }
-    };
-    fetchData();    
-  }, []);
+const ChangeRoom = ({ onCancel, roomNum }) => {
+  const sid = localStorage.getItem("StudentID");
+  const [open, setOpen] = useState(false);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const sid = localStorage.getItem("StudentID");
+  const onOpenModal = () => setOpen(true);
+  const onCloseModal = () => setOpen(false);
+
+  const [newRoomType, setNewRoomType] = useState("random");
+  const { formattedDate } = UseAuth();
+  const [msg, setMsg] = useState("");
+  const msgID = Math.floor(sid.slice(0, -8) / 600);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();    
+    console.log("sid: ", sid);
+    console.log("newRoomType: ", newRoomType);
+    console.log("msg:", msg);
+    onOpenModal();
+  };
+  const confirmSubmit = async () => {
     try {
-      const res = await axios.patch("http://localhost:4000/api/changeRoom", {
-        sid, nRoomNum: newRoomNum, nRoomType: newRoomType
-      })
+      const res = await axios.post(
+        "http://localhost:4000/api/requestChangeRoom",
+        {
+          rdt: formattedDate,
+          rid: sid,
+          roomNum: roomNum,
+          nRoomType: newRoomType,
+          msg,
+          status: "pending"
+        }
+      );
       if (res.status === 200) {
-        toast.success("Room changed successfully")       
-        onCancel()
-      }      
+        toast.success("Room change request sent successfully");
+        onCancel();
+      }
     } catch (error) {
-      console.log(error)
+      console.log(error);
     }
-    console.log(sid)
-    console.log(newRoomNum, newRoomType)
   }
 
   return (
@@ -54,48 +60,133 @@ const ChangeRoom = ({ onCancel }) => {
       transition={{ duration: 0.5, delay: 0.25 }}
     >
       <h1>Change Room</h1>
+      <motion.div
+        className="note"
+        initial={{ opacity: 0, y: -100 }}
+        exit={{ opacity: 0 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.5 }}
+      >
+        <p>
+          Note: Room change request will be processed within 24 hours and once
+          changed, you are not allowed to change the room for the next 6 months
+        </p>
+      </motion.div>
       <form onSubmit={handleSubmit}>
-        <div className="rbox">         
-       { /***********************Room Number Component****************/}
-        <p>(* If you don't know the new room number, please select random)</p>
-        <div className="roomNumber">
-        <label htmlFor="prnum">New Room Number:</label>
-        <select
-          name="prnum"
-          id="proomnum"
-          value={newRoomNum}
-          onChange={(e) => setNewRoomNum(e.target.value)}
-          required
-        >
-          <option value="rndm">Random</option>
-          {rooms.map((r, index) => (
-            <option value={r} key={index}>
-              {r}
-            </option>
-          ))}
-        </select>
-      </div>            
-      {/***********************Room Type Component****************/}
+        {/***********************Room Type Component****************/}
         <div className="roomType">
-        <label htmlFor="proom">New Room Type: </label>
-        <select name="proom" id="proom" value={newRoomType} onChange={(e) => setNewRoomType(e.target.value)} required>
-          <option value="rndm">Random</option>
-          <option value="1">Single Room</option>
-          <option value="2">Dual Room</option>
-          <option value="3">Triple Sharing Room</option>
-          <option value="4">Quad Sharing Room</option>
-        </select>
-      </div>
+          <label htmlFor="proom">New Room Type: </label>
+          <select
+            name="proom"
+            id="proom"
+            value={newRoomType}
+            onChange={(e) => setNewRoomType(e.target.value)}
+            required
+          >
+            <option value="random">Random</option>
+            <option value="Single Room">Single Room</option>
+            <option value="Dual Room">Dual Room</option>
+            <option value="Triple Sharing Room">Triple Sharing Room</option>
+            <option value="Quad Sharing Room">Quad Sharing Room</option>
+          </select>
+        </div>
         <div className="chngMsg">
-          <label htmlFor="chngMsg">Reason for room change(if any): </label>
+          <label htmlFor="chngMsg">
+            Reason for room change <span>(*required)</span>:{" "}
+          </label>
           <br />
-          <textarea name="chngMsg" cols="70" rows="10 "></textarea>
+          <textarea
+            name="chngMsg"
+            cols="70"
+            rows="10"
+            required
+            onChange={(e) => setMsg(e.target.value)}
+          ></textarea>
         </div>
         <div className="buttons">
-          <button type="submit" >Request change</button>
+          <button type="submit" onSubmit={handleSubmit}>
+            Request change
+          </button>
           <button onClick={onCancel}>Cancel</button>
+          <Modal
+            open={open}
+            onClose={onCloseModal}
+            center
+            styles={{
+              modal: {
+                borderRadius: "10px",
+                width: "500px",
+                minHeight: "400px",
+                padding: "20px",
+                fontSize: "1.2rem",
+              },
+              overlay: { background: "rgba(218, 107, 67, 0.8)" },
+              closeButton: {
+                background: "coral",
+                borderRadius: "5px",
+              },
+              closeIcon: {
+                color: "white",
+              },
+            }}
+            classNames={{
+              modal: "modal",
+              overlay: "customOverlay",
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "flex-start",
+                gap: "10px",
+              }}
+            >
+              <header
+                style={{
+                  alignSelf: "center",
+                  fontSize: "1.5rem",
+                  fontWeight: "bold",
+                  margin: "20px 0",
+                  color: "coral",
+                }}
+              >
+                Request Details
+              </header>
+              <p>Date: {formattedDate}</p>
+              <br />
+              <p>
+                Request ID: <b>{msgID}</b>
+              </p>
+              <p>
+                Room Number: <b>{roomNum}</b>
+              </p>
+              <p>
+                New Room Type: <b>{newRoomType}</b>
+              </p>
+              <p>
+                Reason for change: <b>{msg}</b>
+              </p>
+              <button
+              type="submit"
+                onClick={() => {onCloseModal(); confirmSubmit();}}
+                style={{
+                  padding: "10px",
+                  borderRadius: "5px",
+                  border: "none",
+                  background: "coral",
+                  color: "white",
+                  cursor: "pointer",
+                  fontWeight: "bold",
+                  margin: "20px 0",
+                  alignSelf: "center",
+                }}                
+              >
+                Confirm Change
+              </button>
+            </div>
+          </Modal>
         </div>
-        </div>  
       </form>
     </motion.div>
   );
