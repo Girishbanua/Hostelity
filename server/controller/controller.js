@@ -1,6 +1,6 @@
 const { StudentModel, stdntLoginModel } = require("../models/Student");
 const { MessMenuModel } = require("../models/messMenu");
-const { RoomModel } = require("../models/roomsModel");
+const { RoomModel, RoomChngReqstModel } = require("../models/roomsModel");
 const bcrypt = require("bcryptjs");
 
 const home = async (req, res) => {
@@ -294,20 +294,26 @@ const userUpdate = async (req, res) => {
 const paymentUpdate = async (req, res) => {
   try {
     const { students } = req.body;
-    
-    const studentsToUpdate = await StudentModel.find({ name: { $in: students } });
-    
-    const updatedStudents = await Promise.all(studentsToUpdate.map(async (student) => {
-      let currentMpay = parseFloat(student.mpay) || 0; // Convert mpay to a number, or default to 0 if invalid
-      let newMpay = (currentMpay - 50).toString(); // Subtract 50 and convert back to a string
-      
-      return await StudentModel.updateOne(
-        { _id: student._id },
-        { $set: { mpay: newMpay } }
-      );
-    }));
-    
-    res.status(200).json({ msg: "Payment updated successfully", updatedStudents });
+
+    const studentsToUpdate = await StudentModel.find({
+      name: { $in: students },
+    });
+
+    const updatedStudents = await Promise.all(
+      studentsToUpdate.map(async (student) => {
+        let currentMpay = parseFloat(student.mpay) || 0; // Convert mpay to a number, or default to 0 if invalid
+        let newMpay = (currentMpay - 50).toString(); // Subtract 50 and convert back to a string
+
+        return await StudentModel.updateOne(
+          { _id: student._id },
+          { $set: { mpay: newMpay } }
+        );
+      })
+    );
+
+    res
+      .status(200)
+      .json({ msg: "Payment updated successfully", updatedStudents });
   } catch (err) {
     console.log("Error from paymentUpdate", err);
     res.status(500).json({ msg: "Internal server error" });
@@ -332,6 +338,28 @@ const changeRoom = async (req, res) => {
     console.log("Error Changing Room", error);
   }
 };
+
+const requestChangeRoom = async (req, res) => {
+  try {
+    const { rdt, rid, roomNum, nRoomType, msg, status } = req.body;
+    const result = await RoomChngReqstModel.create({
+      rdt,
+      rid,
+      roomNum,
+      nRoomType,
+      msg,
+      status
+    });
+    if (!result) {
+      return res.status(404).json({ msg: "User not found" });
+    }
+    res
+      .status(200)
+      .json({ msg: "Request sent successfully", rdt, rid, roomNum, nRoomType });
+  } catch (error) {
+    console.log("Error Changing Room, request rejected", error);
+  }
+};
 module.exports = {
   home,
   stdntSignup,
@@ -343,5 +371,6 @@ module.exports = {
   messMenu,
   userUpdate,
   changeRoom,
-  paymentUpdate
+  paymentUpdate,
+  requestChangeRoom,
 };
