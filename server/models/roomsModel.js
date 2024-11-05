@@ -13,5 +13,15 @@ const roomSchema = new mongoose.Schema({
     ]
 });
 
+const roomChngReqstSchema = new mongoose.Schema({
+    rdt: String,
+    rid: String,
+    roomNum: String,
+    nRoomType: String,
+    msg: String,
+    status: String,
+})
+
 const RoomModel = mongoose.model("room", roomSchema);
-module.exports = { RoomModel }
+const RoomChngReqstModel = mongoose.model("roomChngReqst", roomChngReqstSchema);
+module.exports = { RoomModel, RoomChngReqstModel }
