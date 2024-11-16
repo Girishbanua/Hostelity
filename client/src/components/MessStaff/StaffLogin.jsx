@@ -2,12 +2,17 @@ import { useNavigate } from "react-router-dom";
 
 const StaffLogin = () => {
   const navigate = useNavigate();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    navigate("/staffDashboard");
+  }
   return (
     <>
       <div className="signupContainer" style={{margin: "10vh 0"}}>
         <div className="signupBox">
           <h1>Staff Login</h1>
-          <form>
+          <form onSubmit={handleSubmit}>
             <section>
               <div>
             <label htmlFor="name">User name</label>

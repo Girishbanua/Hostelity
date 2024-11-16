@@ -1,0 +1,52 @@
+@use "_base.scss";
+.createRoom{
+    @include base.flex(flex-start, center);
+    width: 70vw;
+    margin: auto 2vw;  
+    background: white;
+    box-shadow: 0px 0px 7px rgb(194, 194, 194);
+    border-radius: 20px;
+    padding: 30px;
+    h1{
+        @include base.gradientText();
+        font-size: 3rem;
+        font-weight: 500;        
+        margin-bottom: 50px;
+    }
+    form{
+        @include base.flex(flex-start, center, column);
+        gap: 10px;
+        div{
+            @include base.flex(flex-start, space-between);
+            width: 100%;           
+            gap: 10px;
+            label{
+                font-size: 1.3rem;
+            }
+            input, select{
+                width: 300px;
+                height: 40px;
+                border-radius: 10px;
+                border: 1px solid base.$extraLightColor;
+                padding: 10px;
+                font-size: 1rem;                
+                &:focus{
+                    outline: 1px solid base.$darkColor;
+                }
+            }
+            input[type="submit"], button{
+                @include base.btn();
+                border: 1px solid base.$darkColor;
+                width: 200px;
+                font-size: 1.1rem;
+                margin-top: 30px;
+            }                      
+        }
+    }
+    .createImage{
+        img{
+            width: 100%;
+
+        }
+    }
+}

@@ -3,7 +3,7 @@
 import "../../styles/_StudentPaymentHistory.scss";
 import { motion } from "framer-motion";
 
-const StudentPaymentHistory = ({ onCancel, name, lpay, pdate, messOn, balance, days, mrem }) => {
+const StudentPaymentHistory = ({ onCancel,Shpay,ohpay, ompay, Mhpay, name, hpay,mpay, lpay, pdate, messOn, balance, days, mrem }) => {
   return (
     <motion.div
       className="stdntpayHistory"
@@ -28,18 +28,26 @@ const StudentPaymentHistory = ({ onCancel, name, lpay, pdate, messOn, balance, d
           <td>{lpay}</td>
         </tr>
         <tr>
+          <th style={{ fontSize:"0.8rem"}}>Last Hostel Payment: </th>
+          <td style={{ fontSize:"0.8rem"}}>{ohpay}</td>
+        </tr>
+        <tr>
+          <th style={{ fontSize:"0.8rem"}}>Last Mess Payment: </th>
+          <td style={{ fontSize:"0.8rem"}}>{ompay}</td>
+        </tr>
+        <tr>
           <th>Payment Date: </th>
           <td>{pdate}</td>
         </tr>
         <tr>
           <th>Hostel Dues: </th>
-          <td><b>0.00</b></td>
+          <td><b>{hpay > 0 ? "No dues" : Shpay}</b></td>
         </tr>
         {messOn && (
           <>
             <tr>
               <th>Mess Dues: </th>
-              <td><b>0.00</b></td>
+              <td><b>{mpay > 0 ? "No dues" : Mhpay}</b></td>
             </tr>
             <tr>
               <th>Meals Consumed: </th>

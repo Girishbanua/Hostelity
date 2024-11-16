@@ -5,6 +5,10 @@
   gap: 30px;
   width: 70vw;
   margin: auto 2vw;
+  background: white;
+  box-shadow: 0px 0px 7px rgb(194, 194, 194);
+  border-radius: 20px;
+  padding: 30px;
   h1 {
     @include base.gradientText();
     font-size: 3rem;

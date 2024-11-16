@@ -1,35 +1,16 @@
 import "../../styles/_UserDashboard.scss";
 import { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+
 import { motion, AnimatePresence } from "framer-motion";
+import Announcement from "./Announcement";
+import CreateAdmin from "./CreateAdmin";
+import CreateRoom from "./CreateRoom";
+import Requests from "./Requests";
 
-export default function StaffDashboard() {
-  const LOGD_STDNTS_URL = "http://localhost:4000/api/loggedStudents";
-  const TOTL_STDNTS_URL = "http://localhost:4000/api/total_Students";
+export default function AdminDashboard() {
   const navigate = useNavigate();
-  const [stdntname, setStdntname] = useState("");
-  const [count, setCount] = useState(null);
-
-  // Data Fetching
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await axios.get(LOGD_STDNTS_URL);
-        const stdnt_Name = res.data.lgdStdnts;
-        const lastStudentName = stdnt_Name[stdnt_Name.length - 1].name;
-        setStdntname(lastStudentName);
-
-        const response = await axios.get(TOTL_STDNTS_URL);
-        setCount(response.data.count);
-      } catch (err) {
-        console.log("Error fetching data", err);
-      }
-    };
-
-    fetchData(); // Call the async function
-  }, []); // Empty dependency array ensures this runs only once
-
+  const [greet, setGreet] = useState("");
   // Home Page Visibility
   const [visible, setVisible] = useState("home");
   const handleVisibility = (compName) => {
@@ -38,15 +19,27 @@ export default function StaffDashboard() {
   const handleCancel = () => {
     setVisible("home");
   };
-  
+  useEffect(() => {
+    const dt = new Date();
+    console.log("date: ", dt);
+    let time = dt.toTimeString();
+    time = time.split(":")[0];
+    console.log("time: ", time);
+    time < "12"
+      ? setGreet("Good Morning")
+      : time < "17"
+      ? setGreet("Good Afternoon")
+      : setGreet("Good Evening");
+  }, []);
+
   const DashboardHome = () => {
     return (
       <>
         <AnimatePresence>
-          {visible === "home" && ( 
+          {visible === "home" && (
             <motion.div
               className="dashboard_container"
-              initial={{ opacity: 0 }} 
+              initial={{ opacity: 0 }}
               exit={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ duration: 1, delay: 0.25 }}
@@ -59,49 +52,105 @@ export default function StaffDashboard() {
                     onClick={() => handleVisibility("profileSettings")}
                   />
                   <p>
-                    Welcome <span>{`Mess Staff`}</span>
+                    Welcome <span>{`Admin`}</span>
                   </p>
                   <select name="user_Menu" id="">
                     <option value="logout" onClick={() => navigate("/")}>
                       Logout
                     </option>
-                    <option value="settings" onClick={() => handleVisibility("profileSettings")}>Settings</option>
+                    <option
+                      value="settings"
+                      onClick={() => handleVisibility("profileSettings")}
+                    >
+                      Settings
+                    </option>
                   </select>
                 </div>
               </div>
-              <h1>{`Hello Mess Staff`}</h1>
-              <div className="details">
-                                                
+              <h1>{`${greet} Admin`}</h1>
+              <div
+                className="details"
+                style={{ display: "flex", flexWrap: "wrap" }}
+              >
                 <div className="action_menu">
                   <div className="info_txt">
-                    <h3>Switch Room</h3>
+                    <h3>Create Announcement</h3>
                   </div>
-                  <img src="/images/Dashboard/change.png" alt="change_icon" />
-                  <button onClick={() => handleVisibility("changeRoom")}>
-                    Change
+                  <img
+                    src="/images/Dashboard/announcement.png"
+                    alt="student requests"
+                  />
+                  <button onClick={() => handleVisibility("announcement")}>
+                    Create
                   </button>
                 </div>
                 <div className="action_menu">
                   <div className="info_txt">
-                    <h3>Raise an Issue</h3>
+                    <h3>Create Admin</h3>
                   </div>
-                  <img src="/images/Dashboard/report-issue.png" alt="" />
-                  <button onClick={() => handleVisibility("issue")}>
-                    Raise
+                  <img
+                    src="/images/Dashboard/newadmin.png"
+                    alt="create admin"
+                  />
+                  <button onClick={() => handleVisibility("createAdmin")}>
+                    Create
                   </button>
                 </div>
                 <div className="action_menu">
                   <div className="info_txt">
-                    <h3>Put Attendance</h3>
+                    <h3>Create Room</h3>
                   </div>
-                  <img src="/images/Dashboard/qr-menu.png" alt="" />
-                  <button onClick={() => navigate("/messAttendance")}>
-                    View
+                  <img src="/images/Dashboard/newroom.png" alt="create room" />
+                  <button onClick={() => handleVisibility("createRoom")}>
+                    Create
+                  </button>
+                </div>
+                <div className="action_menu">
+                  <div className="info_txt">
+                    <h3>Add Students</h3>
+                  </div>
+                  <img
+                    src="/images/Dashboard/newstudent.png"
+                    alt="new student"
+                  />
+                  <button onClick={() => navigate("/studentRegister")}>
+                    Add
+                  </button>
+                </div>
+                <div className="action_menu">
+                  <div className="info_txt">
+                    <h3>Add Staff</h3>
+                  </div>
+                  <img
+                    src="/images/Dashboard/team.png"
+                    alt="student requests"
+                  />
+                  <button onClick={() => handleVisibility("addStaff")}>
+                    Create
+                  </button>
+                </div>
+                <div className="action_menu">
+                  <div className="info_txt">
+                    <h3>Student requests</h3>
+                  </div>
+                  <img
+                    src="/images/Dashboard/requests.png"
+                    alt="student requests"
+                  />
+                  <button onClick={() => handleVisibility("requests")}>
+                    View Requests
                   </button>
                 </div>
               </div>
             </motion.div>
-          )}      
+          )}
+          {visible === "announcement" && (
+            <Announcement onCancel={handleCancel} />
+          )}
+          {visible === "createAdmin" && <CreateAdmin onCancel={handleCancel} />}
+          {visible === "createRoom" && <CreateRoom onCancel={handleCancel} />}
+          {/* {visible === "addStaff" && <AddStaff onCancel={handleCancel} />} */}
+          {visible === "requests" && <Requests onCancel={handleCancel} />}
         </AnimatePresence>
       </>
     );
@@ -143,8 +192,7 @@ export default function StaffDashboard() {
           onClick={() => handleVisibility("home")}
           variants={sidebarVariants}
         >
-          <img src="/images/Dashboard/Icon.png" alt="dashboard_icon" />
-          <h3>Dashboard</h3>
+          <h3>Admin Dashboard</h3>
         </motion.div>
         <motion.div className="features" variants={sidebarVariants}>
           <motion.h2 variants={sidebarVariants}>Features</motion.h2>

@@ -29,7 +29,7 @@ export default function LoginAs() {
         <section>
           <div className="loginCard">
             <section className="laImg"><img src="/images/loginasImages/user.png" alt="user icon" loading="lazy" /></section>
-            <p>User</p>
+            <p>Student</p>
             <div>
               <button className="lalbtn" onClick={() => navigate("/studentLogin")}>Login</button>
               <button onClick={() => navigate("/studentRegister")}>Register</button>

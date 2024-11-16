@@ -1,6 +1,6 @@
 @use "_base";
 .userDashboard {
-  @include base.flex(center, space-between);
+  @include base.flex(flex-start, space-between);
   gap: 30px;
 }
 .sideBar {
@@ -28,12 +28,13 @@
     font-size: 1.2rem;
     @include base.flex(center, flex-end);
     cursor: pointer;
-    gap: 30px;
+    gap: 30px;    
     h3 {
       font-weight: 400;
       margin-right: 22%;
+      transition: all ease-in-out, 0.3s;   
       &:hover {
-        cursor: pointer;
+        scale: 1.1;
       }
     }
   }
@@ -43,10 +44,13 @@
       text-transform: uppercase;
       letter-spacing: 2px;
     }
-    .feature {
+    
+    .feature {      
       @include base.flex(center, flex-start);
       gap: 10px;
-      margin-bottom: 20px;
+      margin-bottom: 5px;
+      outline: 1px solid white;
+      padding: 10px;      
       img {
         width: 25px;
       }
@@ -55,35 +59,43 @@
         font-size: 1.2rem;
         cursor: pointer;
       }
+      &:hover {        
+        outline: 1px solid base.$extraLightColor;
+        padding: 10px;
+        border-radius: 10px;    
+        scale: 1.1;    
+      }
     }
   }
 }
 
 .dashboard_container {
   @include base.flex(flex-start, top, column);
-  width: 70vw;
-  margin: auto 2vw;
+  width: 70vw;  
+  margin: 5vh 2vw;
   .dashboard_navbar {
     @include base.flex(center, space-between);
     padding: 0 20px;
     align-self: flex-end;
     .userMenu {
       @include base.flex(center, space-between);
-      gap: 20px;      
+      gap: 20px;  
+      position: relative;    
       img {
         height: 40px;
         width: 40px;
         background: base.$extraLightColor;
         border-radius: 50%;
+        border: 0px solid base.$lightColor;
         padding: 5px;
         object-fit: contain;
         cursor: pointer;        
-        transition: all ease-in-out, 0.5s;
-        &:hover {
-          scale: 1.2;
-          box-shadow: 1px 2px 7px gray;                    
+        transition: all ease-in-out, 0.3s;        
+        &:hover{         
+          scale: 1.1; 
+          filter: drop-shadow(0px 0px 5px base.$lightColor);
         }
-      }
+      }      
       span {
         color: base.$lightColor;
         font-weight: bold;

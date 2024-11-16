@@ -6,13 +6,17 @@
   width: 70vw;
   margin: auto 2vw;
   flex-wrap: wrap;
+  background: white;
+  box-shadow: 0px 0px 7px rgb(194, 194, 194);
+  border-radius: 20px;
+  padding: 30px;
   position: relative;
   .note {
     position: absolute;
     outline: 1px solid base.$extraLightColor;
     border-radius: 10px;
     backdrop-filter: blur(10px);
-    right: 10px;
+    right: 20px;
   }
   p {
     color: base.$lightColor;

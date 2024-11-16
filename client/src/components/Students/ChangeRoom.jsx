@@ -1,4 +1,3 @@
-/* eslint-disable react/no-unescaped-entities */
 /* eslint-disable react/prop-types */
 
 import { useState } from "react";
@@ -20,13 +19,18 @@ const ChangeRoom = ({ onCancel, roomNum }) => {
   const [newRoomType, setNewRoomType] = useState("random");
   const { formattedDate } = UseAuth();
   const [msg, setMsg] = useState("");
-  const msgID = Math.floor(sid.slice(0, -8) / 600);
+  let msgID = sid
+    .match(/\d/g)
+    .filter((digit) => digit != "0")
+    .join("");
+  msgID = msgID.substring(0, 12);
 
   const handleSubmit = (e) => {
-    e.preventDefault();    
+    e.preventDefault();
     console.log("sid: ", sid);
     console.log("newRoomType: ", newRoomType);
     console.log("msg:", msg);
+    console.log("msgID: ", msgID);
     onOpenModal();
   };
   const confirmSubmit = async () => {
@@ -35,21 +39,25 @@ const ChangeRoom = ({ onCancel, roomNum }) => {
         "http://localhost:4000/api/requestChangeRoom",
         {
           rdt: formattedDate,
-          rid: sid,
-          roomNum: roomNum,
+          oid: sid,
+          rid: msgID,
+          roomNum,
           nRoomType: newRoomType,
           msg,
-          status: "pending"
+          status: "pending",
+          rtype: "room change",
         }
       );
       if (res.status === 200) {
         toast.success("Room change request sent successfully");
         onCancel();
       }
+      console.log(res);
     } catch (error) {
       console.log(error);
+      toast.error(`Room change request failed: ${error.response.statusText}`);
     }
-  }
+  };
 
   return (
     <motion.div
@@ -62,7 +70,7 @@ const ChangeRoom = ({ onCancel, roomNum }) => {
       <h1>Change Room</h1>
       <motion.div
         className="note"
-        initial={{ opacity: 0, y: -100 }}
+        initial={{ opacity: 0, y: -50 }}
         exit={{ opacity: 0 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, delay: 0.5 }}
@@ -120,13 +128,13 @@ const ChangeRoom = ({ onCancel, roomNum }) => {
                 padding: "20px",
                 fontSize: "1.2rem",
               },
-              overlay: { background: "rgba(218, 107, 67, 0.8)" },
+              overlay: {
+                background: "rgba(218, 107, 67, 0.5)",
+                backdropFilter: "blur(5px)",
+              },
               closeButton: {
                 background: "coral",
                 borderRadius: "5px",
-              },
-              closeIcon: {
-                color: "white",
               },
             }}
             classNames={{
@@ -168,8 +176,11 @@ const ChangeRoom = ({ onCancel, roomNum }) => {
                 Reason for change: <b>{msg}</b>
               </p>
               <button
-              type="submit"
-                onClick={() => {onCloseModal(); confirmSubmit();}}
+                type="submit"
+                onClick={() => {
+                  onCloseModal();
+                  confirmSubmit();
+                }}
                 style={{
                   padding: "10px",
                   borderRadius: "5px",
@@ -180,7 +191,7 @@ const ChangeRoom = ({ onCancel, roomNum }) => {
                   fontWeight: "bold",
                   margin: "20px 0",
                   alignSelf: "center",
-                }}                
+                }}
               >
                 Confirm Change
               </button>

@@ -1,0 +1,97 @@
+@use "_base.scss";
+
+.adminSignupContainer {
+  .adminSignupBox {
+    margin-top: 5vh;   
+    margin-right: 1vw;
+    width: 70vw;
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px;
+    box-shadow: 1px 2px 7px gray;
+    h1 {
+      font-size: 2.5rem;
+      @include base.gradientText();
+      margin: 30px;
+    }
+    form {
+      display: grid;
+      grid-template-columns: 50% 50%;
+      padding: 30px;
+      gap: 30px;      
+     
+        div {
+          margin-bottom: 20px;
+          display: flex;
+          align-items: center;
+          gap: 10px;
+
+          label {
+            width: 45%;
+            font-size: 1.5rem;
+            @include base.gradientText();
+          }
+          input,
+          textarea,
+          select {
+            margin-right: 10px;
+            font-size: 1rem;
+          }
+          input[type="radio"] {
+            appearance: none;
+            width: 1rem;
+            height: 1rem;
+            border: 1px solid base.$extraLightColor;
+            border-radius: 50%;
+          }
+          input[type="radio"]:checked {
+            background: base.$lightColor;
+            border: 3px solid white;
+            outline: 1px solid base.$extraLightColor;
+          }
+          input:not([type="radio"]) {
+            width: 100%;
+            height: 50px;
+            border-radius: 5px;
+            padding: 15px;
+            border: none;
+            outline: 1px solid base.$extraLightColor;
+          }
+          select {
+            outline: 1px solid base.$extraLightColor;
+            border: none;
+            border-radius: 10px;
+            width: 50px;
+            padding: 10px;
+            color: base.$lightColor;
+            background: white;
+            width: 100%;
+            text-align: center;
+            font-weight: bold;
+          }
+          textarea {
+            resize: none;
+            height: 100px;
+            width: 100%;
+            outline: 1px solid base.$extraLightColor;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            padding: 10px;
+          }
+          input[type="checkbox"] {
+            width: 40px;
+            outline: none;
+            accent-color: base.$extraLightColor;
+          }
+          p {
+            font-size: 1.1rem;
+          }
+          button{
+            @include base.btn();
+            width: 150px;
+          }          
+        }      
+    }
+  }
+}

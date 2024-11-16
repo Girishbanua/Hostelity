@@ -15,6 +15,8 @@ import RoomInfo from "./components/Students/RoomInfo";
 import StaffDashboard from "./components/MessStaff/StaffDashboard";
 import MessAttendance from "./components/MessStaff/MessAttendance";
 import Logout from "./components/Logout";
+import AdminDashboard from "./components/Admin/AdminDashboard";
+import FAQs from "./components/FAQs";
 
 export default function App() {
   const router = createBrowserRouter([
@@ -82,6 +84,14 @@ export default function App() {
       path: "/roomInfo",
       element: <RoomInfo />,
     },  
+    {
+      path: "/adminDashboard",
+      element: <AdminDashboard />,
+    },  
+    {
+      path: "/FAQs",
+      element: <FAQs />,
+    }, 
   ]);
   return (
     <>

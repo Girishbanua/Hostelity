@@ -23,7 +23,7 @@ export default function UserDashboard() {
   const [nDays, setNdays] = useState(0);
   const [roomNum, setRoomNum] = useState("");
   const [roomType, setRoomType] = useState("");
-  
+
   //************* Logged student's Data Fetching*********************
   useEffect(() => {
     const fetchData = async () => {
@@ -59,10 +59,21 @@ export default function UserDashboard() {
         let DoJDate = new Date(year, month - 1, day);
 
         let diff = crntDt - DoJDate;
-        let days = Math.floor(diff / (1000 * 60 * 60 * 24));
+        let days = Math.floor(diff / (1000 * 60 * 60 * 24)) + 1;
+        console.log("days: ", days);
+        let months = Math.floor(days / 28);
+        console.log("months: ", months);
+        let electBill = 400;
+        let roomRent = 800;
+        let waterCharge = 200;
+        let pDayExpns = 100; //per day expense
+        let totalMonthExpense = (electBill + roomRent + waterCharge) * months;
+        console.log("totalMonthExpense: ", totalMonthExpense);
 
-        let pDayExpns = 100;
-        setTotalHExpInNDays(hpay - pDayExpns * days);
+        months > 0
+          ? setTotalHExpInNDays(hpay - totalMonthExpense)
+          : setTotalHExpInNDays(hpay - 0);
+        // setTotalHExpInNDays(hpay - pDayExpns * days);
         Number(mpay) === 0
           ? setTotalMExpInNDays(0)
           : setTotalMExpInNDays(mpay - pDayExpns * days);
@@ -75,15 +86,18 @@ export default function UserDashboard() {
   const lpay = String(Number(hpay) + Number(mpay));
 
   //fetching data from the mess attendance
-  
 
   //*******function for adding a comma inbetween the number*****
   const addComma = (num) => {
     if (num.length > 3) {
       if (num.length > 4) {
         if (num.length > 5) num = num.slice(0, 3) + "," + num.slice(3);
-        else num = num.slice(0, 2) + "," + num.slice(2);
-      } else num = num.slice(0, 1) + "," + num.slice(1);
+        else {
+                    num = num.slice(0, 2) + "," + num.slice(2);
+        }
+      } else {
+        if (num.includes("-")) return num;
+        else num = num.slice(0, 1) + "," + num.slice(1);}
     }
     return num;
   };
@@ -97,7 +111,7 @@ export default function UserDashboard() {
     setVisible("home");
   };
   const messOn = mpay > 0 ? true : false;
-  
+
   const DashboardHome = () => {
     return (
       <>
@@ -199,7 +213,12 @@ export default function UserDashboard() {
               balance={addComma(String(totalHExpInNDays + totalMExpInNDays))}
               days={nDays}
               mrem={mpay / 100 - nDays * 2}
-              H
+              hpay={totalHExpInNDays}
+              mpay={totalMExpInNDays}
+              Shpay={addComma(String(totalHExpInNDays))}
+              Mhpay={addComma(String(totalMExpInNDays))}
+              ohpay={addComma(String(hpay))}
+              ompay={addComma(String(mpay))}
             />
           )}
           {visible === "profileSettings" && (

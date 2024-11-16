@@ -38,7 +38,7 @@ const StudentLogin = () => {
     <>
       <div className="signupContainer" style={{ margin: "10vh 0" }}>
         <div className="signupBox">
-          <h1>User Login</h1>
+          <h1>Student Login</h1>
           <form onSubmit={handleLogin}>
             <section>
               <div>

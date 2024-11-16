@@ -200,3 +200,19 @@
     }
 }
 
+@media print {
+    body{
+        background: white !important;
+    }
+    .passCnfrm, button, a{
+        display: none !important;
+    }
+    .signupBox{
+        margin: 2vh ;
+        box-shadow: none !important;
+    }
+    form{
+        display: block !important;
+    }
+}
+

@@ -2,14 +2,20 @@
 /* eslint-disable react/prop-types */
 import axios from "axios";
 import { createContext, useContext, useEffect, useState } from "react";
+import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 
 export const AuthContext = createContext();
 
 export const AuthContextProvider = ({ children }) => {
-
   const [token, setToken] = useState(localStorage.getItem("StudentToken"));
   const [stdntID, setStdntID] = useState(localStorage.getItem("StudentID"));
   const [user, setUser] = useState("");
+
+  const date = new Date();
+  let formattedDate = date.toLocaleDateString();
+  const [month, day, year] = formattedDate.split("/").map(Number);
+  formattedDate = `${day}/${month}/${year}`;  
 
   let isLoggedIn = !!token;
   console.log("isLoggedIn", isLoggedIn);
@@ -18,38 +24,40 @@ export const AuthContextProvider = ({ children }) => {
     localStorage.setItem("StudentID", stdntID);
     console.log("id: ", stdntID);
   };
-  
+
   //logout functionality
-  const logoutUser = () => {
+  const logoutUser = async () => {
     setToken("");
     setStdntID("");
-    localStorage.removeItem("studentToken")
-    localStorage.removeItem("studentID")
-  }
+    localStorage.removeItem("StudentToken");
+    localStorage.removeItem("StudentID");
+    toast.success("Logged out successfully");
+  };
 
   // JWT authentication
 
   useEffect(() => {
     const userAuthentication = async () => {
-      try{        
-        const response = await axios.post("http://localhost:4000/api/user",{
-          headers: {Authorization: `Bearer ${token}`},
-        })
-  
-        if(response.ok){
+      try {
+        const response = await axios.post("http://localhost:4000/api/user", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        if (response.ok) {
           const data = await response.json();
-          setUser(data)
+          setUser(data);
         }
-  
-      } catch (err){
+      } catch (err) {
         console.log(err);
       }
-    }
+    };
     userAuthentication();
-  },[])
+  }, []);
 
   return (
-    <AuthContext.Provider value={{ storeTokenInLS, logoutUser, token, isLoggedIn, user, stdntID }}>
+    <AuthContext.Provider
+      value={{ storeTokenInLS, logoutUser, token, isLoggedIn, user, stdntID, date, formattedDate }}
+    >
       {children}
     </AuthContext.Provider>
   );
@@ -57,7 +65,7 @@ export const AuthContextProvider = ({ children }) => {
 
 export const UseAuth = () => {
   const contextValue = useContext(AuthContext);
-  if(!contextValue) {
+  if (!contextValue) {
     throw new Error("UseAuth must be used within an AuthContextProvider");
   }
   return contextValue;

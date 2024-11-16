@@ -28,7 +28,7 @@ export default function Home() {
                   <a href="#about">About</a>
                 </li>
                 <li>
-                  <a href="#">FAQs</a>
+                  <a href="/FAQs">FAQs</a>
                 </li>
                 { 
                   isLoggedIn && <li><a href="/user">My room</a></li>

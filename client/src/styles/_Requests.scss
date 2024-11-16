@@ -1,0 +1,125 @@
+@use "_base.scss";
+
+.requestsBox {
+  width: 70vw;
+  margin: 5vh 2vw;
+  background: white;
+  box-shadow: 0px 0px 7px rgb(194, 194, 194);
+  border-radius: 20px;
+  padding: 30px;
+  @include base.flex(flex-start, left, column);
+  .reqNav {
+    width: 100%;
+    @include base.flex(center, space-between);
+    h1 {
+      @include base.gradientText();
+      font-size: 3rem;
+      font-weight: 500;
+      margin-bottom: 30px;
+    }
+    .searchBox {
+      @include base.flex(center, center);
+      gap: 10px;
+      img {
+        width: 30px;
+        cursor: pointer;
+      }
+      input {
+        border-radius: 10px;
+        width: 200px;
+        padding: 5px;
+        text-align: center;
+        border: 1px solid base.$extraLightColor;
+        color: base.$primaryFontColor;
+      }
+      select {
+        border-radius: 10px;
+        width: 150px;
+        padding: 5px;
+        text-align: center;
+        border: 1px solid base.$extraLightColor;
+        text-transform: capitalize;
+        color: base.$primaryFontColor;
+        option {
+          text-transform: capitalize;
+          text-align: left;
+        }
+      }
+    }
+  }
+  .requestsContainer {
+    @include base.flex(flex-start, left);
+    width: 100%;
+    gap: 30px;
+    flex-wrap: wrap;
+    .noReq {
+      text-align: center;
+      width: 100%;
+      padding: 20px;
+      font-size: 2rem;
+      img {
+        width: 100%;
+        height: 350px;
+        object-fit: contain;
+      }
+    }
+    .request {
+      @include base.flex(flex-start, left, column);
+      min-width: 400px;
+      margin: 20px 0;
+
+      .requestDetails {
+        @include base.flex(flex-start, left, column);
+        background: base.$gradient3i;
+        padding: 10px;
+        border-radius: 10px;
+        margin-bottom: 10px;
+        width: 100%;
+        gap: 10px;
+        div {
+          @include base.flex(center, center);
+          gap: 10px;
+          color: rgba(0, 0, 0, 0.69);
+          h3 {
+            text-transform: capitalize;
+            font-weight: 500;
+          }
+          p {
+            text-transform: capitalize;
+          }         
+          ul {
+            list-style: none;
+          }
+        }
+      }
+      .approve-reject-buttons {
+        align-self: flex-end;
+        button {
+          border: none;
+          padding: 10px;
+          border-radius: 7px;
+          width: 100px;
+          text-transform: capitalize;
+          cursor: pointer;
+          &:hover {
+            opacity: 0.8;
+          }
+        }
+        .check {
+          background: base.$check;
+        }
+        .approve {
+          background: base.$approved;
+          margin-right: 10px;
+        }
+        .reject {
+          background: base.$gradient4;
+          margin-right: 10px;
+        }
+     
+      }
+    
+    }
+  }
+}
+

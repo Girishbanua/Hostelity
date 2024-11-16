@@ -34,6 +34,12 @@ export default function StudentSignUp() {
   const handleMessPay = (e) => {
     mess === "off" ? setMpay("0000") : setMpay(e.target.value);
   };
+  const handleMessOff = () => {
+    setMess("off");
+    setMpay("0000")
+    setMref("0000000000");
+    console.log("mref:", mref);
+  };
 
   const URL = "http://localhost:4000/api/studentSignup";
 
@@ -71,6 +77,7 @@ export default function StudentSignUp() {
         response.status === 201
       ) {
         toast.success("Registered successfully");
+        printPDF();
         document.getElementById("signupForm").reset();
         navigate("/loginas");
       } else {
@@ -82,6 +89,9 @@ export default function StudentSignUp() {
       toast.error(`${error}`);
       console.log("Error while signup\n", err.name, err.message);
     }
+  };
+  const printPDF = () => {
+    window.print();
   };
 
   return (
@@ -101,9 +111,11 @@ export default function StudentSignUp() {
                 <input
                   type="text"
                   id="name"
+                  name="name"
                   placeholder="Enter your Name"
-                  required                  
+                  required
                   onChange={(e) => setName(e.target.value)}
+                  autoComplete="off"
                 />
               </div>
               {/*Email*/}
@@ -112,6 +124,7 @@ export default function StudentSignUp() {
                 <input
                   type="email"
                   id="mail"
+                  name="email"
                   placeholder="Enter your email address"
                   required
                   autoComplete="off"
@@ -128,6 +141,7 @@ export default function StudentSignUp() {
                   autoComplete="off"
                   id="phnNumber"
                   onChange={(e) => setPhone(e.target.value)}
+                  name="phone"
                 />
               </div>
               {/*Permanent Address*/}
@@ -138,6 +152,7 @@ export default function StudentSignUp() {
                   cols="20"
                   rows="5"
                   onChange={(e) => setPaddress(e.target.value)}
+                  name="paddress"
                 ></textarea>
               </div>
             </section>
@@ -153,6 +168,7 @@ export default function StudentSignUp() {
                   autoComplete="off"
                   id="clgName"
                   onChange={(e) => setCollege(e.target.value)}
+                  name="college"
                 />
               </div>
               {/*Admission Number*/}
@@ -164,6 +180,7 @@ export default function StudentSignUp() {
                   required
                   autoComplete="off"
                   id="admsnNumber"
+                  name="admission"
                   onChange={(e) => setAdmission(e.target.value)}
                 />
               </div>
@@ -177,6 +194,7 @@ export default function StudentSignUp() {
                   autoComplete="off"
                   id="deptName"
                   onChange={(e) => setDepartment(e.target.value)}
+                  name="department"
                 />
               </div>
               {/*Semester- choose between 1 to 6 considering three years courses also*/}
@@ -187,6 +205,7 @@ export default function StudentSignUp() {
                   id="semester"
                   value={semester}
                   onChange={(e) => setSemester(e.target.value)}
+                  required
                 >
                   <option value="1">1st semester</option>
                   <option value="2">2nd semester</option>
@@ -204,6 +223,7 @@ export default function StudentSignUp() {
                   id="totalDuration"
                   value={duration}
                   onChange={(e) => setDuration(e.target.value)}
+                  required
                 >
                   <option value="1">1 year</option>
                   <option value="2">2 years</option>
@@ -222,6 +242,7 @@ export default function StudentSignUp() {
                   required
                   autoComplete="off"
                   onChange={(e) => setPname(e.target.value)}
+                  name="pname"
                 />
               </div>
               <div>
@@ -233,6 +254,7 @@ export default function StudentSignUp() {
                   required
                   autoComplete="off"
                   onChange={(e) => setRltn(e.target.value)}
+                  name="rltn"
                 />
               </div>
               <div>
@@ -244,6 +266,7 @@ export default function StudentSignUp() {
                   required
                   autoComplete="off"
                   onChange={(e) => setCnumber(e.target.value)}
+                  name="cnumber"
                 />
               </div>
               <div>
@@ -254,6 +277,7 @@ export default function StudentSignUp() {
                   rows="5"
                   value={caddress}
                   onChange={(e) => setCaddress(e.target.value)}
+                  name="caddress"
                 ></textarea>
               </div>
               <div>
@@ -348,7 +372,7 @@ export default function StudentSignUp() {
 
               {pdone === "yes" && (
                 <>
-                 <div>
+                  <div>
                     <label htmlFor="hrefrnce">Enter Reference ID:</label>
                     <input
                       type="text"
@@ -365,14 +389,13 @@ export default function StudentSignUp() {
                       name="hpay"
                       id="hPayment"
                       onChange={(e) => setHpay(e.target.value)}
-                      required                      
+                      required
                     >
                       <option value="12000">₹12,000</option>
                       <option value="24000">₹24,000</option>
                       <option value="36000">₹36,000</option>
                     </select>
                   </div>
-                 
                 </>
               )}
               {pdone === "yes" && (
@@ -390,13 +413,15 @@ export default function StudentSignUp() {
                     type="radio"
                     name="choice"
                     id="no"
-                    onClick={() => setMess("off")}
+                    onClick={() => {
+                      handleMessOff();
+                    }}
                   />
                 </div>
               )}
               {mess === "on" && pdone === "yes" && (
                 <>
-                <div>
+                  <div>
                     <label htmlFor="mrefrnce">Enter Reference ID:</label>
                     <input
                       type="text"
@@ -421,13 +446,12 @@ export default function StudentSignUp() {
                       <option value="48000">₹48,000</option>
                     </select>
                   </div>
-                  
                 </>
               )}
             </section>
 
-              {/*Password*/}
-            <section>
+            {/*Password*/}
+            <section className="passCnfrm">
               <div>
                 <label htmlFor="pass">Password</label>
                 <input

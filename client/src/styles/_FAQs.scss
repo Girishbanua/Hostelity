@@ -1,0 +1,40 @@
+@use "_base.scss";
+
+.FAQcontainer{
+    @include base.flex(flex-start, center,column);    
+    gap: 30px;        
+    background: base.$bodyBg;
+    padding: 5vh 4vw;
+    flex-wrap: wrap;
+    h1{
+        @include base.gradientText();
+        font-size: 3rem;
+        font-weight: 500;        
+    }
+    b{
+        font-size: 1.5rem;
+    }
+    div{
+        @include base.flex(flex-start, left);
+        gap: 10px; 
+        width: 550px;
+        flex-wrap: wrap;
+    }
+    details{                
+        border-radius: 10px;
+        box-shadow: 1px 2px 7px rgb(194, 194, 194);
+        width: 100%;
+        summary{
+            font-size: 1.2rem;
+            padding: 20px;
+        }
+        p{
+            border-top: 1px solid base.$extraLightColor;
+            font-size: 1rem;
+            padding: 10px 20px;
+            color: base.$darkColor;
+            line-height: 1.5em;
+            font-weight: 500;
+        }
+    }
+}
