@@ -27,6 +27,14 @@ const studentSchema = new mongoose.Schema({
   href: String,
   mref: String,
   roomnum: String,
+  requests: [
+    {
+      rdt: String,
+      rid: String,
+      requestType: String,
+      msg: String,
+      status: String,
+  }]
 });
 const stdntLoginSchema = new mongoose.Schema({
   name: String,

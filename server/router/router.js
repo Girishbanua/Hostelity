@@ -10,10 +10,11 @@ const authMiddleware = require("../middlewares/authMiddleware");
 const roomController = require("../controller/roomController");
 const stdntUpdateValidCheck = require("../validators/stdntUpdateValidCheck");
 const stdntUpdateValidate = require("../middlewares/stdntUpdateValidate");
+const adminController = require("../controller/adminController");
 
 router.route("/").get(controller.home);
 
-router.route("/studentSignup").post(controller.stdntSignup,stdntSignupValidate(stdntSignupValidCheck));
+router.route("/studentSignup").post(stdntSignupValidate(stdntSignupValidCheck),controller.stdntSignup);
 
 router.route("/studentLogin").post(stdntLoginValidate(stdntLoginValidCheck), controller.stdntLogin);
 
@@ -44,5 +45,11 @@ router.route("/updateRoom").patch(roomController.updateRoom);
 router.route("/changeRoom").patch(controller.changeRoom);
 
 router.route("/requestChangeRoom").post(controller.requestChangeRoom);
+
+router.route("/admin").post(adminController.adminLogin);
+
+router.route("/createAdmin").post(adminController.createAdmin);
+
+router.route("/getRequests").get(adminController.getRequests);
 
 module.exports = router;

@@ -92,7 +92,8 @@ const stdntSignup = async (req, res) => {
           $push: {
             students: { name, phone },
           },
-        }
+        },
+        { new: true }       
       );
     }
 
@@ -336,19 +337,27 @@ const changeRoom = async (req, res) => {
       .json({ msg: "Room changed successfully", nRoomNum, nRoomType });
   } catch (error) {
     console.log("Error Changing Room", error);
+    res.status(500).json({ msg: "Internal server error" });
   }
 };
 
 const requestChangeRoom = async (req, res) => {
   try {
-    const { rdt, rid, roomNum, nRoomType, msg, status } = req.body;
+    const { rdt, oid, rid, roomNum, nRoomType, msg, status, rtype } = req.body;
+    const result2 = await StudentModel.find({ _id: oid });    
+    const name = result2[0].name;
+    const email = result2[0].email;    
     const result = await RoomChngReqstModel.create({
       rdt,
+      oid,
       rid,
       roomNum,
       nRoomType,
       msg,
-      status
+      status,
+      rtype,
+      name,
+      email,
     });
     if (!result) {
       return res.status(404).json({ msg: "User not found" });
@@ -358,6 +367,7 @@ const requestChangeRoom = async (req, res) => {
       .json({ msg: "Request sent successfully", rdt, rid, roomNum, nRoomType });
   } catch (error) {
     console.log("Error Changing Room, request rejected", error);
+    res.status(500).json({ msg: "Internal server error" });
   }
 };
 module.exports = {

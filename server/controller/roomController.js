@@ -28,21 +28,34 @@ const getAllRooms = async (req, res) => {
 const updateRoom = async (req, res) => {
   try {
     const { roomNumber, roomType, roomStatus, roomPrice, students } = req.body;
-    const result = await RoomModel.findOneAndUpdate(
-      { roomNumber },
-      { roomType, roomStatus, roomPrice, students },
-      { new: true } // Returns the updated document
-    );
-
-    if (!result) {
+    
+    const room = await RoomModel.findOne({ roomNumber });
+    if (!room) {
       return res.status(404).json({ message: "Room not found" });
     }
-    res.status(200).json({ result });
+
+    let newOccupants = (room.occupants || 0) + 1; 
+    let newRoomStatus = newOccupants >= 4 ? "full" : roomStatus || "vacant";
+    
+    const updatedRoom = await RoomModel.findOneAndUpdate(
+      { roomNumber },
+      {
+        roomType,
+        roomPrice,
+        students,
+        occupants: newOccupants,
+        roomStatus: newRoomStatus,
+      },
+      { new: true } 
+    );
+
+    res.status(200).json({ result: updatedRoom });
   } catch (error) {
-    console.log("Error while updating room", error);
+    console.error("Error while updating room", error);
     res.status(500).json({ message: "Server error" });
   }
 };
+
 
 const changeRoom = async (req, res) => {
   try {

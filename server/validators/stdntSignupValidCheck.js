@@ -91,18 +91,18 @@ const stdntSignupValidCheck = z
     }),
     href: z
       .string({ required_error: "Hostel payment reference is required" })      
-      .regex(/^[a-zA-Z0-9]+$/, {
+      .regex(/^[A-Z0-9]+$/, {
         message: "Hostel payment reference must be a string",
       })
-      .max(12, { message: "Hostel payment reference cannot be more than 12 character" })
-      .min(10, { message: "Hostel payment reference must be at least 10 character" }),
+      .min(9, { message: "Hostel payment reference must be at least 10 character" })
+      .max(12, { message: "Hostel payment reference cannot be more than 12 character" }),
     mref: z
       .string({ required_error: "Mess payment reference is required" })
       .regex(/^[a-zA-Z0-9]+$/, {
         message: "Mess payment reference must be a string",
       })
-      .max(12, { message: "Hostel payment reference cannot be more than 12 character" })
-      .min(10, { message: "Hostel payment reference must be at least 10 character" }),
+      .min(10, { message: "Mess payment reference must be at least 10 character" })
+      .max(12, { message: "Mess payment reference cannot be more than 12 character" }),
     mpay: z
       .string({ required_error: "Mess payment is required" })
       .regex(/^[0-9]+$/, { message: "Mess payment must be a number" }),
